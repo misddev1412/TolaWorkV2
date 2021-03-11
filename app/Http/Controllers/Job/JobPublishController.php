@@ -12,10 +12,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Traits\JobTrait;
 
-
 class JobPublishController extends Controller
 {
-	use JobTrait;
+
+    use JobTrait;
 
     /**
      * Create a new controller instance.

@@ -11,13 +11,11 @@
                 </div>
                 {!! APFrmErrHelp::showErrors($errors, 'logo') !!} </div>
         </div>
-
         @if(isset($company))
         <div class="col-md-6">
             {{ ImgUploader::print_image("company_logos/$company->logo") }}        
         </div>    
         @endif  
-
     </div>
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'name') !!}"> {!! Form::label('name', 'Company Name', ['class' => 'bold']) !!}
         {!! Form::text('name', null, array('class'=>'form-control', 'id'=>'name', 'placeholder'=>'Company Name')) !!}
@@ -43,7 +41,7 @@
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'location') !!}"> {!! Form::label('location', 'Location', ['class' => 'bold']) !!}
         {!! Form::text('location', null, array('class'=>'form-control', 'id'=>'location', 'placeholder'=>'Location')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'location') !!} </div>     
-        <div class="form-group {!! APFrmErrHelp::hasError($errors, 'map') !!}"> {!! Form::label('map', 'Google Map', ['class' => 'bold']) !!}
+    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'map') !!}"> {!! Form::label('map', 'Google Map', ['class' => 'bold']) !!}
         {!! Form::textarea('map', null, array('class'=>'form-control', 'id'=>'map', 'placeholder'=>'Google Map')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'map') !!} </div>
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'no_of_offices') !!}"> {!! Form::label('no_of_offices', 'Number of offices', ['class' => 'bold']) !!}
@@ -64,17 +62,17 @@
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'phone') !!}"> {!! Form::label('phone', 'Phone #', ['class' => 'bold']) !!}
         {!! Form::text('phone', null, array('class'=>'form-control', 'id'=>'phone', 'placeholder'=>'Phone #')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'phone') !!} </div>
-    
-    
-    
-    
+
+
+
+
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'facebook') !!}"> {!! Form::label('facebook', 'Facebook Address', ['class' => 'bold']) !!}
         {!! Form::text('facebook', null, array('class'=>'form-control', 'id'=>'facebook', 'placeholder'=>'Facebook address')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'facebook') !!} </div>
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'twitter') !!}"> {!! Form::label('twitter', 'Twitter', ['class' => 'bold']) !!}
         {!! Form::text('twitter', null, array('class'=>'form-control', 'id'=>'twitter', 'placeholder'=>'Twitter')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'twitter') !!} </div>
-        
+
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'linkedin') !!}"> {!! Form::label('linkedin', 'Linkedin', ['class' => 'bold']) !!}
         {!! Form::text('linkedin', null, array('class'=>'form-control', 'id'=>'linkedin', 'placeholder'=>'Linkedin')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'linkedin') !!} </div>
@@ -97,28 +95,28 @@
             {!! Form::select('city_id', ['' => 'Select City'], null, array('class'=>'form-control', 'id'=>'city_id')) !!}
         </span>
         {!! APFrmErrHelp::showErrors($errors, 'city_id') !!} </div>
-        
-        
-        <div class="form-group {!! APFrmErrHelp::hasError($errors, 'company_package_id') !!}"> {!! Form::label('company_package_id', 'Package', ['class' => 'bold']) !!}  
+
+
+    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'company_package_id') !!}"> {!! Form::label('company_package_id', 'Package', ['class' => 'bold']) !!}  
         {!! Form::select('company_package_id', ['' => 'Select Package']+$packages, null, array('class'=>'form-control', 'id'=>'company_package_id')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'company_package_id') !!} </div>
-        
-        @if(isset($company) && $company->package_id > 0)
-        <div class="form-group">
-         {!! Form::label('package', 'Package : ', ['class' => 'bold']) !!}         
-         <strong>{{$company->getPackage('package_title')}}</strong>
-        </div>
-        <div class="form-group">
-         {!! Form::label('package_Duration', 'Package Duration : ', ['class' => 'bold']) !!}
-         <strong>{{$company->package_start_date->format('d M, Y')}}</strong> - <strong>{{$company->package_end_date->format('d M, Y')}}</strong>
-        </div>
-        <div class="form-group">
-         {!! Form::label('package_quota', 'Availed quota : ', ['class' => 'bold']) !!}
-         <strong>{{$company->availed_jobs_quota}}</strong> / <strong>{{$company->jobs_quota}}</strong>
-        </div>
-        <hr/>
-        @endif
-        
+
+    @if(isset($company) && $company->package_id > 0)
+    <div class="form-group">
+        {!! Form::label('package', 'Package : ', ['class' => 'bold']) !!}         
+        <strong>{{$company->getPackage('package_title')}}</strong>
+    </div>
+    <div class="form-group">
+        {!! Form::label('package_Duration', 'Package Duration : ', ['class' => 'bold']) !!}
+        <strong>{{$company->package_start_date->format('d M, Y')}}</strong> - <strong>{{$company->package_end_date->format('d M, Y')}}</strong>
+    </div>
+    <div class="form-group">
+        {!! Form::label('package_quota', 'Availed quota : ', ['class' => 'bold']) !!}
+        <strong>{{$company->availed_jobs_quota}}</strong> / <strong>{{$company->jobs_quota}}</strong>
+    </div>
+    <hr/>
+    @endif
+
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'is_active') !!}">
         {!! Form::label('is_active', 'Is Active?', ['class' => 'bold']) !!}
         <div class="radio-list">
@@ -163,39 +161,37 @@
 @push('scripts')
 @include('admin.shared.tinyMCEFront') 
 <script type="text/javascript">
-    $(document).ready(function(){
-    $('#country_id').on('change', function (e) {
-    e.preventDefault();
-    filterDefaultStates(0);
-    });
-    $(document).on('change', '#state_id', function (e) {
-    e.preventDefault();
-    filterDefaultCities(0);
-    });
-    filterDefaultStates(<?php echo old('state_id', (isset($company))? $company->state_id:0); ?>);
+    $(document).ready(function () {
+        $('#country_id').on('change', function (e) {
+            e.preventDefault();
+            filterDefaultStates(0);
+        });
+        $(document).on('change', '#state_id', function (e) {
+            e.preventDefault();
+            filterDefaultCities(0);
+        });
+        filterDefaultStates(<?php echo old('state_id', (isset($company)) ? $company->state_id : 0); ?>);
     });
     function filterDefaultStates(state_id)
     {
-    var country_id = $('#country_id').val();
-    if (country_id != ''){
-    $.post("{{ route('filter.default.states.dropdown') }}", {country_id: country_id, state_id: state_id, _method: 'POST', _token: '{{ csrf_token() }}'})
-            .done(function (response) {
-            $('#default_state_dd').html(response);
-            filterDefaultCities(<?php echo old('city_id', (isset($company))? $company->city_id:0); ?>);
-            });
+        var country_id = $('#country_id').val();
+        if (country_id != '') {
+            $.post("{{ route('filter.default.states.dropdown') }}", {country_id: country_id, state_id: state_id, _method: 'POST', _token: '{{ csrf_token() }}'})
+                    .done(function (response) {
+                        $('#default_state_dd').html(response);
+                        filterDefaultCities(<?php echo old('city_id', (isset($company)) ? $company->city_id : 0); ?>);
+                    });
+        }
     }
-    }
-
     function filterDefaultCities(city_id)
     {
-    var state_id = $('#state_id').val();
-    if (state_id != ''){
-    $.post("{{ route('filter.default.cities.dropdown') }}", {state_id: state_id, city_id: city_id, _method: 'POST', _token: '{{ csrf_token() }}'})
-            .done(function (response) {
-            $('#default_city_dd').html(response);
-            });
+        var state_id = $('#state_id').val();
+        if (state_id != '') {
+            $.post("{{ route('filter.default.cities.dropdown') }}", {state_id: state_id, city_id: city_id, _method: 'POST', _token: '{{ csrf_token() }}'})
+                    .done(function (response) {
+                        $('#default_city_dd').html(response);
+                    });
+        }
     }
-    }
-
 </script>
 @endpush

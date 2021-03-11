@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <style type="text/css">
     .table td, .table th {
@@ -23,12 +22,9 @@
         <h3 class="page-title">Manage Users <small>Users</small> </h3>
         <!-- END PAGE TITLE--> 
         <!-- END PAGE HEADER-->
-
         <div class="row">
             <div class="col-md-12"> 
-
                 <!-- Begin: life time stats -->
-
                 <div class="portlet light portlet-fit portlet-datatable bordered">
                     <div class="portlet-title">
                         <div class="caption"> <i class="icon-settings font-dark"></i> <span class="caption-subject font-dark sbold uppercase">Users</span> </div>
@@ -46,13 +42,11 @@
                                             <td><input type="text" class="form-control" name="name" id="name" autocomplete="off"></td>
                                             <td><input type="text" class="form-control" name="email" id="email" autocomplete="off"></td>
                                             <td></td>
-
                                         </tr>
                                         <tr role="row" class="heading"> 
                                             <th>Id</th>                                        
                                             <th>Name</th>
                                             <th>Email</th>                                        
-
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -68,7 +62,6 @@
     <!-- END CONTENT BODY --> 
 </div>
 @endsection
-
 @push('scripts') 
 <script>
     $(function () {
@@ -95,10 +88,8 @@
                 {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
-
             ]
         });
-
         $('#user-search-form').on('submit', function (e) {
             oTable.draw();
             e.preventDefault();
@@ -115,9 +106,7 @@
             oTable.draw();
             e.preventDefault();
         });
-
     });
-
     function delete_user(id) {
         if (confirm('Are you sure! you want to delete?')) {
             $.post("{{ route('delete.user') }}", {id: id, _method: 'DELETE', _token: '{{ csrf_token() }}'})
@@ -133,7 +122,6 @@
                     });
         }
     }
-
     function make_active(id) {
         $.post("{{ route('make.active.user') }}", {id: id, _method: 'PUT', _token: '{{ csrf_token() }}'})
                 .done(function (response) {
@@ -145,8 +133,6 @@
                     {
                         alert('Request Failed!');
                     }
-
-
                 });
     }
     function make_not_active(id) {
@@ -160,11 +146,8 @@
                     {
                         alert('Request Failed!');
                     }
-
-
                 });
     }
-
     function make_verified(id) {
         $.post("{{ route('make.verified.user') }}", {id: id, _method: 'PUT', _token: '{{ csrf_token() }}'})
                 .done(function (response) {
@@ -176,8 +159,6 @@
                     {
                         alert('Request Failed!');
                     }
-
-
                 });
     }
     function make_not_verified(id) {
@@ -191,8 +172,6 @@
                     {
                         alert('Request Failed!');
                     }
-
-
                 });
     }
 </script> 

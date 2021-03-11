@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\VideoFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class VideoController extends Controller
 {
@@ -48,28 +49,23 @@ class VideoController extends Controller
     public function storeVideo(VideoFormRequest $request)
     {
         $video = new Video();
-        $video->id = $request->input('id');
         $video->lang = $request->input('lang');
         $video->video_title = $request->input('video_title');
-		$video->video_text = $request->input('video_text');
-		$video->video_link = $request->input('video_link');
+        $video->video_text = $request->input('video_text');
+        $video->video_link = $request->input('video_link');
         $video->is_default = $request->input('is_default');
         $video->video_id = $request->input('video_id');
         $video->is_active = $request->input('is_active');
         $video->save();
         /*         * ************************************ */
-
         $video->sort_order = $video->id;
-
         if ((int) $request->input('is_default') == 1) {
             $video->video_id = $video->id;
         } else {
             $video->video_id = $request->input('video_id');
         }
-
         $video->update();
         /*         * ************************************ */
-
         flash('Video has been added!')->success();
         return \Redirect::route('edit.video', array($video->id));
     }
@@ -77,8 +73,8 @@ class VideoController extends Controller
     public function editVideo($id)
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
-		$videos = DataArrayHelper::defaultVideosArray();
-		
+        $videos = DataArrayHelper::defaultVideosArray();
+
         $video = Video::findOrFail($id);
         return view('admin.video.edit')
                         ->with('video', $video)
@@ -89,11 +85,10 @@ class VideoController extends Controller
     public function updateVideo($id, VideoFormRequest $request)
     {
         $video = Video::findOrFail($id);
-        $video->id = $request->input('id');
         $video->lang = $request->input('lang');
         $video->video_title = $request->input('video_title');
-		$video->video_text = $request->input('video_text');
-		$video->video_link = $request->input('video_link');
+        $video->video_text = $request->input('video_text');
+        $video->video_link = $request->input('video_link');
         $video->is_default = $request->input('is_default');
         $video->video_id = $request->input('video_id');
         $video->is_active = $request->input('is_active');
@@ -105,7 +100,6 @@ class VideoController extends Controller
         }
         /*         * ************************************ */
         $video->update();
-
         flash('Video has been updated!')->success();
         return \Redirect::route('edit.video', array($video->id));
     }
@@ -131,37 +125,31 @@ class VideoController extends Controller
     public function fetchVideosData(Request $request)
     {
         $videos = Video::select([
-                    'videos.id', 'videos.lang', 'videos.video_title','videos.video_text', 'videos.video_link','videos.is_default', 'videos.video_id', 'videos.is_active',
+                    'videos.id', 'videos.lang', 'videos.video_title', 'videos.video_text', 'videos.video_link', 'videos.is_default', 'videos.video_id', 'videos.is_active',
                 ])->sorted();
         return Datatables::of($videos)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('id') && !empty($request->id)) {
                                 $query->where('videos.id', 'like', "%{$request->get('id')}%");
                             }
-
                             if ($request->has('lang') && !empty($request->lang)) {
                                 $query->where('videos.lang', 'like', "%{$request->get('lang')}%");
                             }
-
                             if ($request->has('video_title') && !empty($request->video_title)) {
                                 $query->where('videos.video_title', 'like', "%{$request->get('video_title')}%");
                             }
-
                             if ($request->has('is_default') && !empty($request->is_default)) {
                                 $query->where('videos.is_default', 'like', "%{$request->get('is_default')}%");
                             }
-
                             if ($request->has('video_id') && !empty($request->video_id)) {
                                 $query->where('videos.video_id', 'like', "%{$request->get('video_id')}%");
                             }
-
                             if ($request->has('is_active') && !$request->is_active == -1) {
                                 $query->where('videos.is_active', '=', "{$request->get('is_active')}");
                             }
                         })
                         ->addColumn('video_title', function ($videos) {
-                            $video = str_limit($videos->video_title, 100, '...');
+                            $video = Str::limit($videos->video_title, 100, '...');
                             $direction = MiscHelper::getLangDirection($videos->lang);
                             return '<span dir="' . $direction . '">' . $video . '</span>';
                         })

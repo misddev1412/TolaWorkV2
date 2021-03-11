@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class JobPostedListener implements ShouldQueue
 {
-	
+
     /**
      * Create the event listener.
      *
@@ -29,6 +29,7 @@ class JobPostedListener implements ShouldQueue
      */
     public function handle(JobPosted $event)
     {
-		Mail::send(new JobPostedMailable($event->job));
+        Mail::send(new JobPostedMailable($event->job));
     }
+
 }

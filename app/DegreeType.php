@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class DegreeType extends Model
 {
-	use Lang;
-	use IsDefault;
-	use Active;
-	use Sorted;
-	
+
+    use Lang;
+    use IsDefault;
+    use Active;
+    use Sorted;
+
     protected $table = 'degree_types';
     public $timestamps = true;
     protected $guarded = ['id'];
@@ -29,11 +30,11 @@ class DegreeType extends Model
 
     public function getDegreeLevel($field = '')
     {
-		$degreeLevel = $this->degreeLevel()->lang()->first();
-		if(null === $degreeLevel){
-			$degreeLevel = $this->degreeLevel()->first();
-		}
-        if(null !== $degreeLevel){
+        $degreeLevel = $this->degreeLevel()->lang()->first();
+        if (null === $degreeLevel) {
+            $degreeLevel = $this->degreeLevel()->first();
+        }
+        if (null !== $degreeLevel) {
             if (!empty($field))
                 return $degreeLevel->$field;
             else

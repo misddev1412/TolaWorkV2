@@ -40,14 +40,14 @@
                                             <td><input type="text" class="form-control" name="title" id="title" autocomplete="off" placeholder="Job title"></td>
                                             <td><input type="text" class="form-control" name="description" id="description" autocomplete="off" placeholder="Job description"></td>
                                             <td>
-                                            <?php $default_country_id = Request::query('country_id', $siteSetting->default_country_id); ?>
-                                            {!! Form::select('country_id', ['' => 'Select Country']+$countries, $default_country_id, array('id'=>'country_id', 'class'=>'form-control')) !!}
-                                            <span id="default_state_dd">
-                                            {!! Form::select('state_id', ['' => 'Select State'], null, array('id'=>'state_id', 'class'=>'form-control')) !!}
-                                            </span>
-                                            <span id="default_city_dd">
-                                            {!! Form::select('city_id', ['' => 'Select City'], null, array('id'=>'city_id', 'class'=>'form-control')) !!}
-                                            </span></td>
+                                                <?php $default_country_id = Request::query('country_id', $siteSetting->default_country_id); ?>
+                                                {!! Form::select('country_id', ['' => 'Select Country']+$countries, $default_country_id, array('id'=>'country_id', 'class'=>'form-control')) !!}
+                                                <span id="default_state_dd">
+                                                    {!! Form::select('state_id', ['' => 'Select State'], null, array('id'=>'state_id', 'class'=>'form-control')) !!}
+                                                </span>
+                                                <span id="default_city_dd">
+                                                    {!! Form::select('city_id', ['' => 'Select City'], null, array('id'=>'city_id', 'class'=>'form-control')) !!}
+                                                </span></td>
                                             <td><select name="is_active" id="is_active" class="form-control">
                                                     <option value="-1">Is Active?</option>
                                                     <option value="1" selected="selected">Active</option>
@@ -100,10 +100,10 @@
                     d.title = $('#title').val();
                     d.description = $('#description').val();
                     d.country_id = $('#country_id').val();
-					d.state_id = $('#state_id').val();
-					d.city_id = $('#city_id').val();
+                    d.state_id = $('#state_id').val();
+                    d.city_id = $('#city_id').val();
                     d.is_active = $('#is_active').val();
-					d.is_featured = $('#is_featured').val();
+                    d.is_featured = $('#is_featured').val();
                 }
             }, columns: [
                 {data: 'company_id', name: 'company_id'},
@@ -130,16 +130,16 @@
             e.preventDefault();
         });
         $('#country_id').on('change', function (e) {
-			oTable.draw();
+            oTable.draw();
             e.preventDefault();
-			filterDefaultStates(0);
+            filterDefaultStates(0);
         });
-		$(document).on('change', '#state_id', function (e) {
-			oTable.draw();
+        $(document).on('change', '#state_id', function (e) {
+            oTable.draw();
             e.preventDefault();
-			filterDefaultCities(0);
+            filterDefaultCities(0);
         });
-		$(document).on('change', '#city_id', function (e) {
+        $(document).on('change', '#city_id', function (e) {
             oTable.draw();
             e.preventDefault();
         });
@@ -147,11 +147,11 @@
             oTable.draw();
             e.preventDefault();
         });
-		$('#is_featured').on('change', function (e) {
+        $('#is_featured').on('change', function (e) {
             oTable.draw();
             e.preventDefault();
         });
-		filterDefaultStates(0);
+        filterDefaultStates(0);
     });
     function deleteJob(id, is_default) {
         var msg = 'Are you sure?';
@@ -221,27 +221,25 @@
                     }
                 });
     }
-
-	function filterDefaultStates(state_id)
+    function filterDefaultStates(state_id)
     {
-    var country_id = $('#country_id').val();
-    if (country_id != ''){
-    $.post("{{ route('filter.default.states.dropdown') }}", {country_id: country_id, state_id: state_id, _method: 'POST', _token: '{{ csrf_token() }}'})
-            .done(function (response) {
-            $('#default_state_dd').html(response);
-            });
+        var country_id = $('#country_id').val();
+        if (country_id != '') {
+            $.post("{{ route('filter.default.states.dropdown') }}", {country_id: country_id, state_id: state_id, _method: 'POST', _token: '{{ csrf_token() }}'})
+                    .done(function (response) {
+                        $('#default_state_dd').html(response);
+                    });
+        }
     }
-    }
-
     function filterDefaultCities(city_id)
     {
-    var state_id = $('#state_id').val();
-    if (state_id != ''){
-    $.post("{{ route('filter.default.cities.dropdown') }}", {state_id: state_id, city_id: city_id, _method: 'POST', _token: '{{ csrf_token() }}'})
-            .done(function (response) {
-            $('#default_city_dd').html(response);
-            });
-    }
+        var state_id = $('#state_id').val();
+        if (state_id != '') {
+            $.post("{{ route('filter.default.cities.dropdown') }}", {state_id: state_id, city_id: city_id, _method: 'POST', _token: '{{ csrf_token() }}'})
+                    .done(function (response) {
+                        $('#default_city_dd').html(response);
+                    });
+        }
     }
 </script>
 @endpush

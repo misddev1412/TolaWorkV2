@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\ResultTypeFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class ResultTypeController extends Controller
 {
@@ -48,7 +49,6 @@ class ResultTypeController extends Controller
     public function storeResultType(ResultTypeFormRequest $request)
     {
         $resultType = new ResultType();
-        $resultType->id = $request->input('id');
         $resultType->lang = $request->input('lang');
         $resultType->result_type = $request->input('result_type');
         $resultType->is_default = $request->input('is_default');
@@ -56,18 +56,14 @@ class ResultTypeController extends Controller
         $resultType->is_active = $request->input('is_active');
         $resultType->save();
         /*         * ************************************ */
-
         $resultType->sort_order = $resultType->id;
-
         if ((int) $request->input('is_default') == 1) {
             $resultType->result_type_id = $resultType->id;
         } else {
             $resultType->result_type_id = $request->input('result_type_id');
         }
-
         $resultType->update();
         /*         * ************************************ */
-
         flash('Result Type has been added!')->success();
         return \Redirect::route('edit.result.type', array($resultType->id));
     }
@@ -86,7 +82,6 @@ class ResultTypeController extends Controller
     public function updateResultType($id, ResultTypeFormRequest $request)
     {
         $resultType = ResultType::findOrFail($id);
-        $resultType->id = $request->input('id');
         $resultType->lang = $request->input('lang');
         $resultType->result_type = $request->input('result_type');
         $resultType->is_default = $request->input('is_default');
@@ -100,7 +95,6 @@ class ResultTypeController extends Controller
         }
         /*         * ************************************ */
         $resultType->update();
-
         flash('Result Type has been updated!')->success();
         return \Redirect::route('edit.result.type', array($resultType->id));
     }
@@ -110,13 +104,11 @@ class ResultTypeController extends Controller
         $id = $request->input('id');
         try {
             $resultType = ResultType::findOrFail($id);
-
             if ((bool) $resultType->is_default) {
                 ResultType::where('result_type_id', '=', $resultType->result_type_id)->delete();
             } else {
                 $resultType->delete();
             }
-
             return 'ok';
         } catch (ModelNotFoundException $e) {
             return 'notok';
@@ -130,21 +122,18 @@ class ResultTypeController extends Controller
                 ])->sorted();
         return Datatables::of($resultTypes)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('lang') && !empty($request->lang)) {
                                 $query->where('result_types.lang', 'like', "{$request->get('lang')}");
                             }
-
                             if ($request->has('result_type') && !empty($request->result_type)) {
                                 $query->where('result_types.result_type', 'like', "%{$request->get('result_type')}%");
                             }
-
                             if ($request->has('is_active') && $request->is_active != -1) {
                                 $query->where('result_types.is_active', '=', "{$request->get('is_active')}");
                             }
                         })
                         ->addColumn('result_type', function ($resultTypes) {
-                            $resultType = str_limit($resultTypes->result_type, 100, '...');
+                            $resultType = Str::limit($resultTypes->result_type, 100, '...');
                             $direction = MiscHelper::getLangDirection($resultTypes->lang);
                             return '<span dir="' . $direction . '">' . $resultType . '</span>';
                         })

@@ -12,4 +12,3 @@
         {!! APFrmErrHelp::showErrors($errors, 'nocaptcha_secret') !!}                                       
     </div>    
 </div>
-

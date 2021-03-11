@@ -21,7 +21,7 @@
         {!! Form::label('skills', 'Job skills', ['class' => 'bold']) !!}
         <?php
         $skills = old('skills', $jobSkillIds);
-		?>
+        ?>
         {!! Form::select('skills[]', $jobSkills, $skills, array('class'=>'form-control select2-multiple', 'id'=>'skills', 'multiple'=>'multiple')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'skills') !!}
     </div>
@@ -44,7 +44,6 @@
         </span>
         {!! APFrmErrHelp::showErrors($errors, 'city_id') !!}                                       
     </div>
-
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'is_freelance') !!}">
         {!! Form::label('is_freelance', 'Is Freelance?', ['class' => 'bold']) !!}
         <div class="radio-list">
@@ -195,54 +194,53 @@
 </div>
 @push('css')
 <style type="text/css">
-.datepicker>div {
-    display: block;
-}
+    .datepicker>div {
+        display: block;
+    }
 </style>
 @endpush
 @push('scripts')
 @include('admin.shared.tinyMCEFront') 
 <script type="text/javascript">
-$(document).ready(function() {
-    $('.select2-multiple').select2({
-    	placeholder: "Select Required Skills",
-    	allowClear: true
-	});
-	$(".datepicker").datepicker({
-		autoclose: true,
-		format:'yyyy-m-d'	
-	});
-    $('#country_id').on('change', function (e) {
-    e.preventDefault();
-    filterDefaultStates(0);
-    });
-    $(document).on('change', '#state_id', function (e) {
-    e.preventDefault();
-    filterDefaultCities(0);
-    });
-    filterDefaultStates(<?php echo old('state_id', (isset($job))? $job->state_id:0); ?>);
+    $(document).ready(function () {
+        $('.select2-multiple').select2({
+            placeholder: "Select Required Skills",
+            allowClear: true
+        });
+        $(".datepicker").datepicker({
+            autoclose: true,
+            format: 'yyyy-m-d'
+        });
+        $('#country_id').on('change', function (e) {
+            e.preventDefault();
+            filterDefaultStates(0);
+        });
+        $(document).on('change', '#state_id', function (e) {
+            e.preventDefault();
+            filterDefaultCities(0);
+        });
+        filterDefaultStates(<?php echo old('state_id', (isset($job)) ? $job->state_id : 0); ?>);
     });
     function filterDefaultStates(state_id)
     {
-    var country_id = $('#country_id').val();
-    if (country_id != ''){
-    $.post("{{ route('filter.default.states.dropdown') }}", {country_id: country_id, state_id: state_id, _method: 'POST', _token: '{{ csrf_token() }}'})
-            .done(function (response) {
-            $('#default_state_dd').html(response);
-            filterDefaultCities(<?php echo old('city_id', (isset($job))? $job->city_id:0); ?>);
-            });
+        var country_id = $('#country_id').val();
+        if (country_id != '') {
+            $.post("{{ route('filter.default.states.dropdown') }}", {country_id: country_id, state_id: state_id, _method: 'POST', _token: '{{ csrf_token() }}'})
+                    .done(function (response) {
+                        $('#default_state_dd').html(response);
+                        filterDefaultCities(<?php echo old('city_id', (isset($job)) ? $job->city_id : 0); ?>);
+                    });
+        }
     }
-    }
-
     function filterDefaultCities(city_id)
     {
-    var state_id = $('#state_id').val();
-    if (state_id != ''){
-    $.post("{{ route('filter.default.cities.dropdown') }}", {state_id: state_id, city_id: city_id, _method: 'POST', _token: '{{ csrf_token() }}'})
-            .done(function (response) {
-            $('#default_city_dd').html(response);
-            });
-    }
+        var state_id = $('#state_id').val();
+        if (state_id != '') {
+            $.post("{{ route('filter.default.cities.dropdown') }}", {state_id: state_id, city_id: city_id, _method: 'POST', _token: '{{ csrf_token() }}'})
+                    .done(function (response) {
+                        $('#default_city_dd').html(response);
+                    });
+        }
     }
 </script>
 @endpush

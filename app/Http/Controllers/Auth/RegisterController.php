@@ -28,7 +28,7 @@ class RegisterController extends Controller
      */
 
 use RegistersUsers;
-use VerifiesUsers;
+    use VerifiesUsers;
 
     /**
      * Where to redirect users after registration.
@@ -44,26 +44,26 @@ use VerifiesUsers;
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['getVerification','getVerificationError']]);
+        $this->middleware('guest', ['except' => ['getVerification', 'getVerificationError']]);
     }
 
     public function register(UserFrontRegisterFormRequest $request)
     {
         $user = new User();
         $user->first_name = $request->input('first_name');
-		$user->middle_name = $request->input('middle_name');
-		$user->last_name = $request->input('last_name');
+        $user->middle_name = $request->input('middle_name');
+        $user->last_name = $request->input('last_name');
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
         $user->is_active = 0;
         $user->verified = 0;
         $user->save();
-		/**************************/
-		$user->name = $user->getName();
-		$user->update();
-		/**************************/
+        /*         * *********************** */
+        $user->name = $user->getName();
+        $user->update();
+        /*         * *********************** */
         event(new Registered($user));
-		event(new UserRegistered($user));
+        event(new UserRegistered($user));
         $this->guard()->login($user);
         UserVerification::generate($user);
         UserVerification::send($user, 'User Verification', config('mail.recieve_to.address'), config('mail.recieve_to.name'));

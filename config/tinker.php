@@ -11,6 +11,5 @@ return [
       | you may accomplish by listing the classes in the following array.
       |
      */
-
     'dont_alias' => [],
 ];

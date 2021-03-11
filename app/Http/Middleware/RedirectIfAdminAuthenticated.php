@@ -21,7 +21,6 @@ class RedirectIfAdminAuthenticated
         if (Auth::guard($guard)->check()) {
             return redirect('/admin/home');
         }
-
         return $next($request);
     }
 

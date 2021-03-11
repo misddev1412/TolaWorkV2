@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <div class="page-content-wrapper"> 
     <!-- BEGIN CONTENT BODY -->
@@ -26,7 +25,6 @@
                     <div class="portlet-title">
                         <div class="caption font-red-sunglo"> <i class="icon-settings font-red-sunglo"></i> <span class="caption-subject bold uppercase">Users Form</span> </div>
                     </div>
-
                     <div class="portlet-body form">          
                         <ul class="nav nav-tabs">              
                             <li class="active"> <a href="#Details" data-toggle="tab" aria-expanded="false"> Details </a> </li>
@@ -37,10 +35,9 @@
                             <li><a href="#Education" data-toggle="tab" aria-expanded="false">Education</a></li>
                             <li><a href="#Skills" data-toggle="tab" aria-expanded="false">Skills</a></li>
                             <li><a href="#Languages" data-toggle="tab" aria-expanded="false">Languages</a></li>
-                            
+
                         </ul>
 
-                        
                         <div class="tab-content">              
                             <div class="tab-pane fade active in" id="Details"> @include('admin.user.forms.form') </div>
                             @if(isset($user))
@@ -53,7 +50,6 @@
                             <div class="tab-pane fade" id="Languages"> @include('admin.user.forms.language.languages') </div>
                             @endif
                         </div>
-                        
 
                     </div>
                 </div>

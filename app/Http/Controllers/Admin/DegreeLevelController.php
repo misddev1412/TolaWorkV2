@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\DegreeLevelFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class DegreeLevelController extends Controller
 {
@@ -48,7 +49,6 @@ class DegreeLevelController extends Controller
     public function storeDegreeLevel(DegreeLevelFormRequest $request)
     {
         $degreeLevel = new DegreeLevel();
-        $degreeLevel->id = $request->input('id');
         $degreeLevel->lang = $request->input('lang');
         $degreeLevel->degree_level = $request->input('degree_level');
         $degreeLevel->is_default = $request->input('is_default');
@@ -56,18 +56,14 @@ class DegreeLevelController extends Controller
         $degreeLevel->is_active = $request->input('is_active');
         $degreeLevel->save();
         /*         * ************************************ */
-
         $degreeLevel->sort_order = $degreeLevel->id;
-
         if ((int) $request->input('is_default') == 1) {
             $degreeLevel->degree_level_id = $degreeLevel->id;
         } else {
             $degreeLevel->degree_level_id = $request->input('degree_level_id');
         }
-
         $degreeLevel->update();
         /*         * ************************************ */
-
         flash('Degree Level has been added!')->success();
         return \Redirect::route('edit.degree.level', array($degreeLevel->id));
     }
@@ -75,8 +71,8 @@ class DegreeLevelController extends Controller
     public function editDegreeLevel($id)
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
-		$degreeLevels = DataArrayHelper::defaultDegreeLevelsArray();
-		
+        $degreeLevels = DataArrayHelper::defaultDegreeLevelsArray();
+
         $degreeLevel = DegreeLevel::findOrFail($id);
         return view('admin.degree_level.edit')
                         ->with('degreeLevel', $degreeLevel)
@@ -87,7 +83,6 @@ class DegreeLevelController extends Controller
     public function updateDegreeLevel($id, DegreeLevelFormRequest $request)
     {
         $degreeLevel = DegreeLevel::findOrFail($id);
-        $degreeLevel->id = $request->input('id');
         $degreeLevel->lang = $request->input('lang');
         $degreeLevel->degree_level = $request->input('degree_level');
         $degreeLevel->is_default = $request->input('is_default');
@@ -101,7 +96,6 @@ class DegreeLevelController extends Controller
         }
         /*         * ************************************ */
         $degreeLevel->update();
-
         flash('Degree Level has been updated!')->success();
         return \Redirect::route('edit.degree.level', array($degreeLevel->id));
     }
@@ -131,33 +125,27 @@ class DegreeLevelController extends Controller
                 ])->sorted();
         return Datatables::of($degreeLevels)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('id') && !empty($request->id)) {
                                 $query->where('degree_levels.id', 'like', "%{$request->get('id')}%");
                             }
-
                             if ($request->has('lang') && !empty($request->lang)) {
                                 $query->where('degree_levels.lang', 'like', "%{$request->get('lang')}%");
                             }
-
                             if ($request->has('degree_level') && !empty($request->degree_level)) {
                                 $query->where('degree_levels.degree_level', 'like', "%{$request->get('degree_level')}%");
                             }
-
                             if ($request->has('is_default') && !empty($request->is_default)) {
                                 $query->where('degree_levels.is_default', 'like', "%{$request->get('is_default')}%");
                             }
-
                             if ($request->has('degree_level_id') && !empty($request->degree_level_id)) {
                                 $query->where('degree_levels.degree_level_id', 'like', "%{$request->get('degree_level_id')}%");
                             }
-
                             if ($request->has('is_active') && !$request->is_active == -1) {
                                 $query->where('degree_levels.is_active', '=', "{$request->get('is_active')}");
                             }
                         })
                         ->addColumn('degree_level', function ($degreeLevels) {
-                            $degreeLevel = str_limit($degreeLevels->degree_level, 100, '...');
+                            $degreeLevel = Str::limit($degreeLevels->degree_level, 100, '...');
                             $direction = MiscHelper::getLangDirection($degreeLevels->lang);
                             return '<span dir="' . $direction . '">' . $degreeLevel . '</span>';
                         })

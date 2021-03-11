@@ -18,10 +18,8 @@
             aria-hidden="true"
             >&times;</button>
     @endif
-
     {!! $message['message'] !!}
 </div>
 @endif
 @endforeach
-
 {{ session()->forget('flash_notification') }}

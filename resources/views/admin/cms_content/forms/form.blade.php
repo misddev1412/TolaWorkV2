@@ -2,12 +2,10 @@
 $lang = config('default_lang');
 if (isset($cmsContent))
     $lang = $cmsContent->lang;
-
 $lang = MiscHelper::getLang($lang);
 $direction = MiscHelper::getLangDirection($lang);
 $queryString = MiscHelper::getLangQueryStr();
 ?>
-
 {!! APFrmErrHelp::showErrorsNotice($errors) !!}
 <div class="form-body">	
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'lang') !!}">

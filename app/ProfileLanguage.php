@@ -29,8 +29,8 @@ class ProfileLanguage extends Model
             return '';
         }
     }
-	
-	public function language()
+
+    public function language()
     {
         return $this->belongsTo('App\Language', 'language_id', 'id');
     }
@@ -46,19 +46,19 @@ class ProfileLanguage extends Model
             return '';
         }
     }
-	
-	public function languageLevel()
+
+    public function languageLevel()
     {
         return $this->belongsTo('App\LanguageLevel', 'language_level_id', 'language_level_id');
     }
 
     public function getLanguageLevel($field = '')
     {
-		$languageLevel = $this->languageLevel()->lang()->first();
-		if(null === $languageLevel){
-			$languageLevel = $this->languageLevel()->first();
-		}
-        if(null !== $languageLevel){
+        $languageLevel = $this->languageLevel()->lang()->first();
+        if (null === $languageLevel) {
+            $languageLevel = $this->languageLevel()->first();
+        }
+        if (null !== $languageLevel) {
             if (empty($field))
                 return $languageLevel;
             else

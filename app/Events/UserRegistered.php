@@ -7,10 +7,11 @@ use Illuminate\Queue\SerializesModels;
 
 class UserRegistered
 {
+
     use SerializesModels;
-	
-	public $user;
-	
+
+    public $user;
+
     /**
      * Create a new event instance.
      *
@@ -21,5 +22,4 @@ class UserRegistered
         $this->user = $user;
     }
 
-    
 }

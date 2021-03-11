@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use App\Notifications\AdminResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -30,7 +30,12 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
+    
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new AdminResetPassword($token));
+    }
+    
     public function role()
     {
         return $this->hasOne('App\Role', 'id', 'role_id');
@@ -39,7 +44,6 @@ class Admin extends Authenticatable
     public function hasRole($roles)
     {
         $this->have_role = $this->getAdminUserRole();
-
         if (is_array($roles)) {
             foreach ($roles as $need_role) {
                 if ($this->checkIfAdminUserHasRole($need_role)) {

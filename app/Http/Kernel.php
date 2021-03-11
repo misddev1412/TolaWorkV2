@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
+
     /**
      * The application's global HTTP middleware stack.
      *
@@ -19,7 +20,6 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-		
     ];
 
     /**
@@ -36,9 +36,8 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-			\App\Http\Middleware\Locale::class,
+            \App\Http\Middleware\Locale::class,
         ],
-
         'api' => [
             'throttle:60,1',
             'bindings',
@@ -61,11 +60,11 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-		'admin' => \App\Http\Middleware\RedirectIfAdminNotAuthenticated::class,
+        'admin' => \App\Http\Middleware\RedirectIfAdminNotAuthenticated::class,
         'admin.guest' => \App\Http\Middleware\RedirectIfAdminAuthenticated::class,
         'checkAdminRoles' => \App\Http\Middleware\CheckAdminRole::class,
-		'company' => \App\Http\Middleware\RedirectIfCompanyNotAuthenticated::class,
+        'company' => \App\Http\Middleware\RedirectIfCompanyNotAuthenticated::class,
         'company.guest' => \App\Http\Middleware\RedirectIfCompanyAuthenticated::class,
-        
     ];
+
 }

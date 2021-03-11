@@ -13,7 +13,6 @@ return [
       | Supported: "pusher", "redis", "log", "null"
       |
      */
-
     'default' => env('BROADCAST_DRIVER', 'null'),
     /*
       |--------------------------------------------------------------------------

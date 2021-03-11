@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\JobTitleFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class JobTitleController extends Controller
 {
@@ -51,26 +52,19 @@ class JobTitleController extends Controller
     public function storeJobTitle(JobTitleFormRequest $request)
     {
         $jobTitle = new JobTitle();
-
         $jobTitle->job_title = $request->input('job_title');
         $jobTitle->is_active = $request->input('is_active');
         $jobTitle->lang = $request->input('lang');
         $jobTitle->is_default = $request->input('is_default');
-
         $jobTitle->save();
-
         /*         * ************************************ */
-
         $jobTitle->sort_order = $jobTitle->id;
-
         if ((int) $request->input('is_default') == 1) {
             $jobTitle->job_title_id = $jobTitle->id;
         } else {
             $jobTitle->job_title_id = $request->input('job_title_id');
         }
-
         $jobTitle->update();
-
         flash('Job Title has been added!')->success();
         return \Redirect::route('edit.job.title', array($jobTitle->id));
     }
@@ -89,7 +83,6 @@ class JobTitleController extends Controller
     public function updateJobTitle($id, JobTitleFormRequest $request)
     {
         $jobTitle = JobTitle::findOrFail($id);
-
         $jobTitle->job_title = $request->input('job_title');
         $jobTitle->is_active = $request->input('is_active');
         $jobTitle->lang = $request->input('lang');
@@ -99,9 +92,7 @@ class JobTitleController extends Controller
         } else {
             $jobTitle->job_title_id = $request->input('job_title_id');
         }
-
         $jobTitle->update();
-
         flash('Job Title has been updated!')->success();
         return \Redirect::route('edit.job.title', array($jobTitle->id));
     }
@@ -138,7 +129,7 @@ class JobTitleController extends Controller
                             }
                         })
                         ->addColumn('job_title', function ($jobTitles) {
-                            $jobTitle = str_limit($jobTitles->job_title, 100, '...');
+                            $jobTitle = Str::limit($jobTitles->job_title, 100, '...');
                             $direction = MiscHelper::getLangDirection($jobTitles->lang);
                             return '<span dir="' . $direction . '">' . $jobTitle . '</span>';
                         })

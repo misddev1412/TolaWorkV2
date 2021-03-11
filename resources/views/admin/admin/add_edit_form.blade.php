@@ -6,9 +6,7 @@
 {{ $error }}<br/>
 @endforeach
 @endif
-
 @include('flash::message')
-
 <div class="form-body">
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'name') !!}">
         {!! Form::label('name', 'Name', ['class' => 'bold']) !!}                    

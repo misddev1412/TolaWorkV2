@@ -7,10 +7,11 @@ use Illuminate\Queue\SerializesModels;
 
 class CompanyRegistered
 {
+
     use SerializesModels;
-	
-	public $company;
-	
+
+    public $company;
+
     /**
      * Create a new event instance.
      *
@@ -21,5 +22,4 @@ class CompanyRegistered
         $this->company = $company;
     }
 
-    
 }

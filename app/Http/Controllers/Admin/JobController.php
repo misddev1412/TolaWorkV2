@@ -16,10 +16,12 @@ use App\Http\Controllers\Controller;
 use App\Traits\JobTrait;
 use App\Helpers\MiscHelper;
 use App\Helpers\DataArrayHelper;
+use Illuminate\Support\Str;
 
 class JobController extends Controller
 {
-	use JobTrait;
+
+    use JobTrait;
 
     /**
      * Create a new controller instance.
@@ -34,7 +36,7 @@ class JobController extends Controller
     public function indexJobs()
     {
         $companies = DataArrayHelper::companiesArray();
-		$countries = DataArrayHelper::defaultCountriesArray();
+        $countries = DataArrayHelper::defaultCountriesArray();
         return view('admin.job.index')
                         ->with('companies', $companies)
                         ->with('countries', $countries);
@@ -47,48 +49,40 @@ class JobController extends Controller
         ]);
         return Datatables::of($jobs)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('company_id') && !empty($request->company_id)) {
                                 $query->where('jobs.company_id', '=', "{$request->get('company_id')}");
                             }
-
                             if ($request->has('title') && !empty($request->title)) {
                                 $query->where('jobs.title', 'like', "%{$request->get('title')}%");
                             }
-
                             if ($request->has('description') && !empty($request->description)) {
                                 $query->where('jobs.description', 'like', "%{$request->get('description')}%");
                             }
-
                             if ($request->has('country_id') && !empty($request->country_id)) {
                                 $query->where('jobs.country_id', '=', "{$request->get('country_id')}");
                             }
-
                             if ($request->has('state_id') && !empty($request->state_id)) {
                                 $query->where('jobs.state_id', '=', "{$request->get('state_id')}");
                             }
-
                             if ($request->has('city_id') && !empty($request->city_id)) {
                                 $query->where('jobs.city_id', '=', "{$request->get('city_id')}");
                             }
-
                             if ($request->has('is_active') && $request->is_active != -1) {
                                 $query->where('jobs.is_active', '=', "{$request->get('is_active')}");
                             }
-
                             if ($request->has('is_featured') && $request->is_featured != -1) {
                                 $query->where('jobs.is_featured', '=', "{$request->get('is_featured')}");
                             }
                         })
-						->addColumn('company_id', function ($jobs) {
-							return $jobs->getCompany('name');
-						})
-						->addColumn('city_id', function ($jobs) {
-							return $jobs->getCity('city').'('.$jobs->getState('state').'-'.$jobs->getCountry('country').')';
-						})
-						->addColumn('description', function ($jobs) {
-							return strip_tags($jobs->description);
-						})
+                        ->addColumn('company_id', function ($jobs) {
+                            return $jobs->getCompany('name');
+                        })
+                        ->addColumn('city_id', function ($jobs) {
+                            return $jobs->getCity('city') . '(' . $jobs->getState('state') . '-' . $jobs->getCountry('country') . ')';
+                        })
+                        ->addColumn('description', function ($jobs) {
+                            return strip_tags(Str::limit($jobs->description, 50, '...'));
+                        })
                         ->addColumn('action', function ($jobs) {
                             /*                             * ************************* */
                             $activeTxt = 'Make Active';
@@ -99,7 +93,6 @@ class JobController extends Controller
                                 $activeHref = 'makeNotActive(' . $jobs->id . ');';
                                 $activeIcon = 'check-square-o';
                             }
-
                             $featuredTxt = 'Make Featured';
                             $featuredHref = 'makeFeatured(' . $jobs->id . ');';
                             $featuredIcon = 'square-o';
@@ -108,7 +101,6 @@ class JobController extends Controller
                                 $featuredHref = 'makeNotFeatured(' . $jobs->id . ');';
                                 $featuredIcon = 'check-square-o';
                             }
-
                             return '
 				<div class="btn-group">
 					<button class="btn blue dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action
@@ -164,8 +156,8 @@ class JobController extends Controller
             echo 'notok';
         }
     }
-	
-	public function makeFeaturedJob(Request $request)
+
+    public function makeFeaturedJob(Request $request)
     {
         $id = $request->input('id');
         try {

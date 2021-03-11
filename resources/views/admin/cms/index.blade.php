@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <style type="text/css">
     .table td, .table th {
@@ -23,12 +22,9 @@
         <h3 class="page-title">Manage C.M.S <small>C.M.S</small> </h3>
         <!-- END PAGE TITLE--> 
         <!-- END PAGE HEADER-->
-
         <div class="row">
             <div class="col-md-12"> 
-
                 <!-- Begin: life time stats -->
-
                 <div class="portlet light portlet-fit portlet-datatable bordered">
                     <div class="portlet-title">
                         <div class="caption"> <i class="icon-settings font-dark"></i> <span class="caption-subject font-dark sbold uppercase">C.M.S</span> </div>
@@ -63,7 +59,6 @@
     <!-- END CONTENT BODY --> 
 </div>
 @endsection
-
 @push('scripts') 
 <script>
     $(function () {
@@ -88,10 +83,8 @@
                 {data: 'id', name: 'id'},
                 {data: 'page_slug', name: 'page_slug'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
-
             ]
         });
-
         $('#cms-search-form').on('submit', function (e) {
             oTable.draw();
             e.preventDefault();
@@ -104,9 +97,7 @@
             oTable.draw();
             e.preventDefault();
         });
-
     });
-
     function delete_cms(id) {
         if (confirm('Are you sure! you want to delete? All content pages will be deleted too.')) {
             $.post("{{ route('delete.cms') }}", {id: id, _method: 'DELETE', _token: '{{ csrf_token() }}'})

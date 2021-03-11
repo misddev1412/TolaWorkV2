@@ -27,11 +27,10 @@ class ProfileLanguageFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     return [
                         "language_id" => "required",
-						"language_level_id" => "required",
+                        "language_level_id" => "required",
                     ];
                 }
             default:break;
@@ -42,7 +41,7 @@ class ProfileLanguageFormRequest extends Request
     {
         return [
             'language_id.required' => 'Please select language.',
-			'language_level_id.required' => 'Please select language level.',
+            'language_level_id.required' => 'Please select language level.',
         ];
     }
 

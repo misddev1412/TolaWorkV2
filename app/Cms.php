@@ -18,5 +18,5 @@ class Cms extends Model
         return $this->hasMany('App\CmsPages', 'page_id', 'id')
                         ->orderBy('lang', 'ASC');
     }
-	
+
 }

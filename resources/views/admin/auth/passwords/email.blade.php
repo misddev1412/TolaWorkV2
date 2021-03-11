@@ -1,10 +1,8 @@
 @extends('admin.layouts.login_layout')
-
 @section('content') 
 <!-- BEGIN LOGIN -->
 <div class="content"> 
     <!-- BEGIN FORGOT PASSWORD FORM --> 
-
     @if (session('status'))
     <div class="note note-info">
         <h4 class="block">Email Sent!</h4>
@@ -33,7 +31,6 @@
         </div>
     </form>
     @endif 
-
     <!-- END FORGOT PASSWORD FORM --> 
 </div>
 @endsection

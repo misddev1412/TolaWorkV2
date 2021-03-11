@@ -1,7 +1,6 @@
 {!! APFrmErrHelp::showErrorsNotice($errors) !!}
 @include('flash::message')
 <div class="form-body">
-
     <div class="row">
         <div class="col-md-6">
             <div class="form-group {!! APFrmErrHelp::hasError($errors, 'image') !!}">
@@ -12,14 +11,33 @@
                 </div>
                 {!! APFrmErrHelp::showErrors($errors, 'image') !!} </div>
         </div>
-
         @if(isset($siteSetting))
         <div class="col-md-6">
             {{ ImgUploader::print_image("sitesetting_images/thumb/$siteSetting->site_logo") }}        
         </div>    
         @endif  
-
-    </div>            
+    </div>
+    
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group {!! APFrmErrHelp::hasError($errors, 'favicon') !!}">
+                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;"> <img src="{{ asset('/') }}admin_assets/no-image.png" alt="" /> </div>
+                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 16px; max-height: 16px;"> </div>
+                    <div> <span class="btn default btn-file"> <span class="fileinput-new"> Favicon </span> <span class="fileinput-exists"> Change </span> {!! Form::file('favicon', null, array('id'=>'favicon')) !!} </span> <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a> </div>
+                </div>
+                <span id="name-error" class="help-block help-block-error">The favicon must be a file of type/extension ".ico"</span>
+            </div>
+        </div>
+        @if(isset($siteSetting))
+        <div class="col-md-6">
+            {{ ImgUploader::print_image("favicon.ico") }}        
+        </div>    
+        @endif  
+    </div>
+    
+    
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'site_name') !!}">
         {!! Form::label('site_name', 'Site Name', ['class' => 'bold']) !!}                    
         {!! Form::text('site_name', null, array('class'=>'form-control', 'id'=>'site_name', 'placeholder'=>'Site Name')) !!}
@@ -67,10 +85,10 @@
     </div>
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'country_specific_site') !!}">
         {!! Form::label('country_specific_site', 'Make site specific to this Country?', ['class' => 'bold']) !!}        <div class="radio-list">
-                <label class="radio-inline">{!! Form::radio('country_specific_site', 1, true, ['id' => 'country_specific_site_yes']) !!} Yes </label>
-                <label class="radio-inline">{!! Form::radio('country_specific_site', 0, null, ['id' => 'country_specific_site_no']) !!} No </label>
-            </div>
-            {!! APFrmErrHelp::showErrors($errors, 'country_specific_site') !!}                                       
+            <label class="radio-inline">{!! Form::radio('country_specific_site', 1, true, ['id' => 'country_specific_site_yes']) !!} Yes </label>
+            <label class="radio-inline">{!! Form::radio('country_specific_site', 0, null, ['id' => 'country_specific_site_no']) !!} No </label>
+        </div>
+        {!! APFrmErrHelp::showErrors($errors, 'country_specific_site') !!}                                       
     </div>
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'default_currency_code') !!}">
         {!! Form::label('default_currency_code', 'Default Currency Code', ['class' => 'bold']) !!}                    
@@ -87,7 +105,4 @@
         {!! Form::textarea('site_google_map', null, array('class'=>'form-control', 'id'=>'site_google_map', 'placeholder'=>'Site Google Map')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'site_google_map') !!}                                       
     </div>
-
-
 </div>
-

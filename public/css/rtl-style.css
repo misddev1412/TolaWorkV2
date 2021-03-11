@@ -1,6 +1,6 @@
 
 
-html.rtl, .rtl body{direction:rtl;}
+html.rtl, .rtl body{direction:rtl; text-align: right;}
 
 .rtl .col-md-1, .rtl .col-md-10, .rtl .col-md-11, .rtl .col-md-12, .rtl .col-md-2, .rtl .col-md-3, .rtl .col-md-4, .rtl .col-md-5, .rtl .col-md-6, .rtl .col-md-7, .rtl .col-md-8, .rtl .col-md-9 {
     float: right;
@@ -25,6 +25,12 @@ html.rtl, .rtl body{direction:rtl;}
 .rtl .col-md-offset-2 {margin-right: 16.66666667%; margin-left:0;}
 .rtl .col-md-offset-3 {margin-right: 25%; margin-left:0;}
 
+
+.rtl .srchbox label, .rtl .videowraper .titleTop, .rtl .jobdetail h3, .rtl .job-header .contentbox h3, .rtl .companyinfo h3, .rtl .pageTitle h1, .rtl .footerWrap .quicklinks li a, .rtl .footerWrap h5{text-align: right;}
+
+.rtl .ml-auto, .rtl .mx-auto{    margin-right: auto!important; margin-left: 0 !important;}
+
+
 .rtl .faqs h4 a {padding: 15px 15px 15px 55px;}
 .rtl .faqs h4 a:before, .rtl .faqs h4 .collapsed:before{right:auto; left:15px;}
 
@@ -32,3 +38,5 @@ html.rtl, .rtl body{direction:rtl;}
 .rtl .switchbox .txtlbl{float:right;}
 .rtl .owl-carousel .owl-stage-outer{direction:ltr;}
 html.rtl .owl-stage{direction:ltr;}
+
+.rtl .tabswrap .nav-tabs{float: left;}

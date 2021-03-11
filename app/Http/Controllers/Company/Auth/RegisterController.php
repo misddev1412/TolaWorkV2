@@ -14,6 +14,7 @@ use Jrean\UserVerification\Facades\UserVerification;
 use App\Http\Requests\Front\CompanyFrontRegisterFormRequest;
 use Illuminate\Auth\Events\Registered;
 use App\Events\CompanyRegistered;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -29,7 +30,7 @@ class RegisterController extends Controller
      */
 
 use RegistersUsers;
-use VerifiesUsers;
+    use VerifiesUsers;
 
     /**
      * Where to redirect users after registration.
@@ -37,9 +38,9 @@ use VerifiesUsers;
      * @var string
      */
     protected $redirectTo = '/company-home';
-	protected $userTable = 'companies';
-	protected $redirectIfVerified = '/company-home';
-	protected $redirectAfterVerification = '/company-home';
+    protected $userTable = 'companies';
+    protected $redirectIfVerified = '/company-home';
+    protected $redirectAfterVerification = '/company-home';
 
     /**
      * Create a new controller instance.
@@ -48,9 +49,8 @@ use VerifiesUsers;
      */
     public function __construct()
     {
-        $this->middleware('company.guest', ['except' => ['getVerification','getVerificationError']]);
+        $this->middleware('company.guest', ['except' => ['getVerification', 'getVerificationError']]);
     }
-
 
     /**
      * Get the guard to be used during registration.
@@ -61,23 +61,23 @@ use VerifiesUsers;
     {
         return Auth::guard('company');
     }
-	
-	public function register(CompanyFrontRegisterFormRequest $request)
+
+    public function register(CompanyFrontRegisterFormRequest $request)
     {
         $company = new Company();
         $company->name = $request->input('name');
-		$company->email = $request->input('email');
+        $company->email = $request->input('email');
         $company->password = bcrypt($request->input('password'));
         $company->is_active = 0;
         $company->verified = 0;
-        $company->save();		
-		/***********************/
-		$company->slug = str_slug($company->name, '-').'-'.$company->id;
-		$company->update();
-		/***********************/
-		
+        $company->save();
+        /*         * ******************** */
+        $company->slug = Str::slug($company->name, '-') . '-' . $company->id;
+        $company->update();
+        /*         * ******************** */
+
         event(new Registered($company));
-		event(new CompanyRegistered($company));
+        event(new CompanyRegistered($company));
         $this->guard()->login($company);
         UserVerification::generate($company);
         UserVerification::send($company, 'Company Verification', config('mail.recieve_to.address'), config('mail.recieve_to.name'));

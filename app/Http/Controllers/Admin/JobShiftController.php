@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\JobShiftFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class JobShiftController extends Controller
 {
@@ -51,26 +52,19 @@ class JobShiftController extends Controller
     public function storeJobShift(JobShiftFormRequest $request)
     {
         $jobShift = new JobShift();
-
         $jobShift->job_shift = $request->input('job_shift');
         $jobShift->is_active = $request->input('is_active');
         $jobShift->lang = $request->input('lang');
         $jobShift->is_default = $request->input('is_default');
-
         $jobShift->save();
-
         /*         * ************************************ */
-
         $jobShift->sort_order = $jobShift->id;
-
         if ((int) $request->input('is_default') == 1) {
             $jobShift->job_shift_id = $jobShift->id;
         } else {
             $jobShift->job_shift_id = $request->input('job_shift_id');
         }
-
         $jobShift->update();
-
         flash('Job Shift has been added!')->success();
         return \Redirect::route('edit.job.shift', array($jobShift->id));
     }
@@ -78,7 +72,7 @@ class JobShiftController extends Controller
     public function editJobShift($id)
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
-		$jobShifts = DataArrayHelper::defaultJobShiftsArray();
+        $jobShifts = DataArrayHelper::defaultJobShiftsArray();
         $jobShift = JobShift::findOrFail($id);
         return view('admin.job_shift.edit')
                         ->with('languages', $languages)
@@ -89,7 +83,6 @@ class JobShiftController extends Controller
     public function updateJobShift($id, JobShiftFormRequest $request)
     {
         $jobShift = JobShift::findOrFail($id);
-
         $jobShift->job_shift = $request->input('job_shift');
         $jobShift->is_active = $request->input('is_active');
         $jobShift->lang = $request->input('lang');
@@ -99,9 +92,7 @@ class JobShiftController extends Controller
         } else {
             $jobShift->job_shift_id = $request->input('job_shift_id');
         }
-
         $jobShift->update();
-
         flash('Job Shift has been updated!')->success();
         return \Redirect::route('edit.job.shift', array($jobShift->id));
     }
@@ -138,7 +129,7 @@ class JobShiftController extends Controller
                             }
                         })
                         ->addColumn('job_shift', function ($jobShifts) {
-                            $jobShift = str_limit($jobShifts->job_shift, 100, '...');
+                            $jobShift = Str::limit($jobShifts->job_shift, 100, '...');
                             $direction = MiscHelper::getLangDirection($jobShifts->lang);
                             return '<span dir="' . $direction . '">' . $jobShift . '</span>';
                         })

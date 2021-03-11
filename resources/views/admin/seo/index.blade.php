@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <style type="text/css">
     .table td, .table th {
@@ -23,12 +22,9 @@
         <h3 class="page-title">Manage S.E.O <small>S.E.O</small> </h3>
         <!-- END PAGE TITLE--> 
         <!-- END PAGE HEADER-->
-
         <div class="row">
             <div class="col-md-12"> 
-
                 <!-- Begin: life time stats -->
-
                 <div class="portlet light portlet-fit portlet-datatable bordered">
                     <div class="portlet-title">
                         <div class="caption"> <i class="icon-settings font-dark"></i> <span class="caption-subject font-dark sbold uppercase">S.E.O</span> </div>          </div>
@@ -41,7 +37,6 @@
                                             <td><input type="text" class="form-control" name="id" id="id" autocomplete="off"></td>                    
                                             <td><input type="text" class="form-control" name="page_title" id="page_title" autocomplete="off"></td>
                                             <td></td>
-
                                         </tr>
                                         <tr role="row" class="heading"> 
                                             <th>Id</th>                                                                                
@@ -61,7 +56,6 @@
     <!-- END CONTENT BODY --> 
 </div>
 @endsection
-
 @push('scripts') 
 <script>
     $(function () {
@@ -86,10 +80,8 @@
                 {data: 'id', name: 'id'},
                 {data: 'page_title', name: 'page_title'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
-
             ]
         });
-
         $('#seo-search-form').on('submit', function (e) {
             oTable.draw();
             e.preventDefault();
@@ -102,7 +94,6 @@
             oTable.draw();
             e.preventDefault();
         });
-
     });
 </script> 
 @endpush

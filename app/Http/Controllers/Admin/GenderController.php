@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\GenderFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class GenderController extends Controller
 {
@@ -51,26 +52,19 @@ class GenderController extends Controller
     public function storeGender(GenderFormRequest $request)
     {
         $gender = new Gender();
-
         $gender->gender = $request->input('gender');
         $gender->is_active = $request->input('is_active');
         $gender->lang = $request->input('lang');
         $gender->is_default = $request->input('is_default');
-
         $gender->save();
-
         /*         * ************************************ */
-
         $gender->sort_order = $gender->id;
-
         if ((int) $request->input('is_default') == 1) {
             $gender->gender_id = $gender->id;
         } else {
             $gender->gender_id = $request->input('gender_id');
         }
-
         $gender->update();
-
         flash('Gender has been added!')->success();
         return \Redirect::route('edit.gender', array($gender->id));
     }
@@ -78,7 +72,7 @@ class GenderController extends Controller
     public function editGender($id)
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
-		$genders = DataArrayHelper::defaultGendersArray();
+        $genders = DataArrayHelper::defaultGendersArray();
         $gender = Gender::findOrFail($id);
         return view('admin.gender.edit')
                         ->with('languages', $languages)
@@ -89,7 +83,6 @@ class GenderController extends Controller
     public function updateGender($id, GenderFormRequest $request)
     {
         $gender = Gender::findOrFail($id);
-
         $gender->gender = $request->input('gender');
         $gender->is_active = $request->input('is_active');
         $gender->lang = $request->input('lang');
@@ -99,9 +92,7 @@ class GenderController extends Controller
         } else {
             $gender->gender_id = $request->input('gender_id');
         }
-
         $gender->update();
-
         flash('Gender has been updated!')->success();
         return \Redirect::route('edit.gender', array($gender->id));
     }
@@ -138,7 +129,7 @@ class GenderController extends Controller
                             }
                         })
                         ->addColumn('gender', function ($genders) {
-                            $gender = str_limit($genders->gender, 100, '...');
+                            $gender = Str::limit($genders->gender, 100, '...');
                             $direction = MiscHelper::getLangDirection($genders->lang);
                             return '<span dir="' . $direction . '">' . $gender . '</span>';
                         })

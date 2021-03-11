@@ -28,10 +28,8 @@ class CompanyFrontFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
-                    $id = (int)Auth::guard('company')->user()->id;
+                    $id = (int) Auth::guard('company')->user()->id;
                     $unique_id = ($id > 0) ? ',' . $id : '';
-
                     return [
                         "id" => "",
                         "name" => "required|max:150",
@@ -41,7 +39,7 @@ class CompanyFrontFormRequest extends Request
                         "ownership_type_id" => "required",
                         "description" => "required",
                         "location" => "required|max:150",
-						//"map" => "required",
+                        //"map" => "required",
                         "no_of_offices" => "required|max:11",
                         "website" => "required|url|max:150",
                         "no_of_employees" => "required|max:15",
@@ -71,7 +69,7 @@ class CompanyFrontFormRequest extends Request
             'ownership_type_id.required' => __('Please select Ownership Type'),
             'description.required' => __('Description required'),
             'location.required' => __('Location required'),
-			'map.required' => __('Google Map required'),
+            'map.required' => __('Google Map required'),
             'no_of_offices.required' => __('Number of offices required'),
             'website.required' => __('Website required'),
             'website.url' => __('Complete url of website required'),

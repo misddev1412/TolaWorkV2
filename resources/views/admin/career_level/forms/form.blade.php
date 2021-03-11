@@ -6,7 +6,6 @@ $lang = MiscHelper::getLang($lang);
 $direction = MiscHelper::getLangDirection($lang);
 $queryString = MiscHelper::getLangQueryStr();
 ?>
-
 {!! APFrmErrHelp::showErrorsNotice($errors) !!}
 @include('flash::message')
 <div class="form-body">

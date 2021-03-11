@@ -29,19 +29,19 @@ class ProfileSkill extends Model
             return '';
         }
     }
-	
-	public function jobSkill()
+
+    public function jobSkill()
     {
         return $this->belongsTo('App\JobSkill', 'job_skill_id', 'job_skill_id');
     }
 
     public function getJobSkill($field = '')
     {
-		$jobSkill = $this->jobSkill()->lang()->first();
-		if(null === $jobSkill){
-			$jobSkill = $this->jobSkill()->first();
-		}
-        if(null !== $jobSkill){
+        $jobSkill = $this->jobSkill()->lang()->first();
+        if (null === $jobSkill) {
+            $jobSkill = $this->jobSkill()->first();
+        }
+        if (null !== $jobSkill) {
             if (empty($field))
                 return $jobSkill;
             else
@@ -50,20 +50,20 @@ class ProfileSkill extends Model
             return '';
         }
     }
-	
-	public function jobExperience()
+
+    public function jobExperience()
     {
         return $this->belongsTo('App\JobExperience', 'job_experience_id', 'job_experience_id');
     }
 
     public function getJobExperience($field = '')
     {
-		$jobExperience = $this->jobExperience()->lang()->first();
-		if(null === $jobExperience){
-			$jobExperience = $this->jobExperience()->first();
-		}
-        if(null !== $jobExperience){
-		    if (empty($field))
+        $jobExperience = $this->jobExperience()->lang()->first();
+        if (null === $jobExperience) {
+            $jobExperience = $this->jobExperience()->first();
+        }
+        if (null !== $jobExperience) {
+            if (empty($field))
                 return $jobExperience;
             else
                 return $jobExperience->$field;

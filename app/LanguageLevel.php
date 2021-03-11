@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class LanguageLevel extends Model
 {
-	use Lang;
-	use IsDefault;
-	use Active;
-	use Sorted;
-	
+
+    use Lang;
+    use IsDefault;
+    use Active;
+    use Sorted;
+
     protected $table = 'language_levels';
     public $timestamps = true;
     protected $guarded = ['id'];

@@ -55,14 +55,11 @@ class AdminController extends Controller
     public function storeAdminUser(AdminFormRequest $request)
     {
         $user = new Admin;
-
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role_id = $request->role_id;
-
         $user->save();
-
         /*         * ******************** */
         Mail::send('admin.admin.emails.new_admin_user_created', ['user' => $user], function ($msg) use ($user) {
             $msg->from(config('mail.recieve_to.address'), config('mail.recieve_to.name'));
@@ -83,16 +80,13 @@ class AdminController extends Controller
     public function updateAdminUser($id, AdminFormRequest $request)
     {
         $user = Admin::find($id);
-
         $user->name = $request->name;
         $user->email = $request->email;
         if (!empty($request->password)) {
             $user->password = Hash::make($request->password);
         }
         $user->role_id = $request->role_id;
-
         $user->save();
-
         flash('Admin User has been updated!')->success();
         return \Redirect::route('edit.admin.user', array($user->id));
     }
@@ -113,8 +107,6 @@ class AdminController extends Controller
     {
         $users = Admin::join('roles', 'admins.role_id', '=', 'roles.id')
                 ->select('admins.id', 'admins.name', 'admins.email', 'roles.role_name');
-
-
         return Datatables::of($users)
                         ->addColumn('action', function ($user) {
                             return '<a href="' . route('edit.admin.user', ['id' => $user->id]) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a><a href="javascript:void(0);" onclick="delete_user(' . $user->id . ');" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</a>';

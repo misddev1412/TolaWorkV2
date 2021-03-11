@@ -27,16 +27,15 @@ class ProfileProjectFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     return [
                         "name" => "required",
                         //"image" => "required",
-						//"url" => "required",
-						"date_start" => "required",
-						"date_end" => "required_if:is_on_going,0",
-						"is_on_going" => "required",
-						"description" => "required",
+                        //"url" => "required",
+                        "date_start" => "required",
+                        "date_end" => "required_if:is_on_going,0",
+                        "is_on_going" => "required",
+                        "description" => "required",
                     ];
                 }
             default:break;
@@ -47,12 +46,12 @@ class ProfileProjectFormRequest extends Request
     {
         return [
             'name.required' => 'Please enter project name.',
-			'image.required' => 'Only images can be uploaded.',
-			'url.required' => 'Please enter project URL.',
-			'date_start.required' => 'Please set start date.',
-			'date_end.required_if' => 'Please set end date.',
-			'is_on_going.required' => 'Is this project ongoing?',
-			'description.required' => 'Please enter project description.',
+            'image.required' => 'Only images can be uploaded.',
+            'url.required' => 'Please enter project URL.',
+            'date_start.required' => 'Please set start date.',
+            'date_end.required_if' => 'Please set end date.',
+            'is_on_going.required' => 'Is this project ongoing?',
+            'description.required' => 'Please enter project description.',
         ];
     }
 

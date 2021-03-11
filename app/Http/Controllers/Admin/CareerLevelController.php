@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\CareerLevelFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class CareerLevelController extends Controller
 {
@@ -35,7 +36,7 @@ class CareerLevelController extends Controller
 
     public function indexCareerLevels()
     {
-		$languages = DataArrayHelper::languagesNativeCodeArray();
+        $languages = DataArrayHelper::languagesNativeCodeArray();
         return view('admin.career_level.index')->with('languages', $languages);
     }
 
@@ -43,7 +44,7 @@ class CareerLevelController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $careerLevels = DataArrayHelper::defaultCareerLevelsArray();
-		
+
         return view('admin.career_level.add')
                         ->with('languages', $languages)
                         ->with('careerLevels', $careerLevels);
@@ -52,26 +53,19 @@ class CareerLevelController extends Controller
     public function storeCareerLevel(CareerLevelFormRequest $request)
     {
         $careerLevel = new CareerLevel();
-
         $careerLevel->career_level = $request->input('career_level');
         $careerLevel->is_active = $request->input('is_active');
         $careerLevel->lang = $request->input('lang');
         $careerLevel->is_default = $request->input('is_default');
-
         $careerLevel->save();
-
         /*         * ************************************ */
-
         $careerLevel->sort_order = $careerLevel->id;
-
         if ((int) $request->input('is_default') == 1) {
             $careerLevel->career_level_id = $careerLevel->id;
         } else {
             $careerLevel->career_level_id = $request->input('career_level_id');
         }
-
         $careerLevel->update();
-
         flash('Career Level has been added!')->success();
         return \Redirect::route('edit.career.level', array($careerLevel->id));
     }
@@ -80,7 +74,7 @@ class CareerLevelController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $careerLevels = DataArrayHelper::defaultCareerLevelsArray();
-		$careerLevel = CareerLevel::findOrFail($id);
+        $careerLevel = CareerLevel::findOrFail($id);
         return view('admin.career_level.edit')
                         ->with('languages', $languages)
                         ->with('careerLevel', $careerLevel)
@@ -90,7 +84,6 @@ class CareerLevelController extends Controller
     public function updateCareerLevel($id, CareerLevelFormRequest $request)
     {
         $careerLevel = CareerLevel::findOrFail($id);
-
         $careerLevel->career_level = $request->input('career_level');
         $careerLevel->is_active = $request->input('is_active');
         $careerLevel->lang = $request->input('lang');
@@ -100,9 +93,7 @@ class CareerLevelController extends Controller
         } else {
             $careerLevel->career_level_id = $request->input('career_level_id');
         }
-
         $careerLevel->update();
-
         flash('Career Level has been updated!')->success();
         return \Redirect::route('edit.career.level', array($careerLevel->id));
     }
@@ -139,7 +130,7 @@ class CareerLevelController extends Controller
                             }
                         })
                         ->addColumn('career_level', function ($careerLevels) {
-                            $careerLevel = str_limit($careerLevels->career_level, 100, '...');
+                            $careerLevel = Str::limit($careerLevels->career_level, 100, '...');
                             $direction = MiscHelper::getLangDirection($careerLevels->lang);
                             return '<span dir="' . $direction . '">' . $careerLevel . '</span>';
                         })

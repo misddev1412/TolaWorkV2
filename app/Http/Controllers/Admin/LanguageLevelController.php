@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\LanguageLevelFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class LanguageLevelController extends Controller
 {
@@ -48,7 +49,6 @@ class LanguageLevelController extends Controller
     public function storeLanguageLevel(LanguageLevelFormRequest $request)
     {
         $languageLevel = new LanguageLevel();
-        $languageLevel->id = $request->input('id');
         $languageLevel->lang = $request->input('lang');
         $languageLevel->language_level = $request->input('language_level');
         $languageLevel->is_default = $request->input('is_default');
@@ -56,18 +56,14 @@ class LanguageLevelController extends Controller
         $languageLevel->is_active = $request->input('is_active');
         $languageLevel->save();
         /*         * ************************************ */
-
         $languageLevel->sort_order = $languageLevel->id;
-
         if ((int) $request->input('is_default') == 1) {
             $languageLevel->language_level_id = $languageLevel->id;
         } else {
             $languageLevel->language_level_id = $request->input('language_level_id');
         }
-
         $languageLevel->update();
         /*         * ************************************ */
-
         flash('Language Level has been added!')->success();
         return \Redirect::route('edit.language.level', array($languageLevel->id));
     }
@@ -86,7 +82,6 @@ class LanguageLevelController extends Controller
     public function updateLanguageLevel($id, LanguageLevelFormRequest $request)
     {
         $languageLevel = LanguageLevel::findOrFail($id);
-        $languageLevel->id = $request->input('id');
         $languageLevel->lang = $request->input('lang');
         $languageLevel->language_level = $request->input('language_level');
         $languageLevel->is_default = $request->input('is_default');
@@ -100,7 +95,6 @@ class LanguageLevelController extends Controller
         }
         /*         * ************************************ */
         $languageLevel->update();
-
         flash('Language Level has been updated!')->success();
         return \Redirect::route('edit.language.level', array($languageLevel->id));
     }
@@ -110,13 +104,11 @@ class LanguageLevelController extends Controller
         $id = $request->input('id');
         try {
             $languageLevel = LanguageLevel::findOrFail($id);
-
             if ((bool) $languageLevel->is_default) {
                 LanguageLevel::where('language_level_id', '=', $languageLevel->language_level_id)->delete();
             } else {
                 $languageLevel->delete();
             }
-
             return 'ok';
         } catch (ModelNotFoundException $e) {
             return 'notok';
@@ -130,21 +122,18 @@ class LanguageLevelController extends Controller
                 ])->sorted();
         return Datatables::of($languageLevels)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('lang') && !empty($request->lang)) {
                                 $query->where('language_levels.lang', 'like', "{$request->get('lang')}");
                             }
-
                             if ($request->has('language_level') && !empty($request->language_level)) {
                                 $query->where('language_levels.language_level', 'like', "%{$request->get('language_level')}%");
                             }
-
                             if ($request->has('is_active') && $request->is_active != -1) {
                                 $query->where('language_levels.is_active', '=', "{$request->get('is_active')}");
                             }
                         })
                         ->addColumn('language_level', function ($languageLevels) {
-                            $languageLevel = str_limit($languageLevels->language_level, 100, '...');
+                            $languageLevel = Str::limit($languageLevels->language_level, 100, '...');
                             $direction = MiscHelper::getLangDirection($languageLevels->lang);
                             return '<span dir="' . $direction . '">' . $languageLevel . '</span>';
                         })

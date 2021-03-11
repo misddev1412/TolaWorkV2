@@ -24,7 +24,6 @@ class AdminFormRequest extends Request
      */
     public function rules()
     {
-
         $id = (int) $this->input('id', 0);
         $pass_required = 'required|min:3|max:100';
         $id_str = '';
@@ -33,7 +32,6 @@ class AdminFormRequest extends Request
             $pass_required = '';
         }
         //echo $id_str;exit;
-
         return [
             'name' => 'required|unique:admins,name' . $id_str . '|max:50',
             'email' => 'required|unique:admins,email' . $id_str . '|email|max:100',

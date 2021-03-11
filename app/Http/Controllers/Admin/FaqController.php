@@ -17,6 +17,7 @@ use App\Helpers\DataArrayHelper;
 use App\Language;
 use App\Http\Requests\FaqFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class FaqController extends Controller
 {
@@ -50,17 +51,14 @@ class FaqController extends Controller
 
     public function storeFaq(FaqFormRequest $request)
     {
-
         $faq = new Faq();
         $faq->faq_question = $request->input('faq_question');
         $faq->faq_answer = $request->input('faq_answer');
         $faq->lang = $request->input('lang');
-
         $faq->save();
         /*         * ************************************ */
         $faq->sort_order = $faq->id;
         $faq->update();
-
         flash('FAQ has been added!')->success();
         return \Redirect::route('edit.faq', array($faq->id));
     }
@@ -76,14 +74,11 @@ class FaqController extends Controller
 
     public function updateFaq($id, FaqFormRequest $request)
     {
-
         $faq = Faq::findOrFail($id);
-
         $faq->faq_question = $request->input('faq_question');
         $faq->faq_answer = $request->input('faq_answer');
         $faq->lang = $request->input('lang');
         $faq->update();
-
         flash('FAQ has been updated!')->success();
         return \Redirect::route('edit.faq', array($faq->id));
     }
@@ -102,7 +97,6 @@ class FaqController extends Controller
 
     public function fetchFaqsData(Request $request)
     {
-
         $faqs = Faq::select(
                         [
                             'faqs.id',
@@ -114,7 +108,6 @@ class FaqController extends Controller
                             'faqs.updated_at'
                         ]
         );
-
         return Datatables::of($faqs)
                         ->filter(function ($query) use ($request) {
                             if ($request->has('faq_question') && !empty($request->faq_question)) {
@@ -128,21 +121,17 @@ class FaqController extends Controller
                             }
                         })
                         ->addColumn('faq_answer', function ($faqs) {
-
-                            $faq_answer = str_limit($faqs->faq_answer, 100, '...');
+                            $faq_answer = Str::limit($faqs->faq_answer, 100, '...');
                             $direction = MiscHelper::getLangDirection($faqs->lang);
                             return '<span dir="' . $direction . '">' . $faq_answer . '</span>';
                         })
                         ->addColumn('faq_question', function ($faqs) {
-
-                            $faq_question = str_limit($faqs->faq_question, 100, '...');
+                            $faq_question = Str::limit($faqs->faq_question, 100, '...');
                             $direction = MiscHelper::getLangDirection($faqs->lang);
                             return '<span dir="' . $direction . '">' . $faq_question . '</span>';
                         })
                         ->addColumn('action', function ($faqs) {
-
                             /*                             * ************************* */
-
                             return '
 				<div class="btn-group">
 					<button class="btn blue dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action
@@ -177,7 +166,6 @@ class FaqController extends Controller
         $faqs = Faq::select('faqs.id', 'faqs.faq_question', 'faqs.sort_order')
                         ->where('faqs.lang', 'like', $lang)
                         ->orderBy('faqs.sort_order')->get();
-
         $str = '<ul id="sortable">';
         if ($faqs != null) {
             foreach ($faqs as $faq) {
@@ -190,9 +178,7 @@ class FaqController extends Controller
     public function faqSortUpdate(Request $request)
     {
         $faqOrder = $request->input('faqOrder');
-
         $faqOrderArray = explode(',', $faqOrder);
-
         $count = 1;
         foreach ($faqOrderArray as $faq_id) {
             $faq = Faq::find($faq_id);

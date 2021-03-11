@@ -60,9 +60,7 @@ use AuthenticatesUsers;
     public function logout(Request $request)
     {
         $this->guard('company')->logout();
-
         $request->session()->invalidate();
-
         return redirect('/login');
     }
 
@@ -75,17 +73,17 @@ use AuthenticatesUsers;
     {
         return Auth::guard('company');
     }
-	
-	/**
+
+    /**
      * Redirect the user to the OAuth Provider.
      *
      * @return Response
      */
     public function redirectToProvider($provider)
     {
-		//echo config("services.{$provider}.redirect").'<br>';
-		config(["services.{$provider}.redirect" => url("login/employer/{$provider}/callback")]);
-		//echo config("services.{$provider}.redirect");exit;
+        //echo config("services.{$provider}.redirect").'<br>';
+        config(["services.{$provider}.redirect" => url("login/employer/{$provider}/callback")]);
+        //echo config("services.{$provider}.redirect");exit;
         return Socialite::driver($provider)->redirect();
     }
 
@@ -100,7 +98,6 @@ use AuthenticatesUsers;
     public function handleProviderCallback($provider)
     {
         $user = Socialite::driver($provider)->user();
-
         $authUser = $this->findOrCreateUser($user, $provider);
         Auth::guard('company')->login($authUser, true);
         return redirect($this->redirectTo);
@@ -118,13 +115,12 @@ use AuthenticatesUsers;
         if ($user->getEmail() != '') {
             $authUser = Company::where('email', 'like', $user->getEmail())->first();
             if ($authUser) {
-                /*$authUser->provider = $provider;
-                $authUser->provider_id = $user->getId();
-                $authUser->update();*/
+                /* $authUser->provider = $provider;
+                  $authUser->provider_id = $user->getId();
+                  $authUser->update(); */
                 return $authUser;
             }
         }
-
         $str = $user->getName() . $user->getId() . $user->getEmail();
         return Company::create([
                     'name' => $user->getName(),
@@ -133,7 +129,7 @@ use AuthenticatesUsers;
                     //'provider_id' => $user->getId(),
                     'password' => bcrypt($str),
                     'is_active' => 1,
-					'verified' => 1,
+                    'verified' => 1,
         ]);
     }
 

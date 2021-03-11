@@ -27,12 +27,11 @@ class ApplyJobFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     return [
                         "cv_id" => "required",
-						"current_salary" => "required|max:11",
-						"expected_salary" => "required|max:11",
-						"salary_currency" => "required|max:5",
+                        "current_salary" => "required|max:11",
+                        "expected_salary" => "required|max:11",
+                        "salary_currency" => "required|max:5",
                     ];
                 }
             default:break;
@@ -43,9 +42,9 @@ class ApplyJobFormRequest extends Request
     {
         return [
             'cv_id.required' => __('Please select CV'),
-			'current_salary.required' => __('Please enter current salary'),
-'expected_salary.required' => __('Please enter expected salary'),
-'salary_currency.required' => __('Please enter salary currency'),
+            'current_salary.required' => __('Please enter current salary'),
+            'expected_salary.required' => __('Please enter expected salary'),
+            'salary_currency.required' => __('Please enter salary currency'),
         ];
     }
 

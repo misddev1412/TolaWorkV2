@@ -27,7 +27,6 @@ class JobSkillFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $job_skill_unique = '';
                     if ($id > 0) {

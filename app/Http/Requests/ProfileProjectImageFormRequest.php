@@ -27,7 +27,6 @@ class ProfileProjectImageFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     return [
                         "image" => "image",
@@ -40,7 +39,7 @@ class ProfileProjectImageFormRequest extends Request
     public function messages()
     {
         return [
-			'image.image' => 'Only images can be uploaded.',
+            'image.image' => 'Only images can be uploaded.',
         ];
     }
 

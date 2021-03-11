@@ -29,8 +29,8 @@ class ProfileEducationMajorSubject extends Model
             return '';
         }
     }
-	
-	public function majorSubject()
+
+    public function majorSubject()
     {
         return $this->belongsTo('App\MajorSubject', 'major_subject_id', 'major_subject_id');
     }

@@ -27,7 +27,6 @@ class VideoFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $video_unique = '';
                     if ($id > 0) {
@@ -35,13 +34,13 @@ class VideoFormRequest extends Request
                     }
                     return [
                         "id" => "",
-						"lang" => "required",
-						"video_title" => "required|unique:videos$video_unique",
-						"video_text" => "required",
-						"video_link" => "required",
-						"is_default" => "required",
-						"video_id" => "required_if:is_default,0",
-						"is_active" => "required",
+                        "lang" => "required",
+                        "video_title" => "required|unique:videos$video_unique",
+                        "video_text" => "required",
+                        "video_link" => "required",
+                        "is_default" => "required",
+                        "video_id" => "required_if:is_default,0",
+                        "is_active" => "required",
                     ];
                 }
             default:break;

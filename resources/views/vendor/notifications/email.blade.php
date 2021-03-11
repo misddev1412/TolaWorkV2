@@ -9,13 +9,10 @@
 # Hello!
 @endif
 @endif
-
 {{-- Intro Lines --}}
 @foreach ($introLines as $line)
 {{ $line }}
-
 @endforeach
-
 {{-- Action Button --}}
 @isset($actionText)
 <?php
@@ -34,20 +31,16 @@ switch ($level) {
 {{ $actionText }}
 @endcomponent
 @endisset
-
 {{-- Outro Lines --}}
 @foreach ($outroLines as $line)
 {{ $line }}
-
 @endforeach
-
 {{-- Salutation --}}
 @if (! empty($salutation))
 {{ $salutation }}
 @else
 Regards,<br>{{ config('app.name') }}
 @endif
-
 {{-- Subcopy --}}
 @isset($actionText)
 @component('mail::subcopy')

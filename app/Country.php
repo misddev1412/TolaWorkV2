@@ -11,17 +11,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
-	use Lang;
-	use IsDefault;
-	use Active;
-	use Sorted;
-	
+
+    use Lang;
+    use IsDefault;
+    use Active;
+    use Sorted;
+
     protected $table = 'countries';
     public $timestamps = true;
     protected $guarded = ['id'];
     //protected $dateFormat = 'U';
     protected $dates = ['created_at', 'updated_at'];
-
 
     public function states()
     {

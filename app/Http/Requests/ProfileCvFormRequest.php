@@ -27,13 +27,12 @@ class ProfileCvFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
-					$cv_file = ($id > 0)? '':'required|';
+                    $cv_file = ($id > 0) ? '' : 'required|';
                     return [
                         "title" => "required",
                         "is_default" => "required",
-						"cv_file" => $cv_file.'mimes:doc,docx,docm,zip,pdf',
+                        "cv_file" => $cv_file . 'mimes:doc,docx,docm,zip,pdf',
                     ];
                 }
             default:break;
@@ -44,9 +43,9 @@ class ProfileCvFormRequest extends Request
     {
         return [
             'title.required' => 'Please enter CV title.',
-			'is_default.required' => 'Is this CV default?',
-			'cv_file.required' => 'Please select CV file.',
-			'cv_file.mimes' => 'Only PDF and DOC files can be uploaded.',
+            'is_default.required' => 'Is this CV default?',
+            'cv_file.required' => 'Please select CV file.',
+            'cv_file.mimes' => 'Only PDF and DOC files can be uploaded.',
         ];
     }
 

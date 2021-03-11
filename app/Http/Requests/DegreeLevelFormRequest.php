@@ -27,7 +27,6 @@ class DegreeLevelFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $degree_level_unique = '';
                     if ($id > 0) {

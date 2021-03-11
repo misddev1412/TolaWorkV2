@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
 {
+
     /**
      * Handle an incoming request.
      *
@@ -20,7 +21,7 @@ class RedirectIfAuthenticated
         if (Auth::guard($guard)->check()) {
             return redirect('/home');
         }
-
         return $next($request);
     }
+
 }

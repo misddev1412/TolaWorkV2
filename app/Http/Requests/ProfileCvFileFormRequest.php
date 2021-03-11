@@ -27,7 +27,6 @@ class ProfileCvFileFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     return [
                         "cv_file" => 'required|mimes:doc,docx,docm,zip,pdf',
@@ -40,8 +39,8 @@ class ProfileCvFileFormRequest extends Request
     public function messages()
     {
         return [
-			'cv_file.required' => 'Please select CV file.',
-			'cv_file.mimes' => 'Only PDF and DOC files can be uploaded.',
+            'cv_file.required' => 'Please select CV file.',
+            'cv_file.mimes' => 'Only PDF and DOC files can be uploaded.',
         ];
     }
 

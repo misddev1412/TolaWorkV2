@@ -3,14 +3,12 @@
 <!-- Header start -->
 @include('includes.header')
 <!-- Header end --> 
-
 <!-- Inner Page Title start -->
 @include('includes.inner_page_title', ['page_title'=>__('Frequently asked questions')])
 <!-- Inner Page Title end -->
 <!-- Page Title End -->
 <div class="listpgWraper">
     <div class="container"> 
-
         <!--Question-->
         <div class="faqs">
             <div class="panel-group" id="accordion">
@@ -29,12 +27,12 @@
                 @endif
             </div>
         </div>
-        
+
         <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6">{!! $siteSetting->cms_page_ad !!}</div>
-                <div class="col-md-3"></div>
-            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-6">{!! $siteSetting->cms_page_ad !!}</div>
+            <div class="col-md-3"></div>
+        </div>
     </div>
 </div>
 @endsection

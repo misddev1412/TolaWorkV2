@@ -1,15 +1,12 @@
 @extends('layouts.app')
-
 @section('content')
 <!-- Header start -->
 @include('includes.header')
 <!-- Header end --> 
-
 <!-- Inner Page Title start -->
 @include('includes.inner_page_title', ['page_title'=>__('User Verification')])
 <!-- Inner Page Title end -->
 <!-- Page Title start -->
-
 <!-- Page Title End -->
 <div class="about-wraper">
     <div class="container">

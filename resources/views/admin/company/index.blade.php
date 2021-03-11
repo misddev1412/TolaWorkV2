@@ -91,7 +91,6 @@
                     d.email = $('#email').val();
                     d.is_active = $('#is_active').val();
                     d.is_featured = $('#is_featured').val();
-
                 }
             }, columns: [
                 {data: 'name', name: 'name'},
@@ -99,7 +98,6 @@
                 {data: 'is_active', name: 'is_active'},
                 {data: 'is_featured', name: 'is_featured'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
-
             ]
         });
         $('#datatable-search-form').on('submit', function (e) {
@@ -122,7 +120,6 @@
             oTable.draw();
             e.preventDefault();
         });
-
     });
     function deleteCompany(id) {
         var msg = 'Are you sure?';
@@ -140,7 +137,6 @@
                     });
         }
     }
-
     function makeActive(id) {
         $.post("{{ route('make.active.company') }}", {id: id, _method: 'PUT', _token: '{{ csrf_token() }}'})
                 .done(function (response) {
@@ -178,8 +174,6 @@
                     {
                         alert('Request Failed!');
                     }
-
-
                 });
     }
     function makeNotFeatured(id) {
@@ -193,8 +187,6 @@
                     {
                         alert('Request Failed!');
                     }
-
-
                 });
     }
 </script> 

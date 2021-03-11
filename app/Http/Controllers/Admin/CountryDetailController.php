@@ -42,7 +42,6 @@ class CountryDetailController extends Controller
     public function storeCountryDetail(CountryDetailFormRequest $request)
     {
         $countryDetail = new CountryDetail();
-        $countryDetail->id = $request->input('id');
         $countryDetail->country_id = $request->input('country_id');
         $countryDetail->sort_name = $request->input('sort_name');
         $countryDetail->phone_code = $request->input('phone_code');
@@ -53,11 +52,8 @@ class CountryDetailController extends Controller
         $countryDetail->decimal_separator = $request->input('decimal_separator');
         $countryDetail->created_at = $request->input('created_at');
         $countryDetail->updated_at = $request->input('updated_at');
-
         $countryDetail->save();
-
         /*         * ************************************ */
-
         flash('Country Detail has been added!')->success();
         return \Redirect::route('edit.country.detail', array($countryDetail->id));
     }
@@ -72,8 +68,6 @@ class CountryDetailController extends Controller
     public function updateCountryDetail($id, CountryDetailFormRequest $request)
     {
         $countryDetail = CountryDetail::findOrFail($id);
-
-        $countryDetail->id = $request->input('id');
         $countryDetail->country_id = $request->input('country_id');
         $countryDetail->sort_name = $request->input('sort_name');
         $countryDetail->phone_code = $request->input('phone_code');
@@ -84,9 +78,7 @@ class CountryDetailController extends Controller
         $countryDetail->decimal_separator = $request->input('decimal_separator');
         $countryDetail->created_at = $request->input('created_at');
         $countryDetail->updated_at = $request->input('updated_at');
-
         $countryDetail->update();
-
         flash('Country Detail has been updated!')->success();
         return \Redirect::route('edit.country.detail', array($countryDetail->id));
     }
@@ -113,7 +105,6 @@ class CountryDetailController extends Controller
                             return $countryDetails->getCountry('country');
                         })
                         ->addColumn('action', function ($countryDetails) {
-
                             return '
 				<div class="btn-group">
 					<button class="btn blue dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action

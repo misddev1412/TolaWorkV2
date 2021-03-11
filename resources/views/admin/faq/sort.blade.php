@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <div class="page-content-wrapper"> 
     <!-- BEGIN CONTENT BODY -->
@@ -26,16 +25,13 @@
                     <div class="portlet-title">
                         <div class="caption font-red-sunglo"> <i class="icon-settings font-red-sunglo"></i> <span class="caption-subject bold uppercase">Sort Faqs</span> </div>
                     </div>
-
                     <div class="portlet-body form">          
                         <ul class="nav nav-tabs">              
                             <li class="active"> <a href="#Details" data-toggle="tab" aria-expanded="false"> Sort Faqs </a> </li>
                         </ul>
-
                         <div class="tab-content">              
                             <div class="tab-pane fade active in" id="Details"> @include('admin.faq.forms.sort') </div>
                         </div>
-
                     </div>
                 </div>
             </div>

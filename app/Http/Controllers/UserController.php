@@ -11,7 +11,9 @@ use Illuminate\Http\UploadedFile;
 use ImgUploader;
 use Carbon\Carbon;
 use Redirect;
+use Newsletter;
 use App\User;
+use App\Subscription;
 use App\ApplicantMessage;
 use App\Company;
 use App\FavouriteCompany;
@@ -24,6 +26,7 @@ use App\JobExperience;
 use App\JobApply;
 use App\CareerLevel;
 use App\Industry;
+use App\Alert;
 use App\FunctionalArea;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -45,14 +48,14 @@ class UserController extends Controller
 {
 
     use CommonUserFunctions;
-	use ProfileSummaryTrait;
-	use ProfileCvsTrait;
-	use ProfileProjectsTrait;
-	use ProfileExperienceTrait;
-	use ProfileEducationTrait;
-	use ProfileSkillTrait;
-	use ProfileLanguageTrait;
-	use Skills;
+    use ProfileSummaryTrait;
+    use ProfileCvsTrait;
+    use ProfileProjectsTrait;
+    use ProfileExperienceTrait;
+    use ProfileEducationTrait;
+    use ProfileSkillTrait;
+    use ProfileLanguageTrait;
+    use Skills;
 
     /**
      * Create a new controller instance.
@@ -62,35 +65,34 @@ class UserController extends Controller
     public function __construct()
     {
         //$this->middleware('auth', ['only' => ['myProfile', 'updateMyProfile', 'viewPublicProfile']]);
-		$this->middleware('auth', ['except' => ['showApplicantProfileEducation', 'showApplicantProfileProjects', 'showApplicantProfileExperience', 'showApplicantProfileSkills', 'showApplicantProfileLanguages']]);
+        $this->middleware('auth', ['except' => ['showApplicantProfileEducation', 'showApplicantProfileProjects', 'showApplicantProfileExperience', 'showApplicantProfileSkills', 'showApplicantProfileLanguages']]);
     }
-	
-	public function viewPublicProfile($id)
+
+    public function viewPublicProfile($id)
     {
-		
-		$user = User::findOrFail($id);
-		$profileCv = $user->getDefaultCv();
-				
-		return view('user.applicant_profile')
+
+        $user = User::findOrFail($id);
+        $profileCv = $user->getDefaultCv();
+
+        return view('user.applicant_profile')
                         ->with('user', $user)
                         ->with('profileCv', $profileCv)
-						->with('page_title', $user->getName())
-						->with('form_title', 'Contact '.$user->getName());
+                        ->with('page_title', $user->getName())
+                        ->with('form_title', 'Contact ' . $user->getName());
     }
-	
-	public function myProfile()
+
+    public function myProfile()
     {
         $genders = DataArrayHelper::langGendersArray();
         $maritalStatuses = DataArrayHelper::langMaritalStatusesArray();
         $nationalities = DataArrayHelper::langNationalitiesArray();
-		$countries = DataArrayHelper::langCountriesArray();
-		$jobExperiences = DataArrayHelper::langJobExperiencesArray();
-		$careerLevels = DataArrayHelper::langCareerLevelsArray();
-		$industries = DataArrayHelper::langIndustriesArray();
-		$functionalAreas = DataArrayHelper::langFunctionalAreasArray();
-		
-		$upload_max_filesize = UploadedFile::getMaxFilesize() / (1048576);
+        $countries = DataArrayHelper::langCountriesArray();
+        $jobExperiences = DataArrayHelper::langJobExperiencesArray();
+        $careerLevels = DataArrayHelper::langCareerLevelsArray();
+        $industries = DataArrayHelper::langIndustriesArray();
+        $functionalAreas = DataArrayHelper::langFunctionalAreasArray();
 
+        $upload_max_filesize = UploadedFile::getMaxFilesize() / (1048576);
         $user = User::findOrFail(Auth::user()->id);
         return view('user.edit_profile')
                         ->with('genders', $genders)
@@ -102,12 +104,11 @@ class UserController extends Controller
                         ->with('industries', $industries)
                         ->with('functionalAreas', $functionalAreas)
                         ->with('user', $user)
-						->with('upload_max_filesize', $upload_max_filesize);
+                        ->with('upload_max_filesize', $upload_max_filesize);
     }
 
     public function updateMyProfile(UserFrontFormRequest $request)
     {
-
         $user = User::findOrFail(Auth::user()->id);
         /*         * **************************************** */
         if ($request->hasFile('image')) {
@@ -117,19 +118,16 @@ class UserController extends Controller
             $user->image = $fileName;
         }
         /*         * ************************************** */
-
         $user->first_name = $request->input('first_name');
         $user->middle_name = $request->input('middle_name');
         $user->last_name = $request->input('last_name');
-		/**************************/
-		$user->name = $user->getName();
-		/**************************/
+        /*         * *********************** */
+        $user->name = $user->getName();
+        /*         * *********************** */
         $user->email = $request->input('email');
-
         if (!empty($request->input('password'))) {
             $user->password = Hash::make($request->input('password'));
         }
-
         $user->father_name = $request->input('father_name');
         $user->date_of_birth = $request->input('date_of_birth');
         $user->gender_id = $request->input('gender_id');
@@ -149,66 +147,103 @@ class UserController extends Controller
         $user->expected_salary = $request->input('expected_salary');
         $user->salary_currency = $request->input('salary_currency');
         $user->street_address = $request->input('street_address');
+		$user->is_subscribed = $request->input('is_subscribed', 0);
 		
         $user->update();
-		
-		$this->updateUserFullTextSearch($user);
+
+        $this->updateUserFullTextSearch($user);
+		/*************************/
+		Subscription::where('email', 'like', $user->email)->delete();
+		if((bool)$user->is_subscribed)
+		{			
+			$subscription = new Subscription();
+			$subscription->email = $user->email;
+			$subscription->name = $user->name;
+			$subscription->save();
+			
+			/*************************/
+			Newsletter::subscribeOrUpdate($subscription->email, ['FNAME'=>$subscription->name]);
+			/*************************/
+		}
+		else
+		{
+			/*************************/
+			Newsletter::unsubscribe($user->email);
+			/*************************/
+		}
 		
         flash(__('You have updated your profile successfully'))->success();
         return \Redirect::route('my.profile');
     }
-	
-	public function addToFavouriteCompany(Request $request, $company_slug)
+
+    public function addToFavouriteCompany(Request $request, $company_slug)
     {
-		$data['company_slug'] = $company_slug;
+        $data['company_slug'] = $company_slug;
         $data['user_id'] = Auth::user()->id;
         $data_save = FavouriteCompany::create($data);
-		flash(__('Company has been added in favorites list'))->success();
+        flash(__('Company has been added in favorites list'))->success();
         return \Redirect::route('company.detail', $company_slug);
     }
 
     public function removeFromFavouriteCompany(Request $request, $company_slug)
-    {	
-		$user_id = Auth::user()->id;
+    {
+        $user_id = Auth::user()->id;
         FavouriteCompany::where('company_slug', 'like', $company_slug)->where('user_id', $user_id)->delete();
-		
-		flash(__('Company has been removed from favorites list'))->success();
+
+        flash(__('Company has been removed from favorites list'))->success();
         return \Redirect::route('company.detail', $company_slug);
     }
-	
-	public function myFollowings()
+
+    public function myFollowings()
     {
         $user = User::findOrFail(Auth::user()->id);
-		$companiesSlugArray = $user->getFollowingCompaniesSlugArray();
-		$companies = Company::whereIn('slug', $companiesSlugArray)->get();
-		
-		return view('user.following_companies')
+        $companiesSlugArray = $user->getFollowingCompaniesSlugArray();
+        $companies = Company::whereIn('slug', $companiesSlugArray)->get();
+
+        return view('user.following_companies')
                         ->with('user', $user)
-						->with('companies', $companies);
+                        ->with('companies', $companies);
     }
-	
-	public function myMessages()
+
+    public function myMessages()
     {
         $user = User::findOrFail(Auth::user()->id);
-		$messages = ApplicantMessage::where('user_id', '=', $user->id)
-						->orderBy('is_read', 'asc')
-						->orderBy('created_at', 'desc')
-						->get();
-						
-		return view('user.applicant_messages')
+        $messages = ApplicantMessage::where('user_id', '=', $user->id)
+                ->orderBy('is_read', 'asc')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+        return view('user.applicant_messages')
                         ->with('user', $user)
-						->with('messages', $messages);
+                        ->with('messages', $messages);
     }
-	
-	public function applicantMessageDetail($message_id)
+
+    public function applicantMessageDetail($message_id)
     {
         $user = User::findOrFail(Auth::user()->id);
-		$message = ApplicantMessage::findOrFail($message_id);
-		$message->update(['is_read'=>1]);
-				
-		return view('user.applicant_message_detail')
+        $message = ApplicantMessage::findOrFail($message_id);
+        $message->update(['is_read' => 1]);
+
+        return view('user.applicant_message_detail')
                         ->with('user', $user)
-						->with('message', $message);
+                        ->with('message', $message);
+    }
+
+    public function myAlerts()
+    {
+        $alerts = Alert::where('email', Auth::user()->email)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        //dd($alerts);
+        return view('user.applicant_alerts')
+            ->with('alerts', $alerts);
+    }
+    public function delete_alert($id)
+    {
+        $alert = Alert::findOrFail($id);
+        $alert->delete();
+        $arr = array('msg' => 'A Alert has been successfully deleted. ', 'status' => true);
+        return Response()->json($arr);
     }
 
 }

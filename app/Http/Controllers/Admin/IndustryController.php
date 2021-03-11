@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\IndustryFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class IndustryController extends Controller
 {
@@ -43,7 +44,7 @@ class IndustryController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $industries = DataArrayHelper::defaultIndustriesArray();
-		return view('admin.industry.add')
+        return view('admin.industry.add')
                         ->with('languages', $languages)
                         ->with('industries', $industries);
     }
@@ -51,26 +52,19 @@ class IndustryController extends Controller
     public function storeIndustry(IndustryFormRequest $request)
     {
         $industry = new Industry();
-
         $industry->industry = $request->input('industry');
         $industry->is_active = $request->input('is_active');
         $industry->lang = $request->input('lang');
         $industry->is_default = $request->input('is_default');
-
         $industry->save();
-
         /*         * ************************************ */
-
         $industry->sort_order = $industry->id;
-
         if ((int) $request->input('is_default') == 1) {
             $industry->industry_id = $industry->id;
         } else {
             $industry->industry_id = $request->input('industry_id');
         }
-
         $industry->update();
-
         flash('Industry has been added!')->success();
         return \Redirect::route('edit.industry', array($industry->id));
     }
@@ -78,7 +72,7 @@ class IndustryController extends Controller
     public function editIndustry($id)
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
-		$industries = DataArrayHelper::defaultIndustriesArray();
+        $industries = DataArrayHelper::defaultIndustriesArray();
         $industry = Industry::findOrFail($id);
         return view('admin.industry.edit')
                         ->with('languages', $languages)
@@ -89,7 +83,6 @@ class IndustryController extends Controller
     public function updateIndustry($id, IndustryFormRequest $request)
     {
         $industry = Industry::findOrFail($id);
-
         $industry->industry = $request->input('industry');
         $industry->is_active = $request->input('is_active');
         $industry->lang = $request->input('lang');
@@ -99,9 +92,7 @@ class IndustryController extends Controller
         } else {
             $industry->industry_id = $request->input('industry_id');
         }
-
         $industry->update();
-
         flash('Industry has been updated!')->success();
         return \Redirect::route('edit.industry', array($industry->id));
     }
@@ -138,7 +129,7 @@ class IndustryController extends Controller
                             }
                         })
                         ->addColumn('industry', function ($industries) {
-                            $industry = str_limit($industries->industry, 100, '...');
+                            $industry = Str::limit($industries->industry, 100, '...');
                             $direction = MiscHelper::getLangDirection($industries->lang);
                             return '<span dir="' . $direction . '">' . $industry . '</span>';
                         })

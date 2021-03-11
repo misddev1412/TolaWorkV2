@@ -27,11 +27,10 @@ class ProfileSkillFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     return [
                         "job_skill_id" => "required",
-						"job_experience_id" => "required",
+                        "job_experience_id" => "required",
                     ];
                 }
             default:break;
@@ -42,7 +41,7 @@ class ProfileSkillFormRequest extends Request
     {
         return [
             'job_skill_id.required' => 'Please select skill.',
-			'job_experience_id.required' => 'Please select experience.',
+            'job_experience_id.required' => 'Please select experience.',
         ];
     }
 

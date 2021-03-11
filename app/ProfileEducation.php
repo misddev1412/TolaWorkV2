@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProfileEducation extends Model
 {
-	use CountryStateCity;
+
+    use CountryStateCity;
 
     protected $table = 'profile_educations';
     public $timestamps = true;
@@ -31,19 +32,19 @@ class ProfileEducation extends Model
             return '';
         }
     }
-	
-	public function degreeLevel()
+
+    public function degreeLevel()
     {
         return $this->belongsTo('App\DegreeLevel', 'degree_level_id', 'degree_level_id');
     }
 
     public function getDegreeLevel($field = '')
     {
-		$degreeLevel = $this->degreeLevel()->lang()->first();
-		if(null === $degreeLevel){
-			$degreeLevel = $this->degreeLevel()->first();
-		}
-        if(null !== $degreeLevel){
+        $degreeLevel = $this->degreeLevel()->lang()->first();
+        if (null === $degreeLevel) {
+            $degreeLevel = $this->degreeLevel()->first();
+        }
+        if (null !== $degreeLevel) {
             if (empty($field))
                 return $degreeLevel;
             else
@@ -52,19 +53,19 @@ class ProfileEducation extends Model
             return '';
         }
     }
-	
-	public function degreeType()
+
+    public function degreeType()
     {
         return $this->belongsTo('App\DegreeType', 'degree_type_id', 'degree_type_id');
     }
 
     public function getDegreeType($field = '')
     {
-		$degreeType = $this->degreeType()->lang()->first();
-		if(null === $degreeType){
-			$degreeType = $this->degreeType()->first();
-		}
-        if(null !== $degreeType){
+        $degreeType = $this->degreeType()->lang()->first();
+        if (null === $degreeType) {
+            $degreeType = $this->degreeType()->first();
+        }
+        if (null !== $degreeType) {
             if (empty($field))
                 return $degreeType;
             else
@@ -73,19 +74,19 @@ class ProfileEducation extends Model
             return '';
         }
     }
-	
-	public function resultType()
+
+    public function resultType()
     {
         return $this->belongsTo('App\ResultType', 'result_type_id', 'result_type_id');
     }
 
     public function getResultType($field = '')
     {
-		$resultType = $this->resultType()->lang()->first();
-		if(null === $resultType){
-			$resultType = $this->resultType()->first();
-		}
-        if(null !== $resultType){
+        $resultType = $this->resultType()->lang()->first();
+        if (null === $resultType) {
+            $resultType = $this->resultType()->first();
+        }
+        if (null !== $resultType) {
             if (empty($field))
                 return $resultType;
             else
@@ -94,29 +95,27 @@ class ProfileEducation extends Model
             return '';
         }
     }
-	
-	public function profileEducationMajorSubjects()
+
+    public function profileEducationMajorSubjects()
     {
         return $this->hasMany('App\ProfileEducationMajorSubject', 'profile_education_id', 'id');
     }
-	
-	public function getProfileEducationMajorSubjectsArray()
+
+    public function getProfileEducationMajorSubjectsArray()
     {
         return $this->profileEducationMajorSubjects->pluck('major_subject_id')->toArray();
     }
-	
-	public function getProfileEducationMajorSubjectsStr()
+
+    public function getProfileEducationMajorSubjectsStr()
     {
         $majorSubjects = $this->profileEducationMajorSubjects;
-		if(null !== $majorSubjects)
-		{
-			$majorSubjectArray = [];
-			foreach($majorSubjects as $profileEduMajorSubject)
-			{
-				$majorSubjectArray[] = $profileEduMajorSubject->getMajorSubject('major_subject');				
-			}
-		}
-		return implode(', ', $majorSubjectArray);
+        if (null !== $majorSubjects) {
+            $majorSubjectArray = [];
+            foreach ($majorSubjects as $profileEduMajorSubject) {
+                $majorSubjectArray[] = $profileEduMajorSubject->getMajorSubject('major_subject');
+            }
+        }
+        return implode(', ', $majorSubjectArray);
     }
 
 }

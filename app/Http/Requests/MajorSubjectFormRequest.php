@@ -27,7 +27,6 @@ class MajorSubjectFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $major_subject_unique = '';
                     if ($id > 0) {

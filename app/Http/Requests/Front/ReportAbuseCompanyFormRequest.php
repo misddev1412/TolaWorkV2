@@ -36,12 +36,12 @@ class ReportAbuseCompanyFormRequest extends Request
     {
         return [
             'your_name.required' => __('Your name is required'),
-'your_email.required' => __('Your email address is required'),
-'your_email.email' => __('Your Valid e-mail address is required'),
-'company_url.required' => __('Company url is required'),
-'company_url.url' => __('Company url must be a valid URL'),
-'g-recaptcha-response.required' => __('Please verify that you are not a robot'),
-'g-recaptcha-response.captcha' => __('Captcha error! try again later'),
+            'your_email.required' => __('Your email address is required'),
+            'your_email.email' => __('Your Valid e-mail address is required'),
+            'company_url.required' => __('Company url is required'),
+            'company_url.url' => __('Company url must be a valid URL'),
+            'g-recaptcha-response.required' => __('Please verify that you are not a robot'),
+            'g-recaptcha-response.captcha' => __('Captcha error! try again later'),
         ];
     }
 

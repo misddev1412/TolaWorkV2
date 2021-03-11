@@ -27,7 +27,6 @@ class FunctionalAreaFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $functional_area_unique = '';
                     if ($id > 0) {

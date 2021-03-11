@@ -20,6 +20,7 @@ use DataTables;
 use App\Http\Requests\CountryFormRequest;
 use App\Http\Controllers\Controller;
 use App\Traits\CountryStateCity;
+use Illuminate\Support\Str;
 
 class CountryController extends Controller
 {
@@ -46,7 +47,6 @@ class CountryController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $countries = DataArrayHelper::defaultCountriesArray();
-
         return view('admin.country.add')
                         ->with('languages', $languages)
                         ->with('countries', $countries);
@@ -55,27 +55,20 @@ class CountryController extends Controller
     public function storeCountry(CountryFormRequest $request)
     {
         $country = new Country();
-
         $country->country = $request->input('country');
         $country->nationality = $request->input('nationality');
         $country->is_active = $request->input('is_active');
         $country->lang = $request->input('lang');
         $country->is_default = $request->input('is_default');
-
         $country->save();
-
         /*         * ************************************ */
-
         $country->sort_order = $country->id;
-
         if ((int) $request->input('is_default') == 1) {
             $country->country_id = $country->id;
         } else {
             $country->country_id = $request->input('country_id');
         }
-
         $country->update();
-
         flash('Country has been added!')->success();
         return \Redirect::route('edit.country', array($country->id));
     }
@@ -83,7 +76,7 @@ class CountryController extends Controller
     public function editCountry($id)
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
-		$countries = DataArrayHelper::defaultCountriesArray();
+        $countries = DataArrayHelper::defaultCountriesArray();
         $country = Country::findOrFail($id);
         return view('admin.country.edit')
                         ->with('languages', $languages)
@@ -94,7 +87,6 @@ class CountryController extends Controller
     public function updateCountry($id, CountryFormRequest $request)
     {
         $country = Country::findOrFail($id);
-
         $country->country = $request->input('country');
         $country->nationality = $request->input('nationality');
         $country->is_active = $request->input('is_active');
@@ -105,9 +97,7 @@ class CountryController extends Controller
         } else {
             $country->country_id = $request->input('country_id');
         }
-
         $country->update();
-
         flash('Country has been updated!')->success();
         return \Redirect::route('edit.country', array($country->id));
     }
@@ -128,7 +118,7 @@ class CountryController extends Controller
                             }
                         })
                         ->addColumn('country', function ($countries) {
-                            $country = str_limit($countries->country, 100, '...');
+                            $country = Str::limit($countries->country, 100, '...');
                             $direction = MiscHelper::getLangDirection($countries->lang);
                             return '<span dir="' . $direction . '">' . $country . '</span>';
                         })

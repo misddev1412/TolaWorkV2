@@ -1,4 +1,5 @@
 <?php
+
 Route::get('email-to-friend/{job_slug}', 'ContactController@emailToFriend')->name('email.to.friend');
 Route::post('email-to-friend/{job_slug}', 'ContactController@emailToFriendPost')->name('email.to.friend');
 Route::get('email-to-friend-thanks', 'ContactController@emailToFriendThanks')->name('email.to.friend.thanks');

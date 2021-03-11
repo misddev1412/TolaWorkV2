@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\FunctionalAreaFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class FunctionalAreaController extends Controller
 {
@@ -43,7 +44,7 @@ class FunctionalAreaController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $functionalAreas = DataArrayHelper::defaultFunctionalAreasArray();
-		return view('admin.functional_area.add')
+        return view('admin.functional_area.add')
                         ->with('languages', $languages)
                         ->with('functionalAreas', $functionalAreas);
     }
@@ -51,26 +52,19 @@ class FunctionalAreaController extends Controller
     public function storeFunctionalArea(FunctionalAreaFormRequest $request)
     {
         $functionalArea = new FunctionalArea();
-
         $functionalArea->functional_area = $request->input('functional_area');
         $functionalArea->is_active = $request->input('is_active');
         $functionalArea->lang = $request->input('lang');
         $functionalArea->is_default = $request->input('is_default');
-
         $functionalArea->save();
-
         /*         * ************************************ */
-
         $functionalArea->sort_order = $functionalArea->id;
-
         if ((int) $request->input('is_default') == 1) {
             $functionalArea->functional_area_id = $functionalArea->id;
         } else {
             $functionalArea->functional_area_id = $request->input('functional_area_id');
         }
-
         $functionalArea->update();
-
         flash('Functional Area has been added!')->success();
         return \Redirect::route('edit.functional.area', array($functionalArea->id));
     }
@@ -79,7 +73,7 @@ class FunctionalAreaController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $functionalAreas = DataArrayHelper::defaultFunctionalAreasArray();
-		$functionalArea = FunctionalArea::findOrFail($id);
+        $functionalArea = FunctionalArea::findOrFail($id);
         return view('admin.functional_area.edit')
                         ->with('languages', $languages)
                         ->with('functionalArea', $functionalArea)
@@ -89,7 +83,6 @@ class FunctionalAreaController extends Controller
     public function updateFunctionalArea($id, FunctionalAreaFormRequest $request)
     {
         $functionalArea = FunctionalArea::findOrFail($id);
-
         $functionalArea->functional_area = $request->input('functional_area');
         $functionalArea->is_active = $request->input('is_active');
         $functionalArea->lang = $request->input('lang');
@@ -99,9 +92,7 @@ class FunctionalAreaController extends Controller
         } else {
             $functionalArea->functional_area_id = $request->input('functional_area_id');
         }
-
         $functionalArea->update();
-
         flash('Functional Area has been updated!')->success();
         return \Redirect::route('edit.functional.area', array($functionalArea->id));
     }
@@ -138,7 +129,7 @@ class FunctionalAreaController extends Controller
                             }
                         })
                         ->addColumn('functional_area', function ($functionalAreas) {
-                            $functionalArea = str_limit($functionalAreas->functional_area, 100, '...');
+                            $functionalArea = Str::limit($functionalAreas->functional_area, 100, '...');
                             $direction = MiscHelper::getLangDirection($functionalAreas->lang);
                             return '<span dir="' . $direction . '">' . $functionalArea . '</span>';
                         })

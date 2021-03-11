@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class MajorSubject extends Model
 {
-	use Lang;
-	use IsDefault;
-	use Active;
-	use Sorted;
-	
+
+    use Lang;
+    use IsDefault;
+    use Active;
+    use Sorted;
+
     protected $table = 'major_subjects';
     public $timestamps = true;
     protected $guarded = ['id'];

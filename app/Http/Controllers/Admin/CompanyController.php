@@ -27,12 +27,13 @@ use App\Http\Requests\CompanyFormRequest;
 use App\Http\Controllers\Controller;
 use App\Traits\CompanyTrait;
 use App\Traits\CompanyPackageTrait;
+use Illuminate\Support\Str;
 
 class CompanyController extends Controller
 {
 
     use CompanyTrait;
-	use CompanyPackageTrait;
+    use CompanyPackageTrait;
 
     /**
      * Create a new controller instance.
@@ -54,13 +55,13 @@ class CompanyController extends Controller
         $countries = DataArrayHelper::defaultCountriesArray();
         $industries = DataArrayHelper::defaultIndustriesArray();
         $ownershipTypes = DataArrayHelper::defaultOwnershipTypesArray();
-		$packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'employer')->pluck('package_detail', 'id')->toArray();
-        
+        $packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'employer')->pluck('package_detail', 'id')->toArray();
+
         return view('admin.company.add')
                         ->with('countries', $countries)
                         ->with('industries', $industries)
                         ->with('ownershipTypes', $ownershipTypes)
-						->with('packages', $packages);
+                        ->with('packages', $packages);
     }
 
     public function storeCompany(CompanyFormRequest $request)
@@ -73,54 +74,46 @@ class CompanyController extends Controller
             $company->logo = $fileName;
         }
         /*         * ************************************** */
-
         $company->name = $request->input('name');
         $company->email = $request->input('email');
-
         if (!empty($request->input('password'))) {
             $company->password = Hash::make($request->input('password'));
         }
-
         $company->ceo = $request->input('ceo');
         $company->industry_id = $request->input('industry_id');
         $company->ownership_type_id = $request->input('ownership_type_id');
         $company->description = $request->input('description');
         $company->location = $request->input('location');
-		$company->map = $request->input('map');
+        $company->map = $request->input('map');
         $company->no_of_offices = $request->input('no_of_offices');
-
         $website = $request->input('website');
         $company->website = (false === strpos($website, 'http')) ? 'http://' . $website : $website;
-
         $company->no_of_employees = $request->input('no_of_employees');
         $company->established_in = $request->input('established_in');
         $company->fax = $request->input('fax');
         $company->phone = $request->input('phone');
-		$company->facebook = $request->input('facebook');
-		$company->twitter = $request->input('twitter');
-		$company->linkedin = $request->input('linkedin');
-		$company->google_plus = $request->input('google_plus');
+        $company->facebook = $request->input('facebook');
+        $company->twitter = $request->input('twitter');
+        $company->linkedin = $request->input('linkedin');
+        $company->google_plus = $request->input('google_plus');
         $company->pinterest = $request->input('pinterest');
-		$company->country_id = $request->input('country_id');
+        $company->country_id = $request->input('country_id');
         $company->state_id = $request->input('state_id');
         $company->city_id = $request->input('city_id');
         $company->is_active = $request->input('is_active');
         $company->is_featured = $request->input('is_featured');
-
         $company->save();
-		/**********************************/
-		$company->slug = str_slug($company->name, '-').'-'.$company->id;
-		/**********************************/
-		$company->update();
-		/*         * ************************************ */
-		if($request->has('company_package_id') && $request->input('company_package_id') > 0)
-		{
-			$package_id = $request->input('company_package_id');
-			$package = Package::find($package_id);
-			$this->addCompanyPackage($company, $package);
-		}
+        /*         * ******************************* */
+        $company->slug = Str::slug($company->name, '-') . '-' . $company->id;
+        /*         * ******************************* */
+        $company->update();
         /*         * ************************************ */
-
+        if ($request->has('company_package_id') && $request->input('company_package_id') > 0) {
+            $package_id = $request->input('company_package_id');
+            $package = Package::find($package_id);
+            $this->addCompanyPackage($company, $package);
+        }
+        /*         * ************************************ */
         flash('Company has been added!')->success();
         return \Redirect::route('edit.company', array($company->id));
     }
@@ -129,25 +122,22 @@ class CompanyController extends Controller
     {
         $countries = DataArrayHelper::defaultCountriesArray();
         $industries = DataArrayHelper::defaultIndustriesArray();
-        $ownershipTypes = DataArrayHelper::defaultOwnershipTypesArray();		
-		
+        $ownershipTypes = DataArrayHelper::defaultOwnershipTypesArray();
+
         $company = Company::findOrFail($id);
-		if($company->package_id > 0)
-		{
-			$package = Package::find($company->package_id);
-			$packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'employer')->where('id', '<>', $company->package_id)->where('package_price', '>=', $package->package_price)->pluck('package_detail', 'id')->toArray();
-		}
-		else
-		{
-			$packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'employer')->pluck('package_detail', 'id')->toArray();
-		}
-		
+        if ($company->package_id > 0) {
+            $package = Package::find($company->package_id);
+            $packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'employer')->where('id', '<>', $company->package_id)->where('package_price', '>=', $package->package_price)->pluck('package_detail', 'id')->toArray();
+        } else {
+            $packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'employer')->pluck('package_detail', 'id')->toArray();
+        }
+
         return view('admin.company.edit')
                         ->with('company', $company)
                         ->with('countries', $countries)
                         ->with('industries', $industries)
                         ->with('ownershipTypes', $ownershipTypes)
-						->with('packages', $packages);
+                        ->with('packages', $packages);
     }
 
     public function updateCompany($id, CompanyFormRequest $request)
@@ -161,7 +151,6 @@ class CompanyController extends Controller
             $company->logo = $fileName;
         }
         /*         * ************************************** */
-
         $company->name = $request->input('name');
         $company->email = $request->input('email');
         if (!empty($request->input('password'))) {
@@ -172,47 +161,39 @@ class CompanyController extends Controller
         $company->ownership_type_id = $request->input('ownership_type_id');
         $company->description = $request->input('description');
         $company->location = $request->input('location');
-		$company->map = $request->input('map');
+        $company->map = $request->input('map');
         $company->no_of_offices = $request->input('no_of_offices');
-
         $website = $request->input('website');
         $company->website = (false === strpos($website, 'http')) ? 'http://' . $website : $website;
-
         $company->no_of_employees = $request->input('no_of_employees');
         $company->established_in = $request->input('established_in');
         $company->fax = $request->input('fax');
         $company->phone = $request->input('phone');
-		$company->facebook = $request->input('facebook');
-		$company->twitter = $request->input('twitter');
-		$company->linkedin = $request->input('linkedin');
-		$company->google_plus = $request->input('google_plus');
-		$company->pinterest = $request->input('pinterest');
+        $company->facebook = $request->input('facebook');
+        $company->twitter = $request->input('twitter');
+        $company->linkedin = $request->input('linkedin');
+        $company->google_plus = $request->input('google_plus');
+        $company->pinterest = $request->input('pinterest');
         $company->country_id = $request->input('country_id');
         $company->state_id = $request->input('state_id');
         $company->city_id = $request->input('city_id');
         $company->is_active = $request->input('is_active');
         $company->is_featured = $request->input('is_featured');
-		
-		$company->slug = str_slug($company->name, '-').'-'.$company->id;
 
+        $company->slug = Str::slug($company->name, '-') . '-' . $company->id;
         $company->update();
-		
-		/*         * ************************************ */
-		if($request->has('company_package_id') && $request->input('company_package_id') > 0)
-		{
-			$package_id = $request->input('company_package_id');
-			$package = Package::find($package_id);
-			if($company->package_id > 0)
-			{
-				$this->updateCompanyPackage($company, $package);
-			}
-			else
-			{
-				$this->addCompanyPackage($company, $package);
-			}
-		}
-        /*         * ************************************ */
 
+        /*         * ************************************ */
+        if ($request->has('company_package_id') && $request->input('company_package_id') > 0) {
+            $package_id = $request->input('company_package_id');
+            $package = Package::find($package_id);
+            if ($company->package_id > 0) {
+                $this->updateCompanyPackage($company, $package);
+            } else {
+                $this->addCompanyPackage($company, $package);
+            }
+        }
+        /*         * ************************************ */
         flash('Company has been updated!')->success();
         return \Redirect::route('edit.company', array($company->id));
     }
@@ -257,20 +238,15 @@ class CompanyController extends Controller
         ]);
         return Datatables::of($companies)
                         ->filter(function ($query) use ($request) {
-
-
                             if ($request->has('name') && !empty($request->name)) {
                                 $query->where('companies.name', 'like', "%{$request->get('name')}%");
                             }
-
                             if ($request->has('email') && !empty($request->email)) {
                                 $query->where('companies.email', 'like', "%{$request->get('email')}%");
                             }
-
                             if ($request->has('is_active') && $request->is_active != -1) {
                                 $query->where('companies.is_active', '=', "{$request->get('is_active')}");
                             }
-
                             if ($request->has('is_featured') && $request->is_featured != -1) {
                                 $query->where('companies.is_featured', '=', "{$request->get('is_featured')}");
                             }
@@ -282,7 +258,6 @@ class CompanyController extends Controller
                             return ((bool) $companies->is_featured) ? 'Yes' : 'No';
                         })
                         ->addColumn('action', function ($companies) {
-
                             /*                             * ************************* */
                             $activeTxt = 'Make Active';
                             $activeHref = 'makeActive(' . $companies->id . ');';
@@ -292,8 +267,6 @@ class CompanyController extends Controller
                                 $activeHref = 'makeNotActive(' . $companies->id . ');';
                                 $activeIcon = 'check-square-o';
                             }
-
-
                             /*                             * ************************* */
                             $featuredTxt = 'Make Featured';
                             $featuredHref = 'makeFeatured(' . $companies->id . ');';
@@ -303,7 +276,6 @@ class CompanyController extends Controller
                                 $featuredHref = 'makeNotFeatured(' . $companies->id . ');';
                                 $featuredIcon = 'check-square-o';
                             }
-
                             return '
 				<div class="btn-group">
 					<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action
@@ -322,10 +294,8 @@ class CompanyController extends Controller
 						</li>
 						
 <li><a href="javascript:void(0);" onClick="' . $activeHref . '" id="onclickActive' . $companies->id . '"><i class="fa fa-' . $activeIcon . '" aria-hidden="true"></i>' . $activeTxt . '</a></li>
-
 						
 <li><a href="javascript:void(0);" onClick="' . $featuredHref . '" id="onclickFeatured' . $companies->id . '"><i class="fa fa-' . $featuredIcon . '" aria-hidden="true"></i>' . $featuredTxt . '</a></li>
-
 					</ul>
 				</div>';
                         })

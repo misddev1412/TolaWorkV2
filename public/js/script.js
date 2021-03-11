@@ -1,9 +1,6 @@
 "use strict";
 /* ==== Jquery Functions ==== */
 (function($) {
-	
-	/* ==== Tool Tip ==== */	
-    $('[data-toggle="tooltip"]').tooltip();	
 		
 	
 	/* ==== Testimonials Slider ==== */	
@@ -29,6 +26,29 @@
 		}
   	});
 	
+	/* ==== employerList Slider ==== */	
+  	$(".employerList").owlCarousel({      
+	   loop:true,
+		margin:20,
+		nav:true,
+		responsiveClass:true,
+		responsive:{
+			0:{
+				items:3,
+				nav:true
+			},
+			768:{
+				items:5,
+				nav:true
+			},
+			1170:{
+				items:10,
+				nav:true,
+				loop:true
+			}
+		}
+  	});
+	
 	
 	/* ==== Revolution Slider ==== */
 	if($('.tp-banner').length > 0){
@@ -46,5 +66,19 @@
 	        fullWidth: 'on'
 		});
 	}
+	
+	
+	//Top search bar open/close
+    if (!$('.srchbox').hasClass("searchStayOpen")) {
+        $("#jbsearch").click(function() {
+            $(".srchbox").addClass("openSearch");
+            $(".additional_fields").slideDown();
+        });
+
+
+        $(".srchbox").click(function(e) {
+            e.stopPropagation();
+        });
+    }
 	
 })(jQuery);

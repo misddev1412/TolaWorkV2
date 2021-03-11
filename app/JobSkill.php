@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class JobSkill extends Model
 {
-	use Lang;
-	use IsDefault;
-	use Active;
-	use Sorted;
-	
+
+    use Lang;
+    use IsDefault;
+    use Active;
+    use Sorted;
+
     protected $table = 'job_skills';
     public $timestamps = true;
     protected $guarded = ['id'];

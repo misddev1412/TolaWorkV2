@@ -13,5 +13,4 @@ Route::put('make-not-active-state', array_merge(['uses' => 'Admin\StateControlle
 Route::get('sort-states', array_merge(['uses' => 'Admin\StateController@sortStates'], $all_users))->name('sort.states');
 Route::get('state-sort-data', array_merge(['uses' => 'Admin\StateController@stateSortData'], $all_users))->name('state.sort.data');
 Route::put('state-sort-update', array_merge(['uses' => 'Admin\StateController@stateSortUpdate'], $all_users))->name('state.sort.update');
-
 /* * ****** End State ********** */

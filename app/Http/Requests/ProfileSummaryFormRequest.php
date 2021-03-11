@@ -27,7 +27,6 @@ class ProfileSummaryFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     return [
                         "summary" => "required",

@@ -39,8 +39,8 @@ use AuthenticatesUsers;
     {
         $this->middleware('guest')->except('logout');
     }
-	
-	/**
+
+    /**
      * Redirect the user to the OAuth Provider.
      *
      * @return Response
@@ -61,7 +61,6 @@ use AuthenticatesUsers;
     public function handleProviderCallback($provider)
     {
         $user = Socialite::driver($provider)->user();
-
         $authUser = $this->findOrCreateUser($user, $provider);
         Auth::login($authUser, true);
         return redirect($this->redirectTo);
@@ -79,25 +78,24 @@ use AuthenticatesUsers;
         if ($user->getEmail() != '') {
             $authUser = User::where('email', 'like', $user->getEmail())->first();
             if ($authUser) {
-                /*$authUser->provider = $provider;
-                $authUser->provider_id = $user->getId();
-                $authUser->update();*/
+                /* $authUser->provider = $provider;
+                  $authUser->provider_id = $user->getId();
+                  $authUser->update(); */
                 return $authUser;
             }
         }
-
         $str = $user->getName() . $user->getId() . $user->getEmail();
         return User::create([
                     'first_name' => $user->getName(),
-					'middle_name' => $user->getName(),
-					'last_name' => $user->getName(),
-					'name' => $user->getName(),
+                    'middle_name' => $user->getName(),
+                    'last_name' => $user->getName(),
+                    'name' => $user->getName(),
                     'email' => $user->getEmail(),
                     //'provider' => $provider,
                     //'provider_id' => $user->getId(),
                     'password' => bcrypt($str),
                     'is_active' => 1,
-					'verified' => 1,
+                    'verified' => 1,
         ]);
     }
 

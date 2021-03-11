@@ -2,7 +2,6 @@
 $lang = config('default_lang');
 if (isset($faq))
     $lang = $faq->lang;
-
 $lang = MiscHelper::getLang($lang);
 $direction = MiscHelper::getLangDirection($lang);
 $queryString = MiscHelper::getLangQueryStr();
@@ -25,13 +24,9 @@ $queryString = MiscHelper::getLangQueryStr();
         {!! Form::textarea('faq_answer', null, array('class'=>'form-control', 'id'=>'faq_answer', 'placeholder'=>'Answer')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'faq_answer') !!}                                       
     </div>
-
-
     <div class="form-actions">
         {!! Form::button('Update <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>', array('class'=>'btn btn-large btn-primary', 'type'=>'submit')) !!}
     </div>
-
-
 </div>
 @push('scripts')
 <script type="text/javascript">

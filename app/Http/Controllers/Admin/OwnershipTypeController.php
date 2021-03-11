@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\OwnershipTypeFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class OwnershipTypeController extends Controller
 {
@@ -40,7 +41,7 @@ class OwnershipTypeController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $ownershipTypes = DataArrayHelper::defaultOwnershipTypesArray();
-		
+
         return view('admin.ownership_type.add')
                         ->with('languages', $languages)
                         ->with('ownershipTypes', $ownershipTypes);
@@ -49,7 +50,6 @@ class OwnershipTypeController extends Controller
     public function storeOwnershipType(OwnershipTypeFormRequest $request)
     {
         $ownershipType = new OwnershipType();
-        $ownershipType->id = $request->input('id');
         $ownershipType->lang = $request->input('lang');
         $ownershipType->ownership_type = $request->input('ownership_type');
         $ownershipType->is_default = $request->input('is_default');
@@ -57,18 +57,14 @@ class OwnershipTypeController extends Controller
         $ownershipType->is_active = $request->input('is_active');
         $ownershipType->save();
         /*         * ************************************ */
-
         $ownershipType->sort_order = $ownershipType->id;
-
         if ((int) $request->input('is_default') == 1) {
             $ownershipType->ownership_type_id = $ownershipType->id;
         } else {
             $ownershipType->ownership_type_id = $request->input('ownership_type_id');
         }
-
         $ownershipType->update();
         /*         * ************************************ */
-
         flash('Ownership Type has been added!')->success();
         return \Redirect::route('edit.ownership.type', array($ownershipType->id));
     }
@@ -76,8 +72,8 @@ class OwnershipTypeController extends Controller
     public function editOwnershipType($id)
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
-		$ownershipTypes = DataArrayHelper::defaultOwnershipTypesArray();
-		
+        $ownershipTypes = DataArrayHelper::defaultOwnershipTypesArray();
+
         $ownershipType = OwnershipType::findOrFail($id);
         return view('admin.ownership_type.edit')
                         ->with('languages', $languages)
@@ -88,7 +84,6 @@ class OwnershipTypeController extends Controller
     public function updateOwnershipType($id, OwnershipTypeFormRequest $request)
     {
         $ownershipType = OwnershipType::findOrFail($id);
-        $ownershipType->id = $request->input('id');
         $ownershipType->lang = $request->input('lang');
         $ownershipType->ownership_type = $request->input('ownership_type');
         $ownershipType->is_default = $request->input('is_default');
@@ -102,7 +97,6 @@ class OwnershipTypeController extends Controller
         }
         /*         * ************************************ */
         $ownershipType->update();
-
         flash('Ownership Type has been updated!')->success();
         return \Redirect::route('edit.ownership.type', array($ownershipType->id));
     }
@@ -112,13 +106,11 @@ class OwnershipTypeController extends Controller
         $id = $request->input('id');
         try {
             $ownershipType = OwnershipType::findOrFail($id);
-
             if ((bool) $ownershipType->is_default) {
                 OwnershipType::where('ownership_type_id', '=', $ownershipType->ownership_type_id)->delete();
             } else {
                 $ownershipType->delete();
             }
-
             return 'ok';
         } catch (ModelNotFoundException $e) {
             return 'notok';
@@ -132,21 +124,18 @@ class OwnershipTypeController extends Controller
                 ])->sorted();
         return Datatables::of($ownershipTypes)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('lang') && !empty($request->lang)) {
                                 $query->where('ownership_types.lang', 'like', "{$request->get('lang')}");
                             }
-
                             if ($request->has('ownership_type') && !empty($request->ownership_type)) {
                                 $query->where('ownership_types.ownership_type', 'like', "%{$request->get('ownership_type')}%");
                             }
-
                             if ($request->has('is_active') && $request->is_active != -1) {
                                 $query->where('ownership_types.is_active', '=', "{$request->get('is_active')}");
                             }
                         })
                         ->addColumn('ownership_type', function ($ownershipTypes) {
-                            $ownershipType = str_limit($ownershipTypes->ownership_type, 100, '...');
+                            $ownershipType = Str::limit($ownershipTypes->ownership_type, 100, '...');
                             $direction = MiscHelper::getLangDirection($ownershipTypes->lang);
                             return '<span dir="' . $direction . '">' . $ownershipType . '</span>';
                         })

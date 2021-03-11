@@ -47,4 +47,3 @@
         {!! APFrmErrHelp::showErrors($errors, 'flickr_address') !!}                                       
     </div>
 </div>
-

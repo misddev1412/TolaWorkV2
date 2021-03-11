@@ -1,0 +1,36 @@
+Recruiter Portal
+
+Dashboard
+Search Profiles
+Jobs
+Company Profile
+Company Reviews
+Applicant
+Interviewers
+Invite Job Seekers
+Schedule an Interview
+Create an Test
+My Profile
+Logout
+
+Job Seekers Panel
+
+Dashboard
+My Profile
+Interview Scheduled 
+Interview offers
+Browse Interviewer
+Reviews & Rating
+Jobs Applied
+Invite Friends
+Pratice Mock Test
+Logout
+
+Interviewer Panel
+
+Dashboard
+My Profile
+Interview Requests
+Create an Test
+Reviews & Rating
+Logout

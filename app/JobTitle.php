@@ -11,16 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class JobTitle extends Model
 {
-	use Lang;
-	use IsDefault;
-	use Active;
-	use Sorted;
-	
+
+    use Lang;
+    use IsDefault;
+    use Active;
+    use Sorted;
+
     protected $table = 'job_titles';
     public $timestamps = true;
     protected $guarded = ['id'];
     //protected $dateFormat = 'U';
     protected $dates = ['created_at', 'updated_at'];
-
 
 }

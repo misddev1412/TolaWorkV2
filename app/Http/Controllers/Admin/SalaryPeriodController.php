@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\SalaryPeriodFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class SalaryPeriodController extends Controller
 {
@@ -51,26 +52,19 @@ class SalaryPeriodController extends Controller
     public function storeSalaryPeriod(SalaryPeriodFormRequest $request)
     {
         $salaryPeriod = new SalaryPeriod();
-
         $salaryPeriod->salary_period = $request->input('salary_period');
         $salaryPeriod->is_active = $request->input('is_active');
         $salaryPeriod->lang = $request->input('lang');
         $salaryPeriod->is_default = $request->input('is_default');
-
         $salaryPeriod->save();
-
         /*         * ************************************ */
-
         $salaryPeriod->sort_order = $salaryPeriod->id;
-
         if ((int) $request->input('is_default') == 1) {
             $salaryPeriod->salary_period_id = $salaryPeriod->id;
         } else {
             $salaryPeriod->salary_period_id = $request->input('salary_period_id');
         }
-
         $salaryPeriod->update();
-
         flash('Salary Period has been added!')->success();
         return \Redirect::route('edit.salary.period', array($salaryPeriod->id));
     }
@@ -78,7 +72,7 @@ class SalaryPeriodController extends Controller
     public function editSalaryPeriod($id)
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
-		$salaryPeriods = DataArrayHelper::defaultSalaryPeriodsArray();
+        $salaryPeriods = DataArrayHelper::defaultSalaryPeriodsArray();
         $salaryPeriod = SalaryPeriod::findOrFail($id);
         return view('admin.salary_period.edit')
                         ->with('languages', $languages)
@@ -89,7 +83,6 @@ class SalaryPeriodController extends Controller
     public function updateSalaryPeriod($id, SalaryPeriodFormRequest $request)
     {
         $salaryPeriod = SalaryPeriod::findOrFail($id);
-
         $salaryPeriod->salary_period = $request->input('salary_period');
         $salaryPeriod->is_active = $request->input('is_active');
         $salaryPeriod->lang = $request->input('lang');
@@ -99,9 +92,7 @@ class SalaryPeriodController extends Controller
         } else {
             $salaryPeriod->salary_period_id = $request->input('salary_period_id');
         }
-
         $salaryPeriod->update();
-
         flash('Salary Period has been updated!')->success();
         return \Redirect::route('edit.salary.period', array($salaryPeriod->id));
     }
@@ -138,7 +129,7 @@ class SalaryPeriodController extends Controller
                             }
                         })
                         ->addColumn('salary_period', function ($salaryPeriods) {
-                            $salaryPeriod = str_limit($salaryPeriods->salary_period, 100, '...');
+                            $salaryPeriod = Str::limit($salaryPeriods->salary_period, 100, '...');
                             $direction = MiscHelper::getLangDirection($salaryPeriods->lang);
                             return '<span dir="' . $direction . '">' . $salaryPeriod . '</span>';
                         })

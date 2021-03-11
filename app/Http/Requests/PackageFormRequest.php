@@ -27,10 +27,8 @@ class PackageFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $unique_id = ($id > 0) ? ',' . $id : '';
-
                     return [
                         "package_title" => "required",
                         "package_price" => "required",

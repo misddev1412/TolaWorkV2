@@ -33,11 +33,11 @@ class ReportAbuse extends Mailable
     public function build()
     {
         return $this->from($this->data['your_email'], $this->data['your_name'])
-        ->replyTo($this->data['your_email'], $this->data['your_name'])
-        ->to(config('mail.recieve_to.address'), config('mail.recieve_to.name'))
-		->subject($this->data['your_name'] . '" has reported a "' . config('app.name') . '" link')
-		->view('emails.report_abuse_message')
-		->with($this->data);
+                        ->replyTo($this->data['your_email'], $this->data['your_name'])
+                        ->to(config('mail.recieve_to.address'), config('mail.recieve_to.name'))
+                        ->subject($this->data['your_name'] . '" has reported a "' . config('app.name') . '" link')
+                        ->view('emails.report_abuse_message')
+                        ->with($this->data);
     }
 
 }

@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <style type="text/css">
     .table td, .table th {
@@ -23,12 +22,9 @@
         <h3 class="page-title"> Manage Admin Users <small>Admin Users</small> </h3>
         <!-- END PAGE TITLE--> 
         <!-- END PAGE HEADER-->
-
         <div class="row">
             <div class="col-md-12"> 
-
                 <!-- Begin: life time stats -->
-
                 <div class="portlet light portlet-fit portlet-datatable bordered">
                     <div class="portlet-title">
                         <div class="caption"> <i class="icon-settings font-dark"></i> <span class="caption-subject font-dark sbold uppercase">Admin User(s)</span> </div>
@@ -60,7 +56,6 @@
     <!-- END CONTENT BODY --> 
 </div>
 @endsection
-
 @push('scripts') 
 <script>
     $(function () {
@@ -81,12 +76,9 @@
                 {data: 'email', name: 'admins.email'},
                 {data: 'role_name', name: 'roles.role_name'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
-
             ]
         });
-
     });
-
     function delete_user(id) {
         if (confirm('Are you sure! you want to delete?')) {
             $.post("{{ route('delete.admin.user') }}", {id: id, _method: 'DELETE', _token: '{{ csrf_token() }}'})

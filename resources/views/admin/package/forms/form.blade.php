@@ -15,7 +15,7 @@
         {!! APFrmErrHelp::showErrors($errors, 'package_num_listings') !!} 
         *On how many jobs a job seeker can apply<br />
         **How many jobs an employer can post </div>
-    
+
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'package_for') !!}">
         {!! Form::label('package_for', 'Package for?', ['class' => 'bold']) !!}
         <div class="radio-list">

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 
 class EventServiceProvider extends ServiceProvider
 {
+
     /**
      * The event listener mappings for the application.
      *
@@ -16,16 +17,16 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\UserRegistered' => [
             'App\Listeners\UserRegisterdListener',
         ],
-		'App\Events\CompanyRegistered' => [
-        	'App\Listeners\CompanyRegisterdListener',
-    	],
-		'App\Events\JobPosted' => [
-        	'App\Listeners\JobPostedListener',
-    	],
-		'App\Events\JobApplied' => [
-        	'App\Listeners\JobAppliedJobSeekerListener',
-			'App\Listeners\JobAppliedCompanyListener',
-    	],
+        'App\Events\CompanyRegistered' => [
+            'App\Listeners\CompanyRegisterdListener',
+        ],
+        'App\Events\JobPosted' => [
+            'App\Listeners\JobPostedListener',
+        ],
+        'App\Events\JobApplied' => [
+            'App\Listeners\JobAppliedJobSeekerListener',
+            'App\Listeners\JobAppliedCompanyListener',
+        ],
     ];
 
     /**
@@ -36,7 +37,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
         //
     }
+
 }

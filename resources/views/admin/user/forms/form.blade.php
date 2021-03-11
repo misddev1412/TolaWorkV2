@@ -1,13 +1,11 @@
 {!! APFrmErrHelp::showErrorsNotice($errors) !!}
 @include('flash::message')
-
 @if(isset($user))
 {!! Form::model($user, array('method' => 'put', 'route' => array('update.user', $user->id), 'class' => 'form', 'files'=>true)) !!}
 {!! Form::hidden('id', $user->id) !!}
 @else
 {!! Form::open(array('method' => 'post', 'route' => 'store.user', 'class' => 'form', 'files'=>true)) !!}
 @endif
-
 <div class="form-body">    
     <input type="hidden" name="front_or_admin" value="admin" />
     <div class="row">
@@ -20,13 +18,11 @@
                 </div>
                 {!! APFrmErrHelp::showErrors($errors, 'image') !!} </div>
         </div>
-
         @if(isset($user))
         <div class="col-md-6">
             {{ ImgUploader::print_image("user_images/$user->image") }}        
         </div>    
         @endif  
-
     </div>
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'first_name') !!}">
         {!! Form::label('first_name', 'First Name', ['class' => 'bold']) !!}                    
@@ -152,30 +148,30 @@
         {!! Form::textarea('street_address', null, array('class'=>'form-control', 'id'=>'street_address', 'placeholder'=>'Street Address')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'street_address') !!}                                       
     </div>
-    
+
     @if((bool)config('jobseeker.is_jobseeker_package_active'))
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'job_seeker_package_id') !!}"> {!! Form::label('job_seeker_package_id', 'Package', ['class' => 'bold']) !!}  
         {!! Form::select('job_seeker_package_id', ['' => 'Select Package']+$packages, null, array('class'=>'form-control', 'id'=>'job_seeker_package_id')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'job_seeker_package_id') !!} </div>
-        
-        @if(isset($user) && $user->package_id > 0)
-        <div class="form-group">
-         {!! Form::label('package', 'Package : ', ['class' => 'bold']) !!}         
-         <strong>{{$user->getPackage('package_title')}}</strong>
-        </div>
-        <div class="form-group">
-         {!! Form::label('package_Duration', 'Package Duration : ', ['class' => 'bold']) !!}
-         <strong>{{$user->package_start_date->format('d M, Y')}}</strong> - <strong>{{$user->package_end_date->format('d M, Y')}}</strong>
-        </div>
-        <div class="form-group">
-         {!! Form::label('package_quota', 'Availed quota : ', ['class' => 'bold']) !!}
-         <strong>{{$user->availed_jobs_quota}}</strong> / <strong>{{$user->jobs_quota}}</strong>
-        </div>
-        <hr/>
-        @endif
-        @endif
-        
-    
+
+    @if(isset($user) && $user->package_id > 0)
+    <div class="form-group">
+        {!! Form::label('package', 'Package : ', ['class' => 'bold']) !!}         
+        <strong>{{$user->getPackage('package_title')}}</strong>
+    </div>
+    <div class="form-group">
+        {!! Form::label('package_Duration', 'Package Duration : ', ['class' => 'bold']) !!}
+        <strong>{{$user->package_start_date->format('d M, Y')}}</strong> - <strong>{{$user->package_end_date->format('d M, Y')}}</strong>
+    </div>
+    <div class="form-group">
+        {!! Form::label('package_quota', 'Availed quota : ', ['class' => 'bold']) !!}
+        <strong>{{$user->availed_jobs_quota}}</strong> / <strong>{{$user->jobs_quota}}</strong>
+    </div>
+    <hr/>
+    @endif
+    @endif
+
+
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'is_immediate_available') !!}">
         {!! Form::label('is_immediate_available', 'Is Immediate available?', ['class' => 'bold']) !!}
         <div class="radio-list">
@@ -196,8 +192,8 @@
         </div>
         {!! APFrmErrHelp::showErrors($errors, 'is_immediate_available') !!}
     </div>
-    
-    
+
+
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'is_active') !!}">
         {!! Form::label('is_active', 'Active', ['class' => 'bold']) !!}
         <div class="radio-list">
@@ -235,7 +231,6 @@
             <label class="radio-inline">
                 <input id="not_verified" name="verified" type="radio" value="0" {{$verified_2}}>
                 Not Verified </label>
-
         </div>
         {!! APFrmErrHelp::showErrors($errors, 'verified') !!}
     </div> 
@@ -244,62 +239,61 @@
 {!! Form::close() !!}
 @push('css')
 <style type="text/css">
-.datepicker>div {
-    display: block;
-}
+    .datepicker>div {
+        display: block;
+    }
 </style>
 @endpush
 @push('scripts')
 <script type="text/javascript">
-    $(document).ready(function(){
-		initdatepicker();
-		$('#salary_currency').typeahead({
-			source:  function (query, process) {
-				return $.get("{{ route('typeahead.currency_codes') }}", { query: query }, function (data) {
-					console.log(data);
-					data = $.parseJSON(data);
-					return process(data);
-				});
-			}
-		});
-	
-    $('#country_id').on('change', function (e) {
-    e.preventDefault();
-    filterDefaultStates(0);
-    });
-    $(document).on('change', '#state_id', function (e) {
-    e.preventDefault();
-    filterDefaultCities(0);
-    });
-    filterDefaultStates(<?php echo old('state_id', (isset($user))? $user->state_id:0);?>);
+    $(document).ready(function () {
+        initdatepicker();
+        $('#salary_currency').typeahead({
+            source: function (query, process) {
+                return $.get("{{ route('typeahead.currency_codes') }}", {query: query}, function (data) {
+                    console.log(data);
+                    data = $.parseJSON(data);
+                    return process(data);
+                });
+            }
+        });
+
+        $('#country_id').on('change', function (e) {
+            e.preventDefault();
+            filterDefaultStates(0);
+        });
+        $(document).on('change', '#state_id', function (e) {
+            e.preventDefault();
+            filterDefaultCities(0);
+        });
+        filterDefaultStates(<?php echo old('state_id', (isset($user)) ? $user->state_id : 0); ?>);
     });
     function filterDefaultStates(state_id)
     {
-    var country_id = $('#country_id').val();
-    if (country_id != ''){
-    $.post("{{ route('filter.default.states.dropdown') }}", {country_id: country_id, state_id: state_id, _method: 'POST', _token: '{{ csrf_token() }}'})
-            .done(function (response) {
-            $('#default_state_dd').html(response);
-            filterDefaultCities(<?php echo old('city_id', (isset($user))? $user->city_id:0);?>);
-            });
+        var country_id = $('#country_id').val();
+        if (country_id != '') {
+            $.post("{{ route('filter.default.states.dropdown') }}", {country_id: country_id, state_id: state_id, _method: 'POST', _token: '{{ csrf_token() }}'})
+                    .done(function (response) {
+                        $('#default_state_dd').html(response);
+                        filterDefaultCities(<?php echo old('city_id', (isset($user)) ? $user->city_id : 0); ?>);
+                    });
+        }
     }
-    }
-
     function filterDefaultCities(city_id)
     {
-    var state_id = $('#state_id').val();
-    if (state_id != ''){
-    $.post("{{ route('filter.default.cities.dropdown') }}", {state_id: state_id, city_id: city_id, _method: 'POST', _token: '{{ csrf_token() }}'})
-            .done(function (response) {
-            $('#default_city_dd').html(response);
-            });
+        var state_id = $('#state_id').val();
+        if (state_id != '') {
+            $.post("{{ route('filter.default.cities.dropdown') }}", {state_id: state_id, city_id: city_id, _method: 'POST', _token: '{{ csrf_token() }}'})
+                    .done(function (response) {
+                        $('#default_city_dd').html(response);
+                    });
+        }
     }
+    function initdatepicker() {
+        $(".datepicker").datepicker({
+            autoclose: true,
+            format: 'yyyy-m-d'
+        });
     }
-function initdatepicker(){
-	$(".datepicker").datepicker({
-		autoclose: true,
-		format:'yyyy-m-d'	
-	});
-}
 </script>
 @endpush

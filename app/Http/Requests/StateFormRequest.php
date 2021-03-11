@@ -27,7 +27,6 @@ class StateFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $state_unique = '';
                     if ($id > 0) {

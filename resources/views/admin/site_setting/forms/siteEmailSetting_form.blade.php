@@ -7,7 +7,6 @@
         {!! APFrmErrHelp::showErrors($errors, 'mail_driver') !!}                                       
     </div>
     <br>
-
     <fieldset>
         <legend>SMTP Settings:</legend>    
         <div class="form-group {!! APFrmErrHelp::hasError($errors, 'mail_host') !!}">
@@ -90,7 +89,6 @@
             {!! Form::text('ses_key', null, array('class'=>'form-control', 'id'=>'ses_key', 'placeholder'=>'SES Key')) !!}
             {!! APFrmErrHelp::showErrors($errors, 'ses_key') !!}                                       
         </div>
-
         <div class="form-group {!! APFrmErrHelp::hasError($errors, 'ses_secret') !!}">
             {!! Form::label('ses_secret', 'SES Secret', ['class' => 'bold']) !!}                    
             {!! Form::text('ses_secret', null, array('class'=>'form-control', 'id'=>'ses_secret', 'placeholder'=>'SES Secret')) !!}
@@ -102,6 +100,4 @@
             {!! APFrmErrHelp::showErrors($errors, 'ses_region') !!}                                       
         </div>
     </fieldset>   
-
 </div>
-

@@ -35,7 +35,7 @@
                             <form method="post" role="form" id="datatable-search-form">
                                 <table class="table table-striped table-bordered table-hover"  id="packageDatatableAjax">
                                     <thead>
-                                    <tr role="row" class="filter">
+                                        <tr role="row" class="filter">
                                             <td><input type="text" class="form-control" name="package_title" id="package_title" autocomplete="off" placeholder="Package Title"></td>
                                             <td><input type="text" class="form-control" name="package_price" id="package_price" autocomplete="off" placeholder="package price"></td>
                                             <td><input type="text" class="form-control" name="package_num_days" id="package_num_days" autocomplete="off" placeholder="package num days"></td>
@@ -84,26 +84,24 @@
              */
             ajax: {
                 url: '{!! route('fetch.data.packages') !!}',
-				data: function (d) {
+                data: function (d) {
                     d.package_title = $('#package_title').val();
                     d.package_price = $('#package_price').val();
                     d.package_num_days = $('#package_num_days').val();
                     d.package_num_listings = $('#package_num_listings').val();
-					d.package_for = $('#package_for').val();
-
+                    d.package_for = $('#package_for').val();
                 }
             }, columns: [
                 {data: 'package_title', name: 'package_title'},
-				{data: 'package_price', name: 'package_price'},
+                {data: 'package_price', name: 'package_price'},
                 {data: 'package_num_days', name: 'package_num_days'},
-				{data: 'package_num_listings', name: 'package_num_listings'},
+                {data: 'package_num_listings', name: 'package_num_listings'},
                 {data: 'package_for', name: 'package_for'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
-
             ]
         });
-		
-		$('#datatable-search-form').on('submit', function (e) {
+
+        $('#datatable-search-form').on('submit', function (e) {
             oTable.draw();
             e.preventDefault();
         });
@@ -119,11 +117,11 @@
             oTable.draw();
             e.preventDefault();
         });
-		$('#package_num_listings').on('keyup', function (e) {
+        $('#package_num_listings').on('keyup', function (e) {
             oTable.draw();
             e.preventDefault();
         });
-		$('#package_for').on('change', function (e) {
+        $('#package_for').on('change', function (e) {
             oTable.draw();
             e.preventDefault();
         });

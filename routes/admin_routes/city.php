@@ -13,5 +13,4 @@ Route::put('make-not-active-city', array_merge(['uses' => 'Admin\CityController@
 Route::get('sort-cities', array_merge(['uses' => 'Admin\CityController@sortCities'], $all_users))->name('sort.cities');
 Route::get('city-sort-data', array_merge(['uses' => 'Admin\CityController@citySortData'], $all_users))->name('city.sort.data');
 Route::put('city-sort-update', array_merge(['uses' => 'Admin\CityController@citySortUpdate'], $all_users))->name('city.sort.update');
-
 /* * ****** End City ********** */

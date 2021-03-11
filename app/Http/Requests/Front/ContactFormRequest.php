@@ -38,10 +38,10 @@ class ContactFormRequest extends Request
     {
         return [
             'full_name.required' => __('Name is required'),
-'email.required' => __('E-mail address is required'),
-'email.email' => __('Valid e-mail address is required'),
-'subject.required' => __('Subject is required'),
-'message_txt.required' => __('Message is required'),
+            'email.required' => __('E-mail address is required'),
+            'email.email' => __('Valid e-mail address is required'),
+            'subject.required' => __('Subject is required'),
+            'message_txt.required' => __('Message is required'),
         ];
     }
 

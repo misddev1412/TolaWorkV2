@@ -23,7 +23,7 @@
                                         Job details link :
                                         <span style="color: #fff;text-decoration: none;background: #f25a55; padding: 7px 10px;text-align: center;display: inline-block;margin-top: 20px;"><a href="{{ $job_link }}">{{ $job_link }}</a></span>
                                         <br>
-                                        
+
                                         <br>
                                         Employer/Company profile link : 
                                         <span style="color: #fff;text-decoration: none;background: #f25a55; padding: 7px 10px;text-align: center;display: inline-block;margin-top: 20px;"><a href="{{ $company_link }}">{{ $company_link }}</a></span>

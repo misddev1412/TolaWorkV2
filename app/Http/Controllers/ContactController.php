@@ -40,18 +40,14 @@ class ContactController extends Controller
 
     public function postContact(ContactFormRequest $request)
     {
-
         $data['full_name'] = $request->input('full_name');
         $data['email'] = $request->input('email');
         $data['phone'] = $request->input('phone');
         $data['subject'] = $request->input('subject');
         $data['message_txt'] = $request->input('message_txt');
-
         $msg_save = ContactMessage::create($data);
-
         $when = Carbon::now()->addMinutes(5);
         Mail::send(new ContactUs($data));
-
         return Redirect::route('contact.us.thanks');
     }
 
@@ -72,18 +68,14 @@ class ContactController extends Controller
 
     public function emailToFriendPost(EmailToFriendFormRequest $request, $slug)
     {
-
         $data['your_name'] = $request->input('your_name');
         $data['your_email'] = $request->input('your_email');
         $data['friend_name'] = $request->input('friend_name');
         $data['friend_email'] = $request->input('friend_email');
         $data['job_url'] = $request->input('job_url');
-
         $msg_save = SendToFriendMessage::create($data);
-
         $when = Carbon::now()->addMinutes(5);
         Mail::send(new EmailToFriend($data));
-
         return Redirect::route('email.to.friend.thanks');
     }
 
@@ -104,16 +96,12 @@ class ContactController extends Controller
 
     public function reportAbusePost(ReportAbuseFormRequest $request, $slug)
     {
-
         $data['your_name'] = $request->input('your_name');
         $data['your_email'] = $request->input('your_email');
         $data['job_url'] = $request->input('job_url');
-
         $msg_save = ReportAbuseMessage::create($data);
-
         $when = Carbon::now()->addMinutes(5);
         Mail::send(new ReportAbuse($data));
-
         return Redirect::route('report.abuse.thanks');
     }
 
@@ -122,8 +110,8 @@ class ContactController extends Controller
         $seo = SEO::where('seo.page_title', 'like', 'report_abuse')->first();
         return view('contact.report_abuse_page_thanks')->with('seo', $seo);
     }
-	
-	/*     * ******************************************************** */
+
+    /*     * ******************************************************** */
 
     public function reportAbuseCompany($slug)
     {
@@ -134,16 +122,12 @@ class ContactController extends Controller
 
     public function reportAbuseCompanyPost(ReportAbuseCompanyFormRequest $request, $slug)
     {
-
         $data['your_name'] = $request->input('your_name');
         $data['your_email'] = $request->input('your_email');
         $data['company_url'] = $request->input('company_url');
-
         $msg_save = ReportAbuseCompanyMessage::create($data);
-
         $when = Carbon::now()->addMinutes(5);
         Mail::send(new ReportAbuseCompany($data));
-
         return Redirect::route('report.abuse.company.thanks');
     }
 

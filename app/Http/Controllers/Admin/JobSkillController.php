@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\JobSkillFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class JobSkillController extends Controller
 {
@@ -42,7 +43,7 @@ class JobSkillController extends Controller
     public function createJobSkill()
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
-		$jobSkills = DataArrayHelper::defaultJobSkillsArray();
+        $jobSkills = DataArrayHelper::defaultJobSkillsArray();
         return view('admin.job_skill.add')
                         ->with('languages', $languages)
                         ->with('jobSkills', $jobSkills);
@@ -51,26 +52,19 @@ class JobSkillController extends Controller
     public function storeJobSkill(JobSkillFormRequest $request)
     {
         $jobSkill = new JobSkill();
-
         $jobSkill->job_skill = $request->input('job_skill');
         $jobSkill->is_active = $request->input('is_active');
         $jobSkill->lang = $request->input('lang');
         $jobSkill->is_default = $request->input('is_default');
-
         $jobSkill->save();
-
         /*         * ************************************ */
-
         $jobSkill->sort_order = $jobSkill->id;
-
         if ((int) $request->input('is_default') == 1) {
             $jobSkill->job_skill_id = $jobSkill->id;
         } else {
             $jobSkill->job_skill_id = $request->input('job_skill_id');
         }
-
         $jobSkill->update();
-
         flash('Job Skill has been added!')->success();
         return \Redirect::route('edit.job.skill', array($jobSkill->id));
     }
@@ -89,7 +83,6 @@ class JobSkillController extends Controller
     public function updateJobSkill($id, JobSkillFormRequest $request)
     {
         $jobSkill = JobSkill::findOrFail($id);
-
         $jobSkill->job_skill = $request->input('job_skill');
         $jobSkill->is_active = $request->input('is_active');
         $jobSkill->lang = $request->input('lang');
@@ -99,9 +92,7 @@ class JobSkillController extends Controller
         } else {
             $jobSkill->job_skill_id = $request->input('job_skill_id');
         }
-
         $jobSkill->update();
-
         flash('Job Skill has been updated!')->success();
         return \Redirect::route('edit.job.skill', array($jobSkill->id));
     }
@@ -138,7 +129,7 @@ class JobSkillController extends Controller
                             }
                         })
                         ->addColumn('job_skill', function ($jobSkills) {
-                            $jobSkill = str_limit($jobSkills->job_skill, 100, '...');
+                            $jobSkill = Str::limit($jobSkills->job_skill, 100, '...');
                             $direction = MiscHelper::getLangDirection($jobSkills->lang);
                             return '<span dir="' . $direction . '">' . $jobSkill . '</span>';
                         })

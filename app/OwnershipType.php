@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class OwnershipType extends Model
 {
-	use Lang;
-	use IsDefault;
-	use Active;
-	use Sorted;
-	
+
+    use Lang;
+    use IsDefault;
+    use Active;
+    use Sorted;
+
     protected $table = 'ownership_types';
     public $timestamps = true;
     protected $guarded = ['id'];

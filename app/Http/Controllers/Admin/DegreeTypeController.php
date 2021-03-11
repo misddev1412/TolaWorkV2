@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\DegreeTypeFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class DegreeTypeController extends Controller
 {
@@ -35,8 +36,8 @@ class DegreeTypeController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $degreeLevels = DataArrayHelper::defaultDegreeLevelsArray();
-		
-		return view('admin.degree_type.index')
+
+        return view('admin.degree_type.index')
                         ->with('languages', $languages)
                         ->with('degreeLevels', $degreeLevels);
     }
@@ -45,7 +46,7 @@ class DegreeTypeController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $degreeLevels = DataArrayHelper::defaultDegreeLevelsArray();
-		$degreeTypes = array(''=>'Select Degree Type');
+        $degreeTypes = array('' => 'Select Degree Type');
         return view('admin.degree_type.add')
                         ->with('languages', $languages)
                         ->with('degreeLevels', $degreeLevels)
@@ -55,7 +56,6 @@ class DegreeTypeController extends Controller
     public function storeDegreeType(DegreeTypeFormRequest $request)
     {
         $degreeType = new DegreeType();
-        $degreeType->id = $request->input('id');
         $degreeType->lang = $request->input('lang');
         $degreeType->degree_level_id = $request->input('degree_level_id');
         $degreeType->degree_type = $request->input('degree_type');
@@ -64,18 +64,14 @@ class DegreeTypeController extends Controller
         $degreeType->is_active = $request->input('is_active');
         $degreeType->save();
         /*         * ************************************ */
-
         $degreeType->sort_order = $degreeType->id;
-
         if ((int) $request->input('is_default') == 1) {
             $degreeType->degree_type_id = $degreeType->id;
         } else {
             $degreeType->degree_type_id = $request->input('degree_type_id');
         }
-
         $degreeType->update();
         /*         * ************************************ */
-
         flash('Degree Type has been added!')->success();
         return \Redirect::route('edit.degree.type', array($degreeType->id));
     }
@@ -84,7 +80,7 @@ class DegreeTypeController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $degreeLevels = DataArrayHelper::defaultDegreeLevelsArray();
-		$degreeTypes = array(''=>'Select Degree Type');
+        $degreeTypes = array('' => 'Select Degree Type');
         $degreeType = DegreeType::findOrFail($id);
         return view('admin.degree_type.edit')
                         ->with('languages', $languages)
@@ -96,7 +92,6 @@ class DegreeTypeController extends Controller
     public function updateDegreeType($id, DegreeTypeFormRequest $request)
     {
         $degreeType = DegreeType::findOrFail($id);
-        $degreeType->id = $request->input('id');
         $degreeType->lang = $request->input('lang');
         $degreeType->degree_level_id = $request->input('degree_level_id');
         $degreeType->degree_type = $request->input('degree_type');
@@ -111,7 +106,6 @@ class DegreeTypeController extends Controller
         }
         /*         * ************************************ */
         $degreeType->update();
-
         flash('Degree Type has been updated!')->success();
         return \Redirect::route('edit.degree.type', array($degreeType->id));
     }
@@ -121,13 +115,11 @@ class DegreeTypeController extends Controller
         $id = $request->input('id');
         try {
             $degreeType = DegreeType::findOrFail($id);
-
             if ((bool) $degreeType->is_default) {
                 DegreeType::where('degree_type_id', '=', $degreeType->degree_type_id)->delete();
             } else {
                 $degreeType->delete();
             }
-
             return 'ok';
         } catch (ModelNotFoundException $e) {
             return 'notok';
@@ -141,37 +133,30 @@ class DegreeTypeController extends Controller
                 ])->sorted();
         return Datatables::of($degreeTypes)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('id') && !empty($request->id)) {
                                 $query->where('degree_types.id', 'like', "%{$request->get('id')}%");
                             }
-
                             if ($request->has('lang') && !empty($request->lang)) {
                                 $query->where('degree_types.lang', 'like', "%{$request->get('lang')}%");
                             }
-
                             if ($request->has('degree_level_id') && !empty($request->degree_level_id)) {
                                 $query->where('degree_types.degree_level_id', 'like', "%{$request->get('degree_level_id')}%");
                             }
-
                             if ($request->has('degree_type') && !empty($request->degree_type)) {
                                 $query->where('degree_types.degree_type', 'like', "%{$request->get('degree_type')}%");
                             }
-
                             if ($request->has('is_default') && !empty($request->is_default)) {
                                 $query->where('degree_types.is_default', 'like', "%{$request->get('is_default')}%");
                             }
-
                             if ($request->has('degree_type_id') && !empty($request->degree_type_id)) {
                                 $query->where('degree_types.degree_type_id', 'like', "%{$request->get('degree_type_id')}%");
                             }
-
                             if ($request->has('is_active') && !$request->is_active == -1) {
                                 $query->where('degree_types.is_active', '=', "{$request->get('is_active')}");
                             }
                         })
                         ->addColumn('degree_type', function ($degreeTypes) {
-                            $degreeType = str_limit($degreeTypes->degree_type, 100, '...');
+                            $degreeType = Str::limit($degreeTypes->degree_type, 100, '...');
                             $direction = MiscHelper::getLangDirection($degreeTypes->lang);
                             return '<span dir="' . $direction . '">' . $degreeType . '</span>';
                         })

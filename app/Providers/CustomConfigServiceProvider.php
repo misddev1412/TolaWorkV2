@@ -16,8 +16,7 @@ class CustomConfigServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-		if ($settings = SiteSetting::findOrFail(1272)) {
-			
+        if ($settings = SiteSetting::findOrFail(1272)) {
 
             $this->app['config']['mail'] = [
                 'driver' => $settings->mail_driver,
@@ -37,7 +36,6 @@ class CustomConfigServiceProvider extends ServiceProvider
                 'sendmail' => $settings->mail_sendmail,
                 'pretend' => $settings->mail_pretend
             ];
-
             $this->app['config']['services'] = [
                 'mailgun' => [
                     'domain' => $settings->mailgun_domain,
@@ -55,15 +53,13 @@ class CustomConfigServiceProvider extends ServiceProvider
                     'region' => $settings->ses_region, // e.g. us-east-1
                 ],
             ];
-        
-			
+
 
             $this->app['config']['captcha'] = [
                 'sitekey' => $settings->nocaptcha_sitekey,
                 'secret' => $settings->nocaptcha_secret,
                 'options' => ['timeout' => 2.0,],
             ];
-
             $this->app['config']['services'] = [
                 'facebook' => [
                     'client_id' => $settings->facebook_app_id,
@@ -81,36 +77,48 @@ class CustomConfigServiceProvider extends ServiceProvider
                     'redirect' => url('login/jobseeker/google/callback'),
                 ],
             ];
+            $this->app['config']['paypal'] = [
+                'client_id' => env('PAYPAL_CLIENT_ID', $settings->paypal_client_id),
+                'secret' => env('PAYPAL_SECRET', $settings->paypal_secret),
+                'settings' => array(
+                    'mode' => env('PAYPAL_MODE', $settings->paypal_live_sandbox),
+                    'http.ConnectionTimeOut' => 1000,
+                    'log.LogEnabled' => true,
+                    'log.FileName' => storage_path() . '/logs/paypal.log',
+                    'log.LogLevel' => 'ERROR'
+                ),
+            ];
 
-            $this->app['config']['paypal'] = [ 
-				'client_id' => env('PAYPAL_CLIENT_ID',$settings->paypal_client_id),
-				'secret' => env('PAYPAL_SECRET',$settings->paypal_secret),
-				'settings' => array(
-					'mode' => env('PAYPAL_MODE',$settings->paypal_live_sandbox),
-					'http.ConnectionTimeOut' => 1000,
-					'log.LogEnabled' => true,
-					'log.FileName' => storage_path() . '/logs/paypal.log',
-					'log.LogLevel' => 'ERROR'
-				),
+            $this->app['config']['stripe'] = [
+                'stripe_key' => env('stripe_key', $settings->stripe_key),
+                'stripe_secret' => env('stripe_secret', $settings->stripe_secret),
+            ]; 
+            
+           /* $this->app['config']['payu'] = [
+                'mode' => env('PAYU_MONEY_MODE', $settings->payu_money_mode),
+                'key' => env('PAYU_MONEY_KEY', $settings->payu_money_key),
+                'salt' => env('PAYU_BIZ_SALT', $settings->salt),
+            ];*/
+
+            $this->app['config']['jobseeker'] = [
+                'is_jobseeker_package_active' => $settings->is_jobseeker_package_active,
+            ];
+			$this->app['config']['company'] = [ 
+				'is_company_package_active' => $settings->is_company_package_active,
 			];
 			
-			$this->app['config']['stripe'] = [ 
-				'stripe_key' => env('stripe_key',$settings->stripe_key),
-				'stripe_secret' => env('stripe_secret',$settings->stripe_secret),
-			];
-			
-			$this->app['config']['jobseeker'] = [ 
-				'is_jobseeker_package_active' => $settings->is_jobseeker_package_active,
-			];									
-        
-		}
-
+			$this->app['config']['newsletter'] = [
+                'apiKey' => $settings->mailchimp_api_key,
+				'defaultListName' => $settings->mailchimp_list_name,
+				'lists' => ['subscribers' => ['id' =>$settings->mailchimp_list_id]]
+            ];
+        }
         $this->app['config']['default_lang'] = 'en';
-        if(null !== $lang = Language::where('is_default', '=', 1)->first()){
-			if ($lang !== null) {
-				$this->app['config']['default_lang'] = $lang->iso_code;
-			}
-		}
+        if (null !== $lang = Language::where('is_default', '=', 1)->first()) {
+            if ($lang !== null) {
+                $this->app['config']['default_lang'] = $lang->iso_code;				
+            }
+        }
     }
 
     /**

@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <style type="text/css">
     .table td, .table th {
@@ -23,12 +22,9 @@
         <h3 class="page-title">Manage FAQs <small>FAQs</small> </h3>
         <!-- END PAGE TITLE--> 
         <!-- END PAGE HEADER-->
-
         <div class="row">
             <div class="col-md-12"> 
-
                 <!-- Begin: life time stats -->
-
                 <div class="portlet light portlet-fit portlet-datatable bordered">
                     <div class="portlet-title">
                         <div class="caption"> <i class="icon-settings font-dark"></i> <span class="caption-subject font-dark sbold uppercase">FAQs</span> </div>
@@ -46,7 +42,6 @@
                                             <td><input type="text" class="form-control" name="faq_question" id="faq_question" autocomplete="off"></td>
                                             <td><input type="text" class="form-control" name="faq_answer" id="faq_answer" autocomplete="off"></td>
                                             <td></td>
-
                                         </tr>
                                         <tr role="row" class="heading"> 
                                             <th>Language</th>                                               
@@ -67,7 +62,6 @@
     <!-- END CONTENT BODY --> 
 </div>
 @endsection
-
 @push('scripts') 
 <script>
     $(function () {
@@ -76,7 +70,6 @@
             serverSide: true,
             stateSave: true,
             searching: false,
-
             /*		"order": [[0, "desc"]],
              paging: true,
              info: true,
@@ -94,10 +87,8 @@
                 {data: 'faq_question', name: 'faq_question'},
                 {data: 'faq_answer', name: 'faq_answer'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
-
             ]
         });
-
         $('#faq-search-form').on('submit', function (e) {
             oTable.draw();
             e.preventDefault();
@@ -114,9 +105,7 @@
             oTable.draw();
             e.preventDefault();
         });
-
     });
-
     function delete_faq(id) {
         if (confirm('Are you sure! you want to delete?')) {
             $.post("{{ route('delete.faq') }}", {id: id, _method: 'DELETE', _token: '{{ csrf_token() }}'})

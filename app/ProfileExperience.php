@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProfileExperience extends Model
 {
-	use CountryStateCity;
+
+    use CountryStateCity;
 
     protected $table = 'profile_experiences';
-	
-	public $timestamps = true;
+    public $timestamps = true;
     protected $guarded = ['id'];
     //protected $dateFormat = 'U';
     protected $dates = ['created_at', 'updated_at', 'date_start', 'date_end'];
-	
+
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
@@ -32,4 +32,5 @@ class ProfileExperience extends Model
             return '';
         }
     }
+
 }

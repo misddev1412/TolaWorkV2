@@ -21,7 +21,6 @@ class RedirectIfCompanyAuthenticated
         if (Auth::guard($guard)->check()) {
             return redirect('/company-home');
         }
-
         return $next($request);
     }
 

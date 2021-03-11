@@ -31,6 +31,4 @@
         {!! Form::textarea('listing_page_horizontal_ad', null, array('class'=>'form-control', 'id'=>'listing_page_horizontal_ad', 'placeholder'=>'Listing Page Below Listings Horizantal Ad')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'listing_page_horizontal_ad') !!}                                       
     </div>
-
 </div>
-

@@ -29,17 +29,17 @@ class JobPostedMailable extends Mailable
      */
     public function build()
     {
-		$company = $this->job->getCompany();
+        $company = $this->job->getCompany();
         return $this->to(config('mail.recieve_to.address'), config('mail.recieve_to.name'))
-        ->subject('Employer/Company "'.$company->name . '" has posted new job on "' . config('app.name'))
-        ->view('emails.job_posted_message')
-        ->with(
-			[
-				'name'=>$company->name,
-				'link'=>route('job.detail', [$this->job->slug]),
-				'link_admin'=>route('edit.job', ['id' => $this->job->id])
-			]
-		);
+                        ->subject('Employer/Company "' . $company->name . '" has posted new job on "' . config('app.name'))
+                        ->view('emails.job_posted_message')
+                        ->with(
+                                [
+                                    'name' => $company->name,
+                                    'link' => route('job.detail', [$this->job->slug]),
+                                    'link_admin' => route('edit.job', ['id' => $this->job->id])
+                                ]
+        );
     }
 
 }

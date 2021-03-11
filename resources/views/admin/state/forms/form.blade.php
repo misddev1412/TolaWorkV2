@@ -89,7 +89,6 @@ $queryString = MiscHelper::getLangQueryStr();
         }
     }
     showHideStateId();
-
     function filterDefaultStates(state_id)
     {
         var country_id = $('#country_id').val();
@@ -99,7 +98,7 @@ $queryString = MiscHelper::getLangQueryStr();
                         $('#default_state_dd').html(response);
                     });
         }
-        }
-        filterDefaultStates(<?php echo old('state_id', (isset($state))? $state->state_id:0);?>);
+    }
+    filterDefaultStates(<?php echo old('state_id', (isset($state)) ? $state->state_id : 0); ?>);
 </script>
 @endpush

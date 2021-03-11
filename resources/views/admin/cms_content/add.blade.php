@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <div class="page-content-wrapper"> 
     <!-- BEGIN CONTENT BODY -->
@@ -26,12 +25,10 @@
                     <div class="portlet-title">
                         <div class="caption font-red-sunglo"> <i class="icon-settings font-red-sunglo"></i> <span class="caption-subject bold uppercase">C.M.S Content Form</span> </div>
                     </div>
-
                     <div class="portlet-body form">          
                         <ul class="nav nav-tabs">              
                             <li class="active"> <a href="#Details" data-toggle="tab" aria-expanded="false"> Details </a> </li>                            
                         </ul>
-
                         {!! Form::open(array('method' => 'post', 'route' => 'store.cmsContent', 'class' => 'form', 'files'=>true)) !!}
                         <div class="tab-content">              
                             <div class="tab-pane fade active in" id="Details"> @include('admin.cms_content.forms.form') </div>                            
@@ -40,7 +37,6 @@
                             {!! Form::button('Update <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>', array('class'=>'btn btn-large btn-primary', 'type'=>'submit')) !!}
                         </div>
                         {!! Form::close() !!}
-
                     </div>
                 </div>
             </div>

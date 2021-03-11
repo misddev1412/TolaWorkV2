@@ -29,7 +29,6 @@ class CmsFormRequest extends Request
         if ($id > 0) {
             $id_str = ',' . $id;
         }
-
         return [
             'page_slug' => 'required|alpha_dash|unique:cms,page_slug' . $id_str,
             'seo_title' => 'required',

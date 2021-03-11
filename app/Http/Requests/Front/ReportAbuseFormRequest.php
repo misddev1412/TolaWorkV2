@@ -36,12 +36,12 @@ class ReportAbuseFormRequest extends Request
     {
         return [
             'your_name.required' => __('Your name is required'),
-'your_email.required' => __('Your email address is required'),
-'your_email.email' => __('Your Valid e-mail address is required'),
-'job_url.required' => __('Job url is required'),
-'job_url.url' => __('Job url must be a valid URL'),
-'g-recaptcha-response.required' => __('Please verify that you are not a robot'),
-'g-recaptcha-response.captcha' => __('Captcha error! try again later'),
+            'your_email.required' => __('Your email address is required'),
+            'your_email.email' => __('Your Valid e-mail address is required'),
+            'job_url.required' => __('Job url is required'),
+            'job_url.url' => __('Job url must be a valid URL'),
+            'g-recaptcha-response.required' => __('Please verify that you are not a robot'),
+            'g-recaptcha-response.captcha' => __('Captcha error! try again later'),
         ];
     }
 

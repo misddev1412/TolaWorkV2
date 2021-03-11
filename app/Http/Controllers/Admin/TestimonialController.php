@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\TestimonialFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class TestimonialController extends Controller
 {
@@ -48,28 +49,23 @@ class TestimonialController extends Controller
     public function storeTestimonial(TestimonialFormRequest $request)
     {
         $testimonial = new Testimonial();
-        $testimonial->id = $request->input('id');
         $testimonial->lang = $request->input('lang');
         $testimonial->testimonial_by = $request->input('testimonial_by');
-		$testimonial->testimonial = $request->input('testimonial');
-		$testimonial->company = $request->input('company');		
+        $testimonial->testimonial = $request->input('testimonial');
+        $testimonial->company = $request->input('company');
         $testimonial->is_default = $request->input('is_default');
         $testimonial->testimonial_id = $request->input('testimonial_id');
         $testimonial->is_active = $request->input('is_active');
         $testimonial->save();
         /*         * ************************************ */
-
         $testimonial->sort_order = $testimonial->id;
-
         if ((int) $request->input('is_default') == 1) {
             $testimonial->testimonial_id = $testimonial->id;
         } else {
             $testimonial->testimonial_id = $request->input('testimonial_id');
         }
-
         $testimonial->update();
         /*         * ************************************ */
-
         flash('Testimonial has been added!')->success();
         return \Redirect::route('edit.testimonial', array($testimonial->id));
     }
@@ -77,8 +73,8 @@ class TestimonialController extends Controller
     public function editTestimonial($id)
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
-		$testimonials = DataArrayHelper::defaultTestimonialsArray();
-		
+        $testimonials = DataArrayHelper::defaultTestimonialsArray();
+
         $testimonial = Testimonial::findOrFail($id);
         return view('admin.testimonial.edit')
                         ->with('testimonial', $testimonial)
@@ -89,11 +85,10 @@ class TestimonialController extends Controller
     public function updateTestimonial($id, TestimonialFormRequest $request)
     {
         $testimonial = Testimonial::findOrFail($id);
-        $testimonial->id = $request->input('id');
         $testimonial->lang = $request->input('lang');
         $testimonial->testimonial_by = $request->input('testimonial_by');
-		$testimonial->testimonial = $request->input('testimonial');
-		$testimonial->company = $request->input('company');
+        $testimonial->testimonial = $request->input('testimonial');
+        $testimonial->company = $request->input('company');
         $testimonial->is_default = $request->input('is_default');
         $testimonial->testimonial_id = $request->input('testimonial_id');
         $testimonial->is_active = $request->input('is_active');
@@ -105,7 +100,6 @@ class TestimonialController extends Controller
         }
         /*         * ************************************ */
         $testimonial->update();
-
         flash('Testimonial has been updated!')->success();
         return \Redirect::route('edit.testimonial', array($testimonial->id));
     }
@@ -135,37 +129,31 @@ class TestimonialController extends Controller
                 ])->sorted();
         return Datatables::of($testimonials)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('id') && !empty($request->id)) {
                                 $query->where('testimonials.id', 'like', "%{$request->get('id')}%");
                             }
-
                             if ($request->has('lang') && !empty($request->lang)) {
                                 $query->where('testimonials.lang', 'like', "%{$request->get('lang')}%");
                             }
-
                             if ($request->has('testimonial_by') && !empty($request->testimonial_by)) {
                                 $query->where('testimonials.testimonial_by', 'like', "%{$request->get('testimonial_by')}%");
                             }
-							
-							if ($request->has('testimonial') && !empty($request->testimonial)) {
+
+                            if ($request->has('testimonial') && !empty($request->testimonial)) {
                                 $query->where('testimonials.testimonial', 'like', "%{$request->get('testimonial')}%");
                             }
-
                             if ($request->has('is_default') && !empty($request->is_default)) {
                                 $query->where('testimonials.is_default', 'like', "%{$request->get('is_default')}%");
                             }
-
                             if ($request->has('testimonial_id') && !empty($request->testimonial_id)) {
                                 $query->where('testimonials.testimonial_id', 'like', "%{$request->get('testimonial_id')}%");
                             }
-
                             if ($request->has('is_active') && !$request->is_active == -1) {
                                 $query->where('testimonials.is_active', '=', "{$request->get('is_active')}");
                             }
                         })
                         ->addColumn('testimonial', function ($testimonials) {
-                            $testimonial = str_limit($testimonials->testimonial, 100, '...');
+                            $testimonial = Str::limit($testimonials->testimonial, 100, '...');
                             $direction = MiscHelper::getLangDirection($testimonials->lang);
                             return '<span dir="' . $direction . '">' . $testimonial . '</span>';
                         })

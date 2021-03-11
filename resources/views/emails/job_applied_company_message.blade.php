@@ -23,7 +23,7 @@
                                         Job seeker profile link :
                                         <span style="color: #fff;text-decoration: none;background: #f25a55; padding: 7px 10px;text-align: center;display: inline-block;margin-top: 20px;"><a href="{{ $user_link }}">{{ $user_link }}</a></span>
                                         <br>
-                                        
+
                                         <br>
                                         Job link : 
                                         <span style="color: #fff;text-decoration: none;background: #f25a55; padding: 7px 10px;text-align: center;display: inline-block;margin-top: 20px;"><a href="{{ $job_link }}">{{ $job_link }}</a></span>

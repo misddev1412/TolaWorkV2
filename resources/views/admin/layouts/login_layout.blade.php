@@ -4,7 +4,6 @@
 <html lang="en">
     <!--<![endif]-->
     <!-- BEGIN HEAD -->
-
     <head>
         <meta charset="utf-8" />
         <title>{{ $siteSetting->site_name }} | Admin Login</title>
@@ -36,8 +35,6 @@
         <link rel="shortcut icon" href="{{ asset('/') }}favicon.ico" /> 
     </head>
     <!-- END HEAD -->
-
-
     <body class=" login">
         <!-- BEGIN LOGO -->
         <div class="logo">
@@ -46,7 +43,6 @@
         </div>
         <!-- END LOGO -->
         @yield('content')
-
         <div class="copyright"> {{ date('Y')}} © {{ $siteSetting->site_name }}. Admin Panel. </div>
         <!--[if lt IE 9]>
 <script src="{{ asset('/') }}admin_assets/global/plugins/respond.min.js"></script>
@@ -77,5 +73,4 @@
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <!-- END THEME LAYOUT SCRIPTS -->
     </body>
-
 </html>

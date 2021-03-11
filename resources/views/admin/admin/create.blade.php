@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <div class="page-content-wrapper"> 
     <!-- BEGIN CONTENT BODY -->
@@ -17,7 +16,6 @@
         <h3 class="page-title"> Add New Admin User <small>Admin Users</small> </h3>
         <!-- END PAGE TITLE--> 
         <!-- END PAGE HEADER-->
-
         <div class="row">
             <div class="col-md-6">
                 <div class="portlet light bordered">

@@ -22,12 +22,10 @@ return [
       | Fractal Presenter Config
       |--------------------------------------------------------------------------
       |
-
       Available serializers:
       ArraySerializer
       DataArraySerializer
       JsonApiSerializer
-
      */
     'fractal' => [
         'params' => [

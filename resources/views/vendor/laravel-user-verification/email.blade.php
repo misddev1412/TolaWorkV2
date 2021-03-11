@@ -1,6 +1,5 @@
 @extends('admin.layouts.email_template')
 @section('content')
-
 @php
 if(auth('company')->check()){
 $link = route('company.email-verification.check', $user->verification_token);
@@ -20,7 +19,6 @@ $link = route('email-verification.check', $user->verification_token);
                 <tr>
                    <td width="192" style="width: 192px;" valign="top">
                       <![endif]-->
-
             <table border="0" cellpadding="0" cellspacing="0" align="left" class="force-row" style="width: 100%;">
                 <tr>
                     <td class="row" valign="top" style="padding-left:12px;padding-right:12px;padding-top:18px;padding-bottom:12px"><table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -28,18 +26,12 @@ $link = route('email-verification.check', $user->verification_token);
                                 <td class="subtitle" style="font-family:Helvetica, Arial, sans-serif;font-size:14px;line-height:22px;font-weight:400;color:#333;padding-bottom:30px; text-align: left;"><a href="{{ $link . '?email=' . urlencode($user->email) }}" style="color: #fff;text-decoration: none;background: #f25a55; padding: 7px 10px;text-align: center;display: inline-block;margin-top: 20px;">Click here to verify your account</a></td>
                             </tr>
                             <tr>
-                                <td class="subtitle" style="font-family:Helvetica, Arial, sans-serif;font-size:14px;line-height:22px;font-weight:400;color:#333;padding-bottom:30px; text-align: left;">Or copy and paste this URL in browser <br> {{ $link }} </td>
+                                <td class="subtitle" style="font-family:Helvetica, Arial, sans-serif;font-size:14px;line-height:22px;font-weight:400;color:#333;padding-bottom:30px; text-align: left;">Or copy and paste this URL in browser <br> {{ $link . '?email=' . urlencode($user->email) }} </td>
                             </tr>
-
-
                             <tr>
                                 <td style="font-family: Helvetica, Arial, sans-serif;font-size: 14px;line-height: 22px;font-weight: 400;color: #333; padding-bottom: 30px;text-align: left;">Thanks, <br>
                                     {{ $siteSetting->site_name }} Team</td>
                             </tr>
-
-
-
-
                         </table>
                         <br></td>
                 </tr>

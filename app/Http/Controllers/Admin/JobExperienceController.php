@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\JobExperienceFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class JobExperienceController extends Controller
 {
@@ -51,26 +52,19 @@ class JobExperienceController extends Controller
     public function storeJobExperience(JobExperienceFormRequest $request)
     {
         $jobExperience = new JobExperience();
-
         $jobExperience->job_experience = $request->input('job_experience');
         $jobExperience->is_active = $request->input('is_active');
         $jobExperience->lang = $request->input('lang');
         $jobExperience->is_default = $request->input('is_default');
-
         $jobExperience->save();
-
         /*         * ************************************ */
-
         $jobExperience->sort_order = $jobExperience->id;
-
         if ((int) $request->input('is_default') == 1) {
             $jobExperience->job_experience_id = $jobExperience->id;
         } else {
             $jobExperience->job_experience_id = $request->input('job_experience_id');
         }
-
         $jobExperience->update();
-
         flash('Job Experience has been added!')->success();
         return \Redirect::route('edit.job.experience', array($jobExperience->id));
     }
@@ -89,7 +83,6 @@ class JobExperienceController extends Controller
     public function updateJobExperience($id, JobExperienceFormRequest $request)
     {
         $jobExperience = JobExperience::findOrFail($id);
-
         $jobExperience->job_experience = $request->input('job_experience');
         $jobExperience->is_active = $request->input('is_active');
         $jobExperience->lang = $request->input('lang');
@@ -99,9 +92,7 @@ class JobExperienceController extends Controller
         } else {
             $jobExperience->job_experience_id = $request->input('job_experience_id');
         }
-
         $jobExperience->update();
-
         flash('Job Experience has been updated!')->success();
         return \Redirect::route('edit.job.experience', array($jobExperience->id));
     }
@@ -138,7 +129,7 @@ class JobExperienceController extends Controller
                             }
                         })
                         ->addColumn('job_experience', function ($jobExperiences) {
-                            $jobExperience = str_limit($jobExperiences->job_experience, 100, '...');
+                            $jobExperience = Str::limit($jobExperiences->job_experience, 100, '...');
                             $direction = MiscHelper::getLangDirection($jobExperiences->lang);
                             return '<span dir="' . $direction . '">' . $jobExperience . '</span>';
                         })

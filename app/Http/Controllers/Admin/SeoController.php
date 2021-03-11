@@ -46,23 +46,18 @@ class SeoController extends Controller
 
     public function updateSeo($id, SeoFormRequest $request)
     {
-
         $seo = Seo::findOrFail($id);
-
         $seo->seo_title = $request->input('seo_title');
         $seo->seo_description = $request->input('seo_description');
         $seo->seo_keywords = $request->input('seo_keywords');
         $seo->seo_other = $request->input('seo_other');
-
         $seo->update();
-
         flash('S.E.O has been updated!')->success();
         return \Redirect::route('edit.seo', array($seo->id));
     }
 
     public function fetchSeoData(Request $request)
     {
-
         $seo = Seo::select(
                         [
                             'seo.id',
@@ -75,7 +70,6 @@ class SeoController extends Controller
                             'seo.updated_at'
                         ]
         );
-
         return Datatables::of($seo)
                         ->filter(function ($query) use ($request) {
                             if ($request->has('id') && !empty($request->id)) {
@@ -86,9 +80,7 @@ class SeoController extends Controller
                             }
                         })
                         ->addColumn('action', function ($seo) {
-
                             /*                             * ************************* */
-
                             return '
 				<div class="btn-group">
 					<button class="btn blue dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action

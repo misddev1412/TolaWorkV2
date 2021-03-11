@@ -40,7 +40,6 @@
                         </div>
                     </a> </div>
             </div>
-
             <div class="col-md-6 col-sm-6">
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"> <a class="dashboard-stat dashboard-stat-v2 red" href="#">
                         <div class="visual"> <i class="fa fa-list"></i> </div>
@@ -96,7 +95,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-6 col-sm-6">
                 <div class="portlet light bordered">
                     <div class="portlet-title">
@@ -113,7 +111,7 @@
                                                 <div class="label label-sm label-info"> <i class="fa fa-check"></i> </div>
                                             </div>
                                             <div class="cont-col2">
-                                                <div class="desc"><a href="{{ route('edit.job', $recentJob->id) }}"> {{ str_limit($recentJob->title, 50) }} </a>  - <i class="fa fa-list" aria-hidden="true"></i> {{ $recentJob->getCompany('name') }} - <i class="fa fa-home" aria-hidden="true"></i> {{ $recentJob->getLocation() }}</div>
+                                                <div class="desc"><a href="{{ route('edit.job', $recentJob->id) }}"> {{ \Illuminate\Support\Str::limit($recentJob->title, 50) }} </a>  - <i class="fa fa-list" aria-hidden="true"></i> {{ $recentJob->getCompany('name') }} - <i class="fa fa-home" aria-hidden="true"></i> {{ $recentJob->getLocation() }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -132,7 +130,6 @@
     <!-- END CONTENT BODY --> 
 </div>
 @endsection
-
 @push('scripts')
 <script type="text/javascript">
     $(function () {

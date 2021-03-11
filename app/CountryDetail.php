@@ -21,13 +21,13 @@ class CountryDetail extends Model
 
     public function getCountry($field = '')
     {
-		if(null !== $country = $this->country()->isDefault()->first()){
-			if (!empty($field)) {
-				return $country->$field;
-			} else {
-				return $country;
-			}
-		}
+        if (null !== $country = $this->country()->isDefault()->first()) {
+            if (!empty($field)) {
+                return $country->$field;
+            } else {
+                return $country;
+            }
+        }
     }
 
 }

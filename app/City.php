@@ -14,12 +14,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class City extends Model
 {
-	use Lang;
-	use IsDefault;
-	use Active;
-	use Sorted;
-	use CountryStateCity;
-	
+
+    use Lang;
+    use IsDefault;
+    use Active;
+    use Sorted;
+    use CountryStateCity;
+
     protected $table = 'cities';
     public $timestamps = true;
     protected $guarded = ['id'];
@@ -28,20 +29,20 @@ class City extends Model
 
     public function getCountry($field)
     {
-        if(null !== $state = $this->getState()){
-        	return $state->getCountry('country');
-		}
+        if (null !== $state = $this->getState()) {
+            return $state->getCountry('country');
+        }
     }
-	
-	public static function getCityById($id)
+
+    public static function getCityById($id)
     {
-		$city = self::where('cities.city_id', '=', $id)->lang()->active()->first();
-        
-		if(null === $city){
-			$city = self::where('cities.city_id', '=', $id)->active()->first();
-		}
-		
-		return $city;
+        $city = self::where('cities.city_id', '=', $id)->lang()->active()->first();
+
+        if (null === $city) {
+            $city = self::where('cities.city_id', '=', $id)->active()->first();
+        }
+
+        return $city;
     }
 
 }

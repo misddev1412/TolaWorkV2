@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <div class="page-content-wrapper"> 
     <!-- BEGIN CONTENT BODY -->
@@ -29,19 +28,16 @@
                             <a href="{{ route('create.faq') }}" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-plus"></i> Add New FAQ</a>
                         </div>
                     </div>
-
                     <div class="portlet-body form">          
                         <ul class="nav nav-tabs">              
                             <li class="active"> <a href="#Details" data-toggle="tab" aria-expanded="false"> FAQ </a> </li>
                         </ul>
-
                         {!! Form::model($faq, array('method' => 'put', 'route' => array('update.faq', $faq->id), 'class' => 'form')) !!}
                         {!! Form::hidden('id', $faq->id) !!}            
                         <div class="tab-content">              
                             <div class="tab-pane fade active in" id="Details"> @include('admin.faq.forms.form') </div>
                         </div>
                         {!! Form::close() !!}
-
                     </div>
                 </div>
             </div>

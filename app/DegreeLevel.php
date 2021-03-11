@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class DegreeLevel extends Model
 {
-	use Lang;
-	use IsDefault;
-	use Active;
-	use Sorted;
-	
+
+    use Lang;
+    use IsDefault;
+    use Active;
+    use Sorted;
+
     protected $table = 'degree_levels';
     public $timestamps = true;
     protected $guarded = ['id'];

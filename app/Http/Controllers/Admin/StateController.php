@@ -19,6 +19,7 @@ use DataTables;
 use App\Http\Requests\StateFormRequest;
 use App\Http\Controllers\Controller;
 use App\Traits\CountryStateCity;
+use Illuminate\Support\Str;
 
 class StateController extends Controller
 {
@@ -56,7 +57,6 @@ class StateController extends Controller
     public function storeState(StateFormRequest $request)
     {
         $state = new State();
-        $state->id = $request->input('id');
         $state->lang = $request->input('lang');
         $state->country_id = $request->input('country_id');
         $state->state = $request->input('state');
@@ -65,18 +65,14 @@ class StateController extends Controller
         $state->is_active = $request->input('is_active');
         $state->save();
         /*         * ************************************ */
-
         $state->sort_order = $state->id;
-
         if ((int) $request->input('is_default') == 1) {
             $state->state_id = $state->id;
         } else {
             $state->state_id = $request->input('state_id');
         }
-
         $state->update();
         /*         * ************************************ */
-
         flash('State has been added!')->success();
         return \Redirect::route('edit.state', array($state->id));
     }
@@ -95,7 +91,6 @@ class StateController extends Controller
     public function updateState($id, StateFormRequest $request)
     {
         $state = State::findOrFail($id);
-        $state->id = $request->input('id');
         $state->lang = $request->input('lang');
         $state->country_id = $request->input('country_id');
         $state->state = $request->input('state');
@@ -110,7 +105,6 @@ class StateController extends Controller
         }
         /*         * ************************************ */
         $state->update();
-
         flash('State has been updated!')->success();
         return \Redirect::route('edit.state', array($state->id));
     }
@@ -122,23 +116,18 @@ class StateController extends Controller
                 ])->sorted();
         return Datatables::of($states)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('id') && !empty($request->id)) {
                                 $query->where('states.id', 'like', "{$request->get('id')}%");
                             }
-
                             if ($request->has('lang') && !empty($request->lang)) {
                                 $query->where('states.lang', 'like', "{$request->get('lang')}");
                             }
-
                             if ($request->has('country_id') && !empty($request->country_id)) {
                                 $query->where('states.country_id', '=', "{$request->get('country_id')}");
                             }
-
                             if ($request->has('state') && !empty($request->state)) {
                                 $query->where('states.state', 'like', "%{$request->get('state')}%");
                             }
-
                             if ($request->has('is_active') && $request->is_active != -1) {
                                 $query->where('states.is_active', '=', "{$request->get('is_active')}");
                             }
@@ -147,7 +136,7 @@ class StateController extends Controller
                             return $states->getCountry('country');
                         })
                         ->addColumn('state', function ($states) {
-                            $state = str_limit($states->state, 100, '...');
+                            $state = Str::limit($states->state, 100, '...');
                             $direction = MiscHelper::getLangDirection($states->lang);
                             return '<span dir="' . $direction . '">' . $state . '</span>';
                         })
@@ -248,7 +237,5 @@ class StateController extends Controller
             $count++;
         }
     }
-
-    
 
 }

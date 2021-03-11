@@ -27,7 +27,6 @@ class SalaryPeriodFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $salary_period_unique = '';
                     if ($id > 0) {

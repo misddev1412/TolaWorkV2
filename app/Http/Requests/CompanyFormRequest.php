@@ -27,13 +27,10 @@ class CompanyFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $unique_id = ($id > 0) ? ',' . $id : '';
-
                     $password = ($id > 0) ? "" : "required";
                     $logo = ($id > 0) ? "" : "required";
-
                     return [
                         "id" => "",
                         "name" => "required",
@@ -44,7 +41,7 @@ class CompanyFormRequest extends Request
                         "ownership_type_id" => "required",
                         "description" => "required",
                         "location" => "required",
-						//"map" => "required",
+                        //"map" => "required",
                         "no_of_offices" => "required",
                         "website" => "required|url",
                         "no_of_employees" => "required",
@@ -74,7 +71,7 @@ class CompanyFormRequest extends Request
             'ownership_type_id.required' => 'Please select Ownership Type',
             'description.required' => 'Company Details required',
             'location.required' => 'Company location required',
-			'map.required' => 'Company Google Map location required',
+            'map.required' => 'Company Google Map location required',
             'no_of_offices.required' => 'Number of offices required',
             'website.required' => 'Company website required',
             'website.url' => 'Complete url of company website required',

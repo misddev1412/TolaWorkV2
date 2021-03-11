@@ -29,7 +29,6 @@ class CmsContentFormRequest extends Request
         if ($id > 0) {
             $id_str = ',' . $id;
         }
-
         return [
             'page_id' => 'required',
             'page_title' => 'required',

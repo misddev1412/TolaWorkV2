@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <div class="page-content-wrapper"> 
     <!-- BEGIN CONTENT BODY -->
@@ -26,18 +25,15 @@
                     <div class="portlet-title">
                         <div class="caption font-red-sunglo"> <i class="icon-settings font-red-sunglo"></i> <span class="caption-subject bold uppercase">FAQs Form</span> </div>
                     </div>
-
                     <div class="portlet-body form">          
                         <ul class="nav nav-tabs">              
                             <li class="active"> <a href="#Details" data-toggle="tab" aria-expanded="false"> FAQ </a> </li>
                         </ul>
-
                         {!! Form::open(array('method' => 'post', 'route' => 'store.faq', 'class' => 'form')) !!}
                         <div class="tab-content">              
                             <div class="tab-pane fade active in" id="Details"> @include('admin.faq.forms.form') </div>
                         </div>
                         {!! Form::close() !!}
-
                     </div>
                 </div>
             </div>

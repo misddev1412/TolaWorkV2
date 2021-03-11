@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\MajorSubjectFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class MajorSubjectController extends Controller
 {
@@ -48,7 +49,6 @@ class MajorSubjectController extends Controller
     public function storeMajorSubject(MajorSubjectFormRequest $request)
     {
         $majorSubject = new MajorSubject();
-        $majorSubject->id = $request->input('id');
         $majorSubject->lang = $request->input('lang');
         $majorSubject->major_subject = $request->input('major_subject');
         $majorSubject->is_default = $request->input('is_default');
@@ -56,18 +56,14 @@ class MajorSubjectController extends Controller
         $majorSubject->is_active = $request->input('is_active');
         $majorSubject->save();
         /*         * ************************************ */
-
         $majorSubject->sort_order = $majorSubject->id;
-
         if ((int) $request->input('is_default') == 1) {
             $majorSubject->major_subject_id = $majorSubject->id;
         } else {
             $majorSubject->major_subject_id = $request->input('major_subject_id');
         }
-
         $majorSubject->update();
         /*         * ************************************ */
-
         flash('Major Subject has been added!')->success();
         return \Redirect::route('edit.major.subject', array($majorSubject->id));
     }
@@ -86,7 +82,6 @@ class MajorSubjectController extends Controller
     public function updateMajorSubject($id, MajorSubjectFormRequest $request)
     {
         $majorSubject = MajorSubject::findOrFail($id);
-        $majorSubject->id = $request->input('id');
         $majorSubject->lang = $request->input('lang');
         $majorSubject->major_subject = $request->input('major_subject');
         $majorSubject->is_default = $request->input('is_default');
@@ -100,7 +95,6 @@ class MajorSubjectController extends Controller
         }
         /*         * ************************************ */
         $majorSubject->update();
-
         flash('Major Subject has been updated!')->success();
         return \Redirect::route('edit.major.subject', array($majorSubject->id));
     }
@@ -110,13 +104,11 @@ class MajorSubjectController extends Controller
         $id = $request->input('id');
         try {
             $majorSubject = MajorSubject::findOrFail($id);
-
             if ((bool) $majorSubject->is_default) {
                 MajorSubject::where('major_subject_id', '=', $majorSubject->major_subject_id)->delete();
             } else {
                 $majorSubject->delete();
             }
-
             return 'ok';
         } catch (ModelNotFoundException $e) {
             return 'notok';
@@ -130,33 +122,27 @@ class MajorSubjectController extends Controller
                 ])->sorted();
         return Datatables::of($majorSubjects)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('id') && !empty($request->id)) {
                                 $query->where('major_subjects.id', 'like', "%{$request->get('id')}%");
                             }
-
                             if ($request->has('lang') && !empty($request->lang)) {
                                 $query->where('major_subjects.lang', 'like', "%{$request->get('lang')}%");
                             }
-
                             if ($request->has('major_subject') && !empty($request->major_subject)) {
                                 $query->where('major_subjects.major_subject', 'like', "%{$request->get('major_subject')}%");
                             }
-
                             if ($request->has('is_default') && !empty($request->is_default)) {
                                 $query->where('major_subjects.is_default', 'like', "%{$request->get('is_default')}%");
                             }
-
                             if ($request->has('major_subject_id') && !empty($request->major_subject_id)) {
                                 $query->where('major_subjects.major_subject_id', 'like', "%{$request->get('major_subject_id')}%");
                             }
-
                             if ($request->has('is_active') && $request->is_active != -1) {
                                 $query->where('major_subjects.is_active', '=', "{$request->get('is_active')}");
                             }
                         })
                         ->addColumn('major_subject', function ($majorSubjects) {
-                            $majorSubject = str_limit($majorSubjects->major_subject, 100, '...');
+                            $majorSubject = Str::limit($majorSubjects->major_subject, 100, '...');
                             $direction = MiscHelper::getLangDirection($majorSubjects->lang);
                             return '<span dir="' . $direction . '">' . $majorSubject . '</span>';
                         })

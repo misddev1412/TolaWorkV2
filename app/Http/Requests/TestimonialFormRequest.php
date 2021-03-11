@@ -27,7 +27,6 @@ class TestimonialFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $testimonial_unique = '';
                     if ($id > 0) {
@@ -35,13 +34,13 @@ class TestimonialFormRequest extends Request
                     }
                     return [
                         "id" => "",
-						"lang" => "required",
-						"testimonial_by" => "required",
-						"testimonial" => "required",
-						"company" => "required",
-						"is_default" => "required",
-						"testimonial_id" => "required_if:is_default,0",
-						"is_active" => "required",
+                        "lang" => "required",
+                        "testimonial_by" => "required",
+                        "testimonial" => "required",
+                        "company" => "required",
+                        "is_default" => "required",
+                        "testimonial_id" => "required_if:is_default,0",
+                        "is_active" => "required",
                     ];
                 }
             default:break;
@@ -52,12 +51,12 @@ class TestimonialFormRequest extends Request
     {
         return [
             'lang.required' => 'Please select language.',
-			'testimonial_by.required' => 'Testimonial by required.',
-			'testimonial.required' => 'Testimonial required.',
-			'company.required' => 'Company required.',
-			'is_default.required' => 'Is this Testimonial default?',
-			'testimonial_id.required_if' => 'Please select default/fallback Testimonial.',
-			'is_active.required' => 'Is this Testimonial active?',
+            'testimonial_by.required' => 'Testimonial by required.',
+            'testimonial.required' => 'Testimonial required.',
+            'company.required' => 'Company required.',
+            'is_default.required' => 'Is this Testimonial default?',
+            'testimonial_id.required_if' => 'Please select default/fallback Testimonial.',
+            'is_active.required' => 'Is this Testimonial active?',
         ];
     }
 

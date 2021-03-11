@@ -20,6 +20,7 @@ use DataTables;
 use App\Http\Requests\CityFormRequest;
 use App\Http\Controllers\Controller;
 use App\Traits\CountryStateCity;
+use Illuminate\Support\Str;
 
 class CityController extends Controller
 {
@@ -40,7 +41,7 @@ class CityController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $countries = DataArrayHelper::defaultCountriesArray();
-        $states = array(''=>'Select State');
+        $states = array('' => 'Select State');
         return view('admin.city.index')
                         ->with('languages', $languages)
                         ->with('countries', $countries)
@@ -51,7 +52,7 @@ class CityController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $countries = DataArrayHelper::defaultCountriesArray();
-        $states = array(''=>'Select State');
+        $states = array('' => 'Select State');
         return view('admin.city.add')
                         ->with('languages', $languages)
                         ->with('countries', $countries)
@@ -61,7 +62,6 @@ class CityController extends Controller
     public function storeCity(CityFormRequest $request)
     {
         $city = new City();
-        $city->id = $request->input('id');
         $city->lang = $request->input('lang');
         $city->state_id = $request->input('state_id');
         $city->city = $request->input('city');
@@ -70,18 +70,14 @@ class CityController extends Controller
         $city->is_active = $request->input('is_active');
         $city->save();
         /*         * ************************************ */
-
         $city->sort_order = $city->id;
-
         if ((int) $request->input('is_default') == 1) {
             $city->city_id = $city->id;
         } else {
             $city->city_id = $request->input('city_id');
         }
-
         $city->update();
         /*         * ************************************ */
-
         flash('City has been added!')->success();
         return \Redirect::route('edit.city', array($city->id));
     }
@@ -90,7 +86,7 @@ class CityController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $countries = DataArrayHelper::defaultCountriesArray();
-        $states = array(''=>'Select State');
+        $states = array('' => 'Select State');
         $city = City::findOrFail($id);
         return view('admin.city.edit')
                         ->with('city', $city)
@@ -102,7 +98,6 @@ class CityController extends Controller
     public function updateCity($id, CityFormRequest $request)
     {
         $city = City::findOrFail($id);
-        $city->id = $request->input('id');
         $city->lang = $request->input('lang');
         $city->state_id = $request->input('state_id');
         $city->city = $request->input('city');
@@ -117,7 +112,6 @@ class CityController extends Controller
         }
         /*         * ************************************ */
         $city->update();
-
         flash('City has been updated!')->success();
         return \Redirect::route('edit.city', array($city->id));
     }
@@ -129,29 +123,22 @@ class CityController extends Controller
                 ])->sorted();
         return Datatables::of($cities)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('id') && !empty($request->id)) {
                                 $query->where('cities.id', 'like', "{$request->get('id')}%");
                             }
-
                             if ($request->has('lang') && !empty($request->lang)) {
                                 $query->where('cities.lang', 'like', "{$request->get('lang')}");
                             }
-
                             if ($request->has('country_id') && !empty($request->country_id)) {
                                 $state_ids = State::select('states.state_id')->where('states.country_id', '=', $request->country_id)->isDefault()->active()->sorted()->pluck('states.state_id')->toArray();
-
                                 $query->whereIn('cities.state_id', $state_ids);
                             }
-
                             if ($request->has('state_id') && !empty($request->state_id)) {
                                 $query->where('cities.state_id', '=', "{$request->get('state_id')}");
                             }
-
                             if ($request->has('city') && !empty($request->city)) {
                                 $query->where('cities.city', 'like', "%{$request->get('city')}%");
                             }
-
                             if ($request->has('is_active') && $request->is_active != -1) {
                                 $query->where('cities.is_active', '=', "{$request->get('is_active')}");
                             }
@@ -160,7 +147,7 @@ class CityController extends Controller
                             return $cities->getState('state') . ' - ' . $cities->getCountry('country');
                         })
                         ->addColumn('city', function ($cities) {
-                            $city = str_limit($cities->city, 100, '...');
+                            $city = Str::limit($cities->city, 100, '...');
                             $direction = MiscHelper::getLangDirection($cities->lang);
                             return '<span dir="' . $direction . '">' . $city . '</span>';
                         })

@@ -85,50 +85,48 @@ $queryString = MiscHelper::getLangQueryStr();
 </div>
 @push('scripts')
 <script type="text/javascript">
-    $(document).ready(function(){
-    $('#country_id').on('change', function (e) {
-    e.preventDefault();
-    filterDefaultStates(0);
-    });
-    $(document).on('change', '#state_id', function (e) {
-    e.preventDefault();
-    filterDefaultCities(0);
-    });
-    filterDefaultStates(<?php echo old('state_id', (isset($city))? $city->getState('id'):0); ?>);
-    filterDefaultCities(<?php echo old('city_id', (isset($city))? $city->city_id:0) ; ?>);
+    $(document).ready(function () {
+        $('#country_id').on('change', function (e) {
+            e.preventDefault();
+            filterDefaultStates(0);
+        });
+        $(document).on('change', '#state_id', function (e) {
+            e.preventDefault();
+            filterDefaultCities(0);
+        });
+        filterDefaultStates(<?php echo old('state_id', (isset($city)) ? $city->getState('id') : 0); ?>);
+        filterDefaultCities(<?php echo old('city_id', (isset($city)) ? $city->city_id : 0); ?>);
     });
     function setLang(lang) {
-    window.location.href = "<?php echo url(Request::url()) . $queryString; ?>" + lang;
+        window.location.href = "<?php echo url(Request::url()) . $queryString; ?>" + lang;
     }
-    function showHideCityId(){
-    $('#city_id_div').hide();
-    var is_default = $("input[name='is_default']:checked").val();
-    if (is_default == 0){
-    $('#city_id_div').show();
-    }
+    function showHideCityId() {
+        $('#city_id_div').hide();
+        var is_default = $("input[name='is_default']:checked").val();
+        if (is_default == 0) {
+            $('#city_id_div').show();
+        }
     }
     showHideCityId();
     function filterDefaultStates(state_id)
     {
-    var country_id = $('#country_id').val();
-    if (country_id != ''){
-    $.post("{{ route('filter.default.states.dropdown') }}", {country_id: country_id, state_id: state_id, _method: 'POST', _token: '{{ csrf_token() }}'})
-            .done(function (response) {
-            $('#default_state_dd').html(response);
-            });
+        var country_id = $('#country_id').val();
+        if (country_id != '') {
+            $.post("{{ route('filter.default.states.dropdown') }}", {country_id: country_id, state_id: state_id, _method: 'POST', _token: '{{ csrf_token() }}'})
+                    .done(function (response) {
+                        $('#default_state_dd').html(response);
+                    });
+        }
     }
-    }
-
     function filterDefaultCities(city_id)
     {
-    var state_id = $('#state_id').val();
-    if (state_id != ''){
-    $.post("{{ route('filter.default.cities.dropdown') }}", {state_id: state_id, city_id: city_id, _method: 'POST', _token: '{{ csrf_token() }}'})
-            .done(function (response) {
-            $('#default_cities_dd').html(response);
-            });
+        var state_id = $('#state_id').val();
+        if (state_id != '') {
+            $.post("{{ route('filter.default.cities.dropdown') }}", {state_id: state_id, city_id: city_id, _method: 'POST', _token: '{{ csrf_token() }}'})
+                    .done(function (response) {
+                        $('#default_cities_dd').html(response);
+                    });
+        }
     }
-    }
-
 </script>
 @endpush

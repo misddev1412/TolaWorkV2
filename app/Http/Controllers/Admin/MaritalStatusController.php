@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\MaritalStatusFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class MaritalStatusController extends Controller
 {
@@ -48,7 +49,6 @@ class MaritalStatusController extends Controller
     public function storeMaritalStatus(MaritalStatusFormRequest $request)
     {
         $maritalStatus = new MaritalStatus();
-        $maritalStatus->id = $request->input('id');
         $maritalStatus->lang = $request->input('lang');
         $maritalStatus->marital_status = $request->input('marital_status');
         $maritalStatus->is_default = $request->input('is_default');
@@ -56,18 +56,14 @@ class MaritalStatusController extends Controller
         $maritalStatus->is_active = $request->input('is_active');
         $maritalStatus->save();
         /*         * ************************************ */
-
         $maritalStatus->sort_order = $maritalStatus->id;
-
         if ((int) $request->input('is_default') == 1) {
             $maritalStatus->marital_status_id = $maritalStatus->id;
         } else {
             $maritalStatus->marital_status_id = $request->input('marital_status_id');
         }
-
         $maritalStatus->update();
         /*         * ************************************ */
-
         flash('Marital Status has been added!')->success();
         return \Redirect::route('edit.marital.status', array($maritalStatus->id));
     }
@@ -86,7 +82,6 @@ class MaritalStatusController extends Controller
     public function updateMaritalStatus($id, MaritalStatusFormRequest $request)
     {
         $maritalStatus = MaritalStatus::findOrFail($id);
-        $maritalStatus->id = $request->input('id');
         $maritalStatus->lang = $request->input('lang');
         $maritalStatus->marital_status = $request->input('marital_status');
         $maritalStatus->is_default = $request->input('is_default');
@@ -100,7 +95,6 @@ class MaritalStatusController extends Controller
         }
         /*         * ************************************ */
         $maritalStatus->update();
-
         flash('Marital Status has been updated!')->success();
         return \Redirect::route('edit.marital.status', array($maritalStatus->id));
     }
@@ -110,13 +104,11 @@ class MaritalStatusController extends Controller
         $id = $request->input('id');
         try {
             $maritalStatus = MaritalStatus::findOrFail($id);
-
             if ((bool) $maritalStatus->is_default) {
                 MaritalStatus::where('marital_status_id', '=', $maritalStatus->marital_status_id)->delete();
             } else {
                 $maritalStatus->delete();
             }
-
             return 'ok';
         } catch (ModelNotFoundException $e) {
             return 'notok';
@@ -130,21 +122,18 @@ class MaritalStatusController extends Controller
                 ])->sorted();
         return Datatables::of($maritalStatuses)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('lang') && !empty($request->lang)) {
                                 $query->where('marital_statuses.lang', 'like', "{$request->get('lang')}");
                             }
-
                             if ($request->has('marital_status') && !empty($request->marital_status)) {
                                 $query->where('marital_statuses.marital_status', 'like', "%{$request->get('marital_status')}%");
                             }
-
                             if ($request->has('is_active') && $request->is_active != -1) {
                                 $query->where('marital_statuses.is_active', '=', "{$request->get('is_active')}");
                             }
                         })
                         ->addColumn('marital_status', function ($maritalStatuses) {
-                            $maritalStatus = str_limit($maritalStatuses->marital_status, 100, '...');
+                            $maritalStatus = Str::limit($maritalStatuses->marital_status, 100, '...');
                             $direction = MiscHelper::getLangDirection($maritalStatuses->lang);
                             return '<span dir="' . $direction . '">' . $maritalStatus . '</span>';
                         })

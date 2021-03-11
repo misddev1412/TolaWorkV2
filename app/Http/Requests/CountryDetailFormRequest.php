@@ -27,9 +27,7 @@ class CountryDetailFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
-
                     return [
                         'id' => '', 'country_id' => '', 'sort_name' => 'required', 'phone_code' => 'required', 'currency' => 'required', 'code' => 'required', 'symbol' => 'required', 'thousand_separator' => 'required', 'decimal_separator' => 'required',
                     ];

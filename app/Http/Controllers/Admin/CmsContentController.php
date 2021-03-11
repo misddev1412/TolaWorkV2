@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\CmsContentFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class CmsContentController extends Controller
 {
@@ -46,7 +47,6 @@ class CmsContentController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $cmsPages = cms::select('cms.id', 'cms.page_slug')->orderBy('cms.page_slug')->pluck('cms.page_slug', 'cms.id')->toArray();
-
         return view('admin.cms_content.add')
                         ->with('languages', $languages)
                         ->with('cmsPages', $cmsPages);
@@ -54,7 +54,6 @@ class CmsContentController extends Controller
 
     public function storeCmsContent(CmsContentFormRequest $request)
     {
-
         $cmsContent = new CmsContent();
         $cmsContent->page_id = $request->input('page_id');
         $cmsContent->page_title = $request->input('page_title');
@@ -69,22 +68,18 @@ class CmsContentController extends Controller
     {
         $languages = DataArrayHelper::languagesNativeCodeArray();
         $cmsPages = cms::select('cms.id', 'cms.page_slug')->orderBy('cms.page_slug')->pluck('cms.page_slug', 'cms.id')->toArray();
-
         $cmsContent = CmsContent::findOrFail($id);
         return view('admin.cms_content.edit', compact('languages', 'cmsPages', 'cmsContent'));
     }
 
     public function updateCmsContent($id, CmsContentFormRequest $request)
     {
-
         $cmsContent = CmsContent::findOrFail($id);
-
         $cmsContent->page_id = $request->input('page_id');
         $cmsContent->page_title = $request->input('page_title');
         $cmsContent->page_content = $request->input('page_content');
         $cmsContent->lang = $request->input('lang');
         $cmsContent->update();
-
         flash('C.M.S page has been updated!')->success();
         return \Redirect::route('edit.cmsContent', array($cmsContent->id));
     }
@@ -103,7 +98,6 @@ class CmsContentController extends Controller
 
     public function fetchCmsContentData(Request $request)
     {
-
         $cmsContent = CmsContent::select(
                         [
                             'cms_content.id',
@@ -115,7 +109,6 @@ class CmsContentController extends Controller
                             'cms_content.updated_at'
                         ]
         );
-
         return Datatables::of($cmsContent)
                         ->filter(function ($query) use ($request) {
                             if ($request->has('id') && !empty($request->id)) {
@@ -126,21 +119,17 @@ class CmsContentController extends Controller
                             }
                         })
                         ->addColumn('page_title', function ($cmsContent) {
-
-                            $page_title = str_limit($cmsContent->page_title, 100, '...');
+                            $page_title = Str::limit($cmsContent->page_title, 100, '...');
                             $direction = MiscHelper::getLangDirection($cmsContent->lang);
                             return '<span dir="' . $direction . '">' . $page_title . '</span>';
                         })
                         ->addColumn('page_content', function ($cmsContent) {
-
-                            $page_content = str_limit($cmsContent->page_content, 100, '...');
+                            $page_content = Str::limit($cmsContent->page_content, 100, '...');
                             $direction = MiscHelper::getLangDirection($cmsContent->lang);
                             return '<span dir="' . $direction . '">' . $page_content . '</span>';
                         })
                         ->addColumn('action', function ($cmsContent) {
-
                             /*                             * ************************* */
-
                             return '
 				<div class="btn-group">
 					<button class="btn blue dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action

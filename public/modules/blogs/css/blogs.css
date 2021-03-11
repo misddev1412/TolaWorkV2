@@ -1,0 +1,143 @@
+            .panel-heading {
+                padding: 0;
+            }
+            
+            .panel-heading ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+            
+            .panel-heading li {
+                float: left;
+                border-right: 1px solid #bbb;
+                display: block;
+                padding: 14px 16px;
+                text-align: center;
+            }
+            
+            .panel-heading li:last-child:hover {
+                background-color: #ccc;
+            }
+            
+            .panel-heading li:last-child {
+                border-right: none;
+            }
+            
+            .panel-heading li a:hover {
+                text-decoration: none;
+            }
+            
+            .table.table-bordered tbody td {
+                vertical-align: baseline;
+            }
+            
+            .form-group {
+                padding-bottom: 56px;
+            }
+            
+            .btn_submit {
+                text-align: right;
+            }
+            
+            .featured-images-main {
+                text-align: right;
+            }
+            
+            .modal-header {
+                padding: 15px;
+                border-bottom: 1px solid #e5e5e5;
+            }
+            
+            .modal-body {
+                padding: 20px 20px 0 !important;
+            }
+            
+            .modal-footer {
+                padding: 15px;
+                text-align: right;
+                border-top: 1px solid #e5e5e5;
+            }
+            /* iCheck plugin Square skin, yellow
+----------------------------------- */
+            
+            .icheckbox_square-yellow,
+            .iradio_square-yellow {
+                display: inline-block;
+                *display: inline;
+                vertical-align: middle;
+                margin: 0;
+                padding: 0;
+                width: 22px;
+                height: 22px;
+                background: url(yellow.png) no-repeat;
+                border: none;
+                cursor: pointer;
+            }
+            
+            .icheckbox_square-yellow {
+                background-position: 0 0;
+            }
+            
+            .icheckbox_square-yellow.hover {
+                background-position: -24px 0;
+            }
+            
+            .icheckbox_square-yellow.checked {
+                background-position: -48px 0;
+            }
+            
+            .icheckbox_square-yellow.disabled {
+                background-position: -72px 0;
+                cursor: default;
+            }
+            
+            .icheckbox_square-yellow.checked.disabled {
+                background-position: -96px 0;
+            }
+            
+            .iradio_square-yellow {
+                background-position: -120px 0;
+            }
+            
+            .iradio_square-yellow.hover {
+                background-position: -144px 0;
+            }
+            
+            .iradio_square-yellow.checked {
+                background-position: -168px 0;
+            }
+            
+            .iradio_square-yellow.disabled {
+                background-position: -192px 0;
+                cursor: default;
+            }
+            
+            .iradio_square-yellow.checked.disabled {
+                background-position: -216px 0;
+            }
+            
+            .featured-images-main i {
+                width: 16px;
+                height: 17px;
+                display: inline-block;
+                position: absolute;
+                margin-top: -5px !important;
+                border: 0px solid;
+                box-shadow: 0px 0px 0px;
+                cursor: pointer;
+            }
+            /* HiDPI support */
+            
+            @media (-o-min-device-pixel-ratio: 5/4),
+            (-webkit-min-device-pixel-ratio: 1.25),
+            (min-resolution: 120dpi),
+            (min-resolution: 1.25dppx) {
+                .icheckbox_square-yellow,
+                .iradio_square-yellow {
+                    background-image: url(yellow@2x.png);
+                    -webkit-background-size: 240px 24px;
+                    background-size: 240px 24px;
+                }
+            }

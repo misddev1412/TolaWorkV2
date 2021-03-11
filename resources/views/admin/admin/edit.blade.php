@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layout')
-
 @section('content')
 <div class="page-content-wrapper"> 
     <!-- BEGIN CONTENT BODY -->
@@ -26,11 +25,8 @@
                     </div>
                     <div class="portlet-body form">
                         {!! Form::model($user, array('method' => 'put', 'route' => array('update.admin.user', $user->id), 'class' => 'form', 'novalidate' => 'novalidate')) !!}
-
                         {!! Form::hidden('id', $user->id) !!}
-
                         @include('admin.admin.add_edit_form')
-
                         <div class="form-actions">
                             {!! Form::submit('Update Admin User!', array('class'=>'btn blue')) !!}
                         </div>

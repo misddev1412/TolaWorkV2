@@ -113,7 +113,6 @@
         <table border="0" width="80%" cellpadding="0" cellspacing="0" bgcolor="#24140e">
             <tr>
                 <td align="center" valign="top" bgcolor="#24140e" style="background-color:#fff;"><!-- 600px container (white background) -->
-
                     <table border="0" cellpadding="0" cellspacing="0" class="container" style="width:100%;border: solid 1px #d6d4d4;">
                         <tr>
                             <td class="content" align="left" style="padding-top:0px;padding-bottom:12px;background-color:#f8f8f8;"><table border="0" cellpadding="0" cellspacing="0" class="force-row" style="width:100%;">
@@ -135,7 +134,6 @@
                                 <br></td>
                         </tr>
                     </table>
-
                     <!--/600px container --></td>
             </tr>
         </table>

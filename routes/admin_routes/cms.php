@@ -9,7 +9,6 @@ Route::put('update-cms/{id}', array_merge(['uses' => 'Admin\CmsController@update
 Route::delete('delete-cms', array_merge(['uses' => 'Admin\CmsController@deleteCms'], $all_users))->name('delete.cms');
 Route::get('fetch-cms', array_merge(['uses' => 'Admin\CmsController@fetchCmsData'], $all_users))->name('fetch.data.cms');
 /* * ****** End CMS Field ********** */
-
 /* * ******  CmsContent Field Start ********** */
 Route::get('list-cmsContent', array_merge(['uses' => 'Admin\CmsContentController@indexCmsContent'], $all_users))->name('list.cmsContent');
 Route::get('create-cmsContent', array_merge(['uses' => 'Admin\CmsContentController@createCmsContent'], $all_users))->name('create.cmsContent');

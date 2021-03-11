@@ -49,7 +49,6 @@ class CmsController extends Controller
 
     public function storeCms(CmsFormRequest $request)
     {
-
         $cms = new Cms();
         $cms->page_slug = $request->input('page_slug');
         $cms->seo_title = $request->input('seo_title');
@@ -71,9 +70,7 @@ class CmsController extends Controller
 
     public function updateCms($id, CmsFormRequest $request)
     {
-
         $cms = Cms::findOrFail($id);
-
         $cms->page_slug = $request->input('page_slug');
         $cms->seo_title = $request->input('seo_title');
         $cms->seo_description = $request->input('seo_description');
@@ -82,7 +79,6 @@ class CmsController extends Controller
         $cms->show_in_top_menu = $request->input('show_in_top_menu');
         $cms->show_in_footer_menu = $request->input('show_in_footer_menu');
         $cms->update();
-
         flash('C.M.S page has been updated!')->success();
         return \Redirect::route('edit.cms', array($cms->id));
     }
@@ -91,10 +87,8 @@ class CmsController extends Controller
     {
         $id = $request->input('id');
         try {
-
             $deletedCms = Cms::where('id', $id)->delete();
             $deletedCmsContent = CmsContent::where('page_id', $id)->delete();
-
             echo 'ok';
         } catch (ModelNotFoundException $e) {
             echo 'notok';
@@ -103,7 +97,6 @@ class CmsController extends Controller
 
     public function fetchCmsData(Request $request)
     {
-
         $cms = Cms::select(
                         [
                             'cms.id',
@@ -116,7 +109,6 @@ class CmsController extends Controller
                             'cms.updated_at'
                         ]
         );
-
         return Datatables::of($cms)
                         ->filter(function ($query) use ($request) {
                             if ($request->has('id') && !empty($request->id)) {
@@ -127,9 +119,7 @@ class CmsController extends Controller
                             }
                         })
                         ->addColumn('action', function ($cms) {
-
                             /*                             * ************************* */
-
                             return '
 				<div class="btn-group">
 					<button class="btn blue dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action

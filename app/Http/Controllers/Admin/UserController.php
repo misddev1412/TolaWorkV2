@@ -52,15 +52,15 @@ class UserController extends Controller
 {
 
     use CommonUserFunctions;
-	use ProfileSummaryTrait;
-	use ProfileCvsTrait;
-	use ProfileProjectsTrait;
-	use ProfileExperienceTrait;
-	use ProfileEducationTrait;
-	use ProfileSkillTrait;
-	use ProfileLanguageTrait;
-	use Skills;
-	use JobSeekerPackageTrait;
+    use ProfileSummaryTrait;
+    use ProfileCvsTrait;
+    use ProfileProjectsTrait;
+    use ProfileExperienceTrait;
+    use ProfileEducationTrait;
+    use ProfileSkillTrait;
+    use ProfileLanguageTrait;
+    use Skills;
+    use JobSeekerPackageTrait;
 
     /**
      * Create a new controller instance.
@@ -87,14 +87,14 @@ class UserController extends Controller
         $genders = DataArrayHelper::defaultGendersArray();
         $maritalStatuses = DataArrayHelper::defaultMaritalStatusesArray();
         $nationalities = DataArrayHelper::defaultNationalitiesArray();
-		$countries = DataArrayHelper::defaultCountriesArray();
-		$jobExperiences = DataArrayHelper::defaultJobExperiencesArray();
-		$careerLevels = DataArrayHelper::defaultCareerLevelsArray();
-		$industries = DataArrayHelper::defaultIndustriesArray();
-		$functionalAreas = DataArrayHelper::defaultFunctionalAreasArray();
-		$packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'job_seeker')->pluck('package_detail', 'id')->toArray();
-		$upload_max_filesize = UploadedFile::getMaxFilesize() / (1048576);
-		
+        $countries = DataArrayHelper::defaultCountriesArray();
+        $jobExperiences = DataArrayHelper::defaultJobExperiencesArray();
+        $careerLevels = DataArrayHelper::defaultCareerLevelsArray();
+        $industries = DataArrayHelper::defaultIndustriesArray();
+        $functionalAreas = DataArrayHelper::defaultFunctionalAreasArray();
+        $packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'job_seeker')->pluck('package_detail', 'id')->toArray();
+        $upload_max_filesize = UploadedFile::getMaxFilesize() / (1048576);
+
         return view('admin.user.add')
                         ->with('genders', $genders)
                         ->with('maritalStatuses', $maritalStatuses)
@@ -104,13 +104,12 @@ class UserController extends Controller
                         ->with('careerLevels', $careerLevels)
                         ->with('industries', $industries)
                         ->with('functionalAreas', $functionalAreas)
-						->with('upload_max_filesize', $upload_max_filesize)
-						->with('packages', $packages);
+                        ->with('upload_max_filesize', $upload_max_filesize)
+                        ->with('packages', $packages);
     }
 
     public function storeUser(UserFormRequest $request)
     {
-
         $user = new User();
         /*         * **************************************** */
         if ($request->hasFile('image')) {
@@ -119,16 +118,13 @@ class UserController extends Controller
             $user->image = $fileName;
         }
         /*         * ************************************** */
-
         $user->first_name = $request->input('first_name');
         $user->middle_name = $request->input('middle_name');
         $user->last_name = $request->input('last_name');
         $user->email = $request->input('email');
-
         if (!empty($request->input('password'))) {
             $user->password = Hash::make($request->input('password'));
         }
-
         $user->father_name = $request->input('father_name');
         $user->date_of_birth = $request->input('date_of_birth');
         $user->gender_id = $request->input('gender_id');
@@ -148,26 +144,24 @@ class UserController extends Controller
         $user->expected_salary = $request->input('expected_salary');
         $user->salary_currency = $request->input('salary_currency');
         $user->street_address = $request->input('street_address');
-		$user->is_immediate_available = $request->input('is_immediate_available');
+        $user->is_immediate_available = $request->input('is_immediate_available');
         $user->is_active = $request->input('is_active');
         $user->verified = $request->input('verified');
-
         $user->save();
-		
-		/**************************/
-		$user->name = $user->getName();
-		$user->update();
-		$this->updateUserFullTextSearch($user);
-		/**************************/
-		/*         * ************************************ */
-		if($request->has('job_seeker_package_id') && $request->input('job_seeker_package_id') > 0)
-		{
-			$package_id = $request->input('job_seeker_package_id');
-			$package = Package::find($package_id);
-			$this->addJobSeekerPackage($user, $package);
-		}
+
+        /*         * *********************** */
+        $user->name = $user->getName();
+        $user->update();
+        $this->updateUserFullTextSearch($user);
+        /*         * *********************** */
         /*         * ************************************ */
-		
+        if ($request->has('job_seeker_package_id') && $request->input('job_seeker_package_id') > 0) {
+            $package_id = $request->input('job_seeker_package_id');
+            $package = Package::find($package_id);
+            $this->addJobSeekerPackage($user, $package);
+        }
+        /*         * ************************************ */
+
         flash('User has been added!')->success();
         return \Redirect::route('edit.user', array($user->id));
     }
@@ -177,25 +171,21 @@ class UserController extends Controller
         $genders = DataArrayHelper::defaultGendersArray();
         $maritalStatuses = DataArrayHelper::defaultMaritalStatusesArray();
         $nationalities = DataArrayHelper::defaultNationalitiesArray();
-		$countries = DataArrayHelper::defaultCountriesArray();
-		$jobExperiences = DataArrayHelper::defaultJobExperiencesArray();
-		$careerLevels = DataArrayHelper::defaultCareerLevelsArray();
-		$industries = DataArrayHelper::defaultIndustriesArray();
-		$functionalAreas = DataArrayHelper::defaultFunctionalAreasArray();
-		
-		$upload_max_filesize = UploadedFile::getMaxFilesize() / (1048576);
+        $countries = DataArrayHelper::defaultCountriesArray();
+        $jobExperiences = DataArrayHelper::defaultJobExperiencesArray();
+        $careerLevels = DataArrayHelper::defaultCareerLevelsArray();
+        $industries = DataArrayHelper::defaultIndustriesArray();
+        $functionalAreas = DataArrayHelper::defaultFunctionalAreasArray();
 
+        $upload_max_filesize = UploadedFile::getMaxFilesize() / (1048576);
         $user = User::findOrFail($id);
-		if($user->package_id > 0)
-		{
-			$package = Package::find($user->package_id);
-			$packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'job_seeker')->where('id', '<>', $user->package_id)->where('package_price', '>=', $package->package_price)->pluck('package_detail', 'id')->toArray();
-		}
-		else
-		{
-			$packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'job_seeker')->pluck('package_detail', 'id')->toArray();
-		}
-		
+        if ($user->package_id > 0) {
+            $package = Package::find($user->package_id);
+            $packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'job_seeker')->where('id', '<>', $user->package_id)->where('package_price', '>=', $package->package_price)->pluck('package_detail', 'id')->toArray();
+        } else {
+            $packages = Package::select('id', DB::raw("CONCAT(`package_title`, ', $', `package_price`, ', Days:', `package_num_days`, ', Listings:', `package_num_listings`) AS package_detail"))->where('package_for', 'like', 'job_seeker')->pluck('package_detail', 'id')->toArray();
+        }
+
         return view('admin.user.edit')
                         ->with('genders', $genders)
                         ->with('maritalStatuses', $maritalStatuses)
@@ -206,13 +196,12 @@ class UserController extends Controller
                         ->with('industries', $industries)
                         ->with('functionalAreas', $functionalAreas)
                         ->with('user', $user)
-						->with('upload_max_filesize', $upload_max_filesize)
-						->with('packages', $packages);
+                        ->with('upload_max_filesize', $upload_max_filesize)
+                        ->with('packages', $packages);
     }
 
     public function updateUser($id, UserFormRequest $request)
     {
-
         $user = User::findOrFail($id);
         /*         * **************************************** */
         if ($request->hasFile('image')) {
@@ -222,19 +211,16 @@ class UserController extends Controller
             $user->image = $fileName;
         }
         /*         * ************************************** */
-
         $user->first_name = $request->input('first_name');
         $user->middle_name = $request->input('middle_name');
         $user->last_name = $request->input('last_name');
-		/**************************/
-		$user->name = $user->getName();
-		/**************************/
+        /*         * *********************** */
+        $user->name = $user->getName();
+        /*         * *********************** */
         $user->email = $request->input('email');
-
         if (!empty($request->input('password'))) {
             $user->password = Hash::make($request->input('password'));
         }
-
         $user->father_name = $request->input('father_name');
         $user->date_of_birth = $request->input('date_of_birth');
         $user->gender_id = $request->input('gender_id');
@@ -254,38 +240,30 @@ class UserController extends Controller
         $user->expected_salary = $request->input('expected_salary');
         $user->salary_currency = $request->input('salary_currency');
         $user->street_address = $request->input('street_address');
-		$user->is_immediate_available = $request->input('is_immediate_available');
+        $user->is_immediate_available = $request->input('is_immediate_available');
         $user->is_active = $request->input('is_active');
         $user->verified = $request->input('verified');
-
         $user->update();
-		
-		$this->updateUserFullTextSearch($user);
-		/*         * ************************************ */
-		if($request->has('job_seeker_package_id') && $request->input('job_seeker_package_id') > 0)
-		{
-			$package_id = $request->input('job_seeker_package_id');
-			$package = Package::find($package_id);
-			if($user->package_id > 0)
-			{
-				$this->updateJobSeekerPackage($user, $package);
-			}
-			else
-			{
-				$this->addJobSeekerPackage($user, $package);
-			}
-		}
+
+        $this->updateUserFullTextSearch($user);
         /*         * ************************************ */
-		
+        if ($request->has('job_seeker_package_id') && $request->input('job_seeker_package_id') > 0) {
+            $package_id = $request->input('job_seeker_package_id');
+            $package = Package::find($package_id);
+            if ($user->package_id > 0) {
+                $this->updateJobSeekerPackage($user, $package);
+            } else {
+                $this->addJobSeekerPackage($user, $package);
+            }
+        }
+        /*         * ************************************ */
+
         flash('User has been updated!')->success();
         return \Redirect::route('edit.user', array($user->id));
     }
 
-    
-
     public function fetchUsersData(Request $request)
     {
-
         $users = User::select(
                         [
                             'users.id',
@@ -298,14 +276,13 @@ class UserController extends Controller
                             'users.country_id',
                             'users.state_id',
                             'users.city_id',
-							'users.is_immediate_available',
-							'users.num_profile_views',
+                            'users.is_immediate_available',
+                            'users.num_profile_views',
                             'users.is_active',
                             'users.verified',
                             'users.created_at',
                             'users.updated_at'
         ]);
-
         return Datatables::of($users)
                         ->filter(function ($query) use ($request) {
                             if ($request->has('id') && !empty($request->id)) {
@@ -327,7 +304,6 @@ class UserController extends Controller
                         })
                         ->addColumn('action', function ($users) {
                             /*                             * ************************* */
-
                             $active_txt = 'Make Active';
                             $active_href = 'make_active(' . $users->id . ');';
                             $active_icon = 'square-o';
@@ -336,10 +312,8 @@ class UserController extends Controller
                                 $active_href = 'make_not_active(' . $users->id . ');';
                                 $active_icon = 'check-square-o';
                             }
-
                             /*                             * ************************* */
                             /*                             * ************************* */
-
                             $verified_txt = 'Not Verified';
                             $verified_href = 'make_verified(' . $users->id . ');';
                             $verified_icon = 'square-o';
@@ -348,9 +322,7 @@ class UserController extends Controller
                                 $verified_href = 'make_not_verified(' . $users->id . ');';
                                 $verified_icon = 'check-square-o';
                             }
-
                             /*                             * ************************* */
-
                             return '
 				<div class="btn-group">
 					<button class="btn blue dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action
@@ -430,9 +402,6 @@ class UserController extends Controller
             echo 'notok';
         }
     }
-	
-	/***********************************************/
-	
-	
 
+    /*     * ******************************************** */
 }

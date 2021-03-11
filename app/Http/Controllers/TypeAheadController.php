@@ -30,7 +30,6 @@ class TypeAheadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
     public function typeAheadCurrencyCodes(Request $request)
     {
         $searchKey = $request->input('query');

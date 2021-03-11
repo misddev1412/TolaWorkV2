@@ -7,10 +7,11 @@ use Illuminate\Queue\SerializesModels;
 
 class JobPosted
 {
+
     use SerializesModels;
 
     public $job;
-	
+
     /**
      * Create a new event instance.
      *
@@ -20,5 +21,5 @@ class JobPosted
     {
         $this->job = $job;
     }
-    
+
 }

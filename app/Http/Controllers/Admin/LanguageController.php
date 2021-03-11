@@ -42,7 +42,6 @@ class LanguageController extends Controller
     public function storeLanguage(LanguageFormRequest $request)
     {
         $language = new Language();
-        $language->id = $request->input('id');
         $language->lang = $request->input('lang');
         $language->native = $request->input('native');
         $language->iso_code = $request->input('iso_code');
@@ -55,7 +54,6 @@ class LanguageController extends Controller
             $this->updateDefaultLang($language->id);
         }
         /*         * ************************************ */
-
         flash('Language has been added!')->success();
         return \Redirect::route('edit.language', array($language->id));
     }
@@ -70,7 +68,6 @@ class LanguageController extends Controller
     public function updateLanguage($id, LanguageFormRequest $request)
     {
         $language = Language::findOrFail($id);
-        $language->id = $request->input('id');
         $language->lang = $request->input('lang');
         $language->native = $request->input('native');
         $language->iso_code = $request->input('iso_code');
@@ -83,7 +80,6 @@ class LanguageController extends Controller
         }
         /*         * ************************************ */
         $language->update();
-
         flash('Language has been updated!')->success();
         return \Redirect::route('edit.language', array($language->id));
     }
@@ -94,7 +90,6 @@ class LanguageController extends Controller
         try {
             $language = Language::findOrFail($id);
             $language->delete();
-
             return 'ok';
         } catch (ModelNotFoundException $e) {
             return 'notok';
@@ -108,23 +103,18 @@ class LanguageController extends Controller
                 ])->sorted();
         return Datatables::of($languages)
                         ->filter(function ($query) use ($request) {
-
                             if ($request->has('native') && !empty($request->native)) {
                                 $query->where('languages.native', 'like', "%{$request->get('native')}%");
                             }
-
                             if ($request->has('iso_code') && !empty($request->iso_code)) {
                                 $query->where('languages.iso_code', 'like', "%{$request->get('iso_code')}%");
                             }
-
                             if ($request->has('is_active') && $request->is_active != -1) {
                                 $query->where('languages.is_active', '=', "{$request->get('is_active')}");
                             }
-
                             if ($request->has('is_rtl') && $request->is_rtl != -1) {
                                 $query->where('languages.is_rtl', '=', "{$request->get('is_rtl')}");
                             }
-
                             if ($request->has('is_default') && $request->is_default != -1) {
                                 $query->where('languages.is_default', '=', "{$request->get('is_default')}");
                             }
@@ -158,7 +148,7 @@ class LanguageController extends Controller
 							<a href="javascript:void(0);" onclick="deleteLanguage(' . $languages->id . ', ' . $languages->is_default . ');" class=""><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</a>
 						</li>
 						<li>
-							<a href="javascript:void(0);" onclick="makeDefaultLanguage(' . $languages->id . ');" class=""><i class="fa fa-check-square-o" aria-hidden="true"></i>Make Default</a>
+							<a href="javascript:void(0);" onclick="makeDefaultLanguage(' . $languages->id . ');" class=""><i class="fa fa-pencil" aria-hidden="true"></i>Make Default</a>
 						</li>
 						<li>
 						<a href="javascript:void(0);" onClick="' . $activeHref . '" id="onclickActive' . $languages->id . '"><i class="fa fa-' . $activeIcon . '" aria-hidden="true"></i>' . $activeTxt . '</a>

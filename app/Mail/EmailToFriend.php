@@ -35,7 +35,7 @@ class EmailToFriend extends Mailable
         return $this->from($this->data['your_email'], $this->data['your_name'])
                         ->replyTo($this->data['your_email'], $this->data['your_name'])
                         ->to($this->data['friend_email'], $this->data['friend_name'])
-                        ->subject(__('Your friend').' '. $this->data['your_name'] . ' '.__('has shared a link with you'))
+                        ->subject(__('Your friend') . ' ' . $this->data['your_name'] . ' ' . __('has shared a link with you'))
                         ->view('emails.send_to_friend_message')
                         ->with($this->data);
     }

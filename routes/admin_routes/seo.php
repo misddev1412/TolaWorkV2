@@ -1,4 +1,5 @@
 <?php
+
 /* * ******  SEO Field Start ********** */
 Route::get('list-seo', array_merge(['uses' => 'Admin\SeoController@indexSeo'], $all_users))->name('list.seo');
 Route::get('edit-seo/{id}/{industry_id?}', array_merge(['uses' => 'Admin\SeoController@editSeo'], $all_users))->name('edit.seo');

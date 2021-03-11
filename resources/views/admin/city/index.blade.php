@@ -38,8 +38,8 @@
                                         <tr role="row" class="filter">
                                             <td>{!! Form::select('lang', ['' => 'Select Language']+$languages, config('default_lang'), array('id'=>'lang', 'class'=>'form-control')) !!}</td>
                                             <td>
-                                            <?php $default_country_id = Request::query('country_id', $siteSetting->default_country_id); ?>
-                                            {!! Form::select('country_id', ['' => 'Select Country']+$countries, $default_country_id, array('id'=>'country_id', 'class'=>'form-control')) !!} <span id="default_state_dd">{!! Form::select('state_id', ['' => 'Select State'], null, array('id'=>'state_id', 'class'=>'form-control')) !!}</span></td><td><input type="text" class="form-control" name="city" id="city" autocomplete="off" placeholder="City"></td><td><select name="is_active" id="is_active" class="form-control"><option value="-1">Is Active?</option><option value="1" selected="selected">Active</option><option value="0">In Active</option></select></td>
+                                                <?php $default_country_id = Request::query('country_id', $siteSetting->default_country_id); ?>
+                                                {!! Form::select('country_id', ['' => 'Select Country']+$countries, $default_country_id, array('id'=>'country_id', 'class'=>'form-control')) !!} <span id="default_state_dd">{!! Form::select('state_id', ['' => 'Select State'], null, array('id'=>'state_id', 'class'=>'form-control')) !!}</span></td><td><input type="text" class="form-control" name="city" id="city" autocomplete="off" placeholder="City"></td><td><select name="is_active" id="is_active" class="form-control"><option value="-1">Is Active?</option><option value="1" selected="selected">Active</option><option value="0">In Active</option></select></td>
                                         </tr>
                                         <tr role="row" class="heading">
                                             <th>Language</th><th>State</th><th>City</th><th>Actions</th>
@@ -112,7 +112,7 @@
             oTable.draw();
             e.preventDefault();
         });
-		filterDefaultStates(0);
+        filterDefaultStates(0);
     });
     function deleteCity(id, is_default) {
         var msg = 'Are you sure?';
@@ -159,7 +159,6 @@
                     }
                 });
     }
-
     function filterDefaultStates(state_id)
     {
         var country_id = $('#country_id').val();

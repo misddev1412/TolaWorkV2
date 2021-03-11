@@ -37,11 +37,10 @@ class FaqController extends Controller
                             'faqs.updated_at'
                         ]
                 )
-				->lang()
-				->orderBy('faqs.sort_order', 'ASC')
+                ->lang()
+                ->orderBy('faqs.sort_order', 'ASC')
                 ->orderBy('faqs.id', 'ASC')
                 ->get();
-
         $seo = SEO::where('seo.page_title', 'like', 'faq')->first();
         //print_r($seo);exit;
         return view('faq.list_faq')->with('faqs', $faqs)->with('seo', $seo);

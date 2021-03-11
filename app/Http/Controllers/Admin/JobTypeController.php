@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use DataTables;
 use App\Http\Requests\JobTypeFormRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class JobTypeController extends Controller
 {
@@ -51,26 +52,19 @@ class JobTypeController extends Controller
     public function storeJobType(JobTypeFormRequest $request)
     {
         $jobType = new JobType();
-
         $jobType->job_type = $request->input('job_type');
         $jobType->is_active = $request->input('is_active');
         $jobType->lang = $request->input('lang');
         $jobType->is_default = $request->input('is_default');
-
         $jobType->save();
-
         /*         * ************************************ */
-
         $jobType->sort_order = $jobType->id;
-
         if ((int) $request->input('is_default') == 1) {
             $jobType->job_type_id = $jobType->id;
         } else {
             $jobType->job_type_id = $request->input('job_type_id');
         }
-
         $jobType->update();
-
         flash('Job Type has been added!')->success();
         return \Redirect::route('edit.job.type', array($jobType->id));
     }
@@ -89,7 +83,6 @@ class JobTypeController extends Controller
     public function updateJobType($id, JobTypeFormRequest $request)
     {
         $jobType = JobType::findOrFail($id);
-
         $jobType->job_type = $request->input('job_type');
         $jobType->is_active = $request->input('is_active');
         $jobType->lang = $request->input('lang');
@@ -99,9 +92,7 @@ class JobTypeController extends Controller
         } else {
             $jobType->job_type_id = $request->input('job_type_id');
         }
-
         $jobType->update();
-
         flash('Job Type has been updated!')->success();
         return \Redirect::route('edit.job.type', array($jobType->id));
     }
@@ -138,7 +129,7 @@ class JobTypeController extends Controller
                             }
                         })
                         ->addColumn('job_type', function ($jobTypes) {
-                            $jobType = str_limit($jobTypes->job_type, 100, '...');
+                            $jobType = Str::limit($jobTypes->job_type, 100, '...');
                             $direction = MiscHelper::getLangDirection($jobTypes->lang);
                             return '<span dir="' . $direction . '">' . $jobType . '</span>';
                         })

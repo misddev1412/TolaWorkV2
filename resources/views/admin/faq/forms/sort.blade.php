@@ -6,13 +6,11 @@
     <div id="faq_sort_data_div">
     </div>
 </div>
-
 @push('scripts') 
 <script>
     $(document).ready(function () {
         refresh_faq_sort_data();
     });
-
     function refresh_faq_sort_data() {
         var language = $('#lang').val();
         $.ajax({

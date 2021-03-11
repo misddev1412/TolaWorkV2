@@ -27,7 +27,6 @@ class LanguageLevelFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $language_level_unique = '';
                     if ($id > 0) {

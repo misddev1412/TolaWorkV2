@@ -38,13 +38,13 @@ class EmailToFriendFormRequest extends Request
     {
         return [
             'friend_name.required' => __('Friend Name required'),
-'friend_email.required' => __('Friend E-mail address required'),
-'friend_email.email' => __('Friend Valid e-mail address is required'),
-'your_name.required' => __('Your name is required'),
-'your_email.required' => __('Your email address is required'),
-'your_email.email' => __('Your Valid e-mail address is required'),
-'job_url.required' => __('Job url is required'),
-'job_url.url' => __('Job url must be a valid URL'),
+            'friend_email.required' => __('Friend E-mail address required'),
+            'friend_email.email' => __('Friend Valid e-mail address is required'),
+            'your_name.required' => __('Your name is required'),
+            'your_email.required' => __('Your email address is required'),
+            'your_email.email' => __('Your Valid e-mail address is required'),
+            'job_url.required' => __('Job url is required'),
+            'job_url.url' => __('Job url must be a valid URL'),
         ];
     }
 

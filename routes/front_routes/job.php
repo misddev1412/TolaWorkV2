@@ -1,4 +1,5 @@
 <?php
+
 Route::get('job/{slug}', 'Job\JobController@jobDetail')->name('job.detail');
 Route::get('apply/{slug}', 'Job\JobController@applyJob')->name('apply.job');
 Route::post('apply/{slug}', 'Job\JobController@postApplyJob')->name('post.apply.job');
@@ -12,5 +13,9 @@ Route::post('store-front-job', 'Job\JobPublishController@storeFrontJob')->name('
 Route::get('edit-front-job/{id}', 'Job\JobPublishController@editFrontJob')->name('edit.front.job');
 Route::put('update-front-job/{id}', 'Job\JobPublishController@updateFrontJob')->name('update.front.job');
 Route::delete('delete-front-job', 'Job\JobPublishController@deleteJob')->name('delete.front.job');
-
 Route::get('job-seekers', 'Job\JobSeekerController@jobSeekersBySearch')->name('job.seeker.list');
+
+
+Route::post('submit-message', 'Job\SeekerSendController@submit_message')->name('submit-message');
+
+Route::get('subscribe-alert', 'SubscriptionController@submitAlert')->name('subscribe.alert');

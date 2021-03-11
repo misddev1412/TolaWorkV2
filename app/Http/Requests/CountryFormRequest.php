@@ -27,7 +27,6 @@ class CountryFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $country_unique = '';
                     if ($id > 0) {

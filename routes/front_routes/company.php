@@ -1,5 +1,7 @@
 <?php
+
 Route::get('company-home', 'Company\CompanyController@index')->name('company.home');
+Route::get('companies', 'Company\CompaniesController@company_listing')->name('company.listing');
 Route::get('company-profile', 'Company\CompanyController@companyProfile')->name('company.profile');
 Route::put('update-company-profile', 'Company\CompanyController@updateCompanyProfile')->name('update.company.profile');
 Route::get('posted-jobs', 'Company\CompanyController@postedJobs')->name('posted.jobs');
@@ -13,5 +15,11 @@ Route::get('remove-from-favourite-applicant/{application_id}/{user_id}/{job_id}/
 Route::get('applicant-profile/{application_id}', 'Company\CompanyController@applicantProfile')->name('applicant.profile');
 Route::get('user-profile/{id}', 'Company\CompanyController@userProfile')->name('user.profile');
 Route::get('company-followers', 'Company\CompanyController@companyFollowers')->name('company.followers');
-Route::get('company-messages', 'Company\CompanyController@companyMessages')->name('company.messages');
+/* Route::get('company-messages', 'Company\CompanyController@companyMessages')->name('company.messages'); */
+Route::post('submit-message-seeker', 'CompanyMessagesController@submitnew_message_seeker')->name('submit-message-seeker');
+
+Route::get('company-messages', 'CompanyMessagesController@all_messages')->name('company.messages');
+Route::get('append-messages', 'CompanyMessagesController@append_messages')->name('append-message');
+Route::get('append-only-messages', 'CompanyMessagesController@appendonly_messages')->name('append-only-message');
+Route::post('company-submit-messages', 'CompanyMessagesController@submit_message')->name('company.submit-message');
 Route::get('company-message-detail/{id}', 'Company\CompanyController@companyMessageDetail')->name('company.message.detail');

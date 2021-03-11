@@ -29,17 +29,14 @@ class HomeController extends Controller
     public function index()
     {
         $today = Carbon::now();
-
         $totalActiveUsers = User::where('is_active', 1)->count();
         $totalVerifiedUsers = User::where('verified', 1)->count();
         $totalTodaysUsers = User::where('created_at', 'like', $today->toDateString() . '%')->count();
         $recentUsers = User::orderBy('id', 'DESC')->take(25)->get();
-
         $totalActiveJobs = Job::where('is_active', 1)->count();
         $totalFeaturedJobs = Job::where('is_featured', 1)->count();
         $totalTodaysJobs = Job::where('created_at', 'like', $today->toDateString() . '%')->count();
         $recentJobs = Job::orderBy('id', 'DESC')->take(25)->get();
-
         return view('admin.home')
                         ->with('totalActiveUsers', $totalActiveUsers)
                         ->with('totalVerifiedUsers', $totalVerifiedUsers)

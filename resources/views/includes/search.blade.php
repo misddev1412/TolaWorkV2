@@ -1,155 +1,41 @@
-<div class="searchwrap">
-
-  <div class="container">
-
-    <h3>{{__('One million success stories')}}. <span>{{__('Start yours today')}}.</span></h3>
-
-    
-
-    @if(Auth::guard('company')->check())
-
-    <form action="{{route('job.seeker.list')}}" method="get">
-
-    <div class="searchbar row">
-
-      <div class="col-md-{{((bool)$siteSetting->country_specific_site)? 12:8}}">
-
-        <input type="text"  name="search" value="{{Request::get('search', '')}}" class="form-control" placeholder="{{__('Enter Skills or Job Seeker Details')}}" />
-
-      </div>
-
-      <div class="col-md-4">
-
-        {!! Form::select('functional_area_id[]', ['' => __('Select Functional Area')]+$functionalAreas, Request::get('functional_area_id', null), array('class'=>'form-control', 'id'=>'functional_area_id')) !!}
-
-      </div>
-
-      
-
-      @if((bool)$siteSetting->country_specific_site)
-
-      {!! Form::hidden('country_id[]', Request::get('country_id[]', $siteSetting->default_country_id), array('id'=>'country_id')) !!}
-
-      @else
-
-      <div class="col-md-4">
-
-      {!! Form::select('country_id[]', ['' => __('Select Country')]+$countries, Request::get('country_id', $siteSetting->default_country_id), array('class'=>'form-control', 'id'=>'country_id')) !!}
-
-      </div>
-
-      @endif
-
-      
-
-      <div class="col-md-3">
-
-      <span id="state_dd">
-
-      {!! Form::select('state_id[]', ['' => __('Select State')], Request::get('state_id', null), array('class'=>'form-control', 'id'=>'state_id')) !!}
-
-      </span>
-
-      </div>
-
-      <div class="col-md-3">
-
-      <span id="city_dd">
-
-      {!! Form::select('city_id[]', ['' => __('Select City')], Request::get('city_id', null), array('class'=>'form-control', 'id'=>'city_id')) !!}
-
-      </span>
-
-      </div>
-
-      <div class="col-md-2">
-
-        <input type="submit" class="btn" value="{{__('Search Job Seeker')}}">
-
-      </div>
-
+@if((bool)$siteSetting->is_slider_active)
+<!-- Revolution slider start -->
+<div class="tp-banner-container">
+    <div class="tp-banner" >
+        <ul>
+        @if(isset($sliders) && count($sliders))
+            @foreach($sliders as $slide)
+            <!--Slide-->
+            <li data-slotamount="7" data-transition="slotzoom-horizontal" data-masterspeed="1000" data-saveperformance="on"> <img alt="{{$slide->slider_heading}}" src="{{asset('/')}}images/slider/dummy.png" data-lazyload="{{ ImgUploader::print_image_src('/slider_images/'.$slide->slider_image) }}">
+                <div class="caption lft large-title tp-resizeme slidertext1" data-x="left" data-y="150" data-speed="600" data-start="1600">{{$slide->slider_heading}}</div>
+                <div class="caption lfb large-title tp-resizeme sliderpara" data-x="left" data-y="200" data-speed="600" data-start="2800">{!!$slide->slider_description!!}</div>
+                <div class="caption lfb large-title tp-resizeme slidertext5" data-x="left" data-y="280" data-speed="600" data-start="3500"><a href="{{$slide->slider_link}}">{{$slide->slider_link_text}}</a></div>
+            </li>
+            <!--Slide end--> 
+            @endforeach
+            @endif
+        </ul>
     </div>
-
-    </form>
-
-    @else
-
-    <form action="{{route('job.list')}}" method="get">
-
-    <div class="searchbar row">
-
-      <div class="col-md-{{((bool)$siteSetting->country_specific_site)? 12:8}}">
-
-        <input type="text"  name="search" value="{{Request::get('search', '')}}" class="form-control" placeholder="{{__('Enter Skills or job title')}}" />
-
-      </div>
-
-      <div class="col-md-4">
-
-        {!! Form::select('functional_area_id[]', ['' => __('Select Functional Area')]+$functionalAreas, Request::get('functional_area_id', null), array('class'=>'form-control', 'id'=>'functional_area_id')) !!}
-
-      </div>
-
-      
-
-      @if((bool)$siteSetting->country_specific_site)
-
-      {!! Form::hidden('country_id[]', Request::get('country_id[]', $siteSetting->default_country_id), array('id'=>'country_id')) !!}
-
-      @else
-
-      <div class="col-md-4">
-
-      {!! Form::select('country_id[]', ['' => __('Select Country')]+$countries, Request::get('country_id', $siteSetting->default_country_id), array('class'=>'form-control', 'id'=>'country_id')) !!}
-
-      </div>
-
-      @endif
-
-      
-
-      <div class="col-md-3">
-
-      <span id="state_dd">
-
-      {!! Form::select('state_id[]', ['' => __('Select State')], Request::get('state_id', null), array('class'=>'form-control', 'id'=>'state_id')) !!}
-
-      </span>
-
-      </div>
-
-      <div class="col-md-3">
-
-      <span id="city_dd">
-
-      {!! Form::select('city_id[]', ['' => __('Select City')], Request::get('city_id', null), array('class'=>'form-control', 'id'=>'city_id')) !!}
-
-      </span>
-
-      </div>
-
-      <div class="col-md-2">
-
-        <input type="submit" class="btn" value="{{__('Search Job')}}">
-
-      </div>
-
-    </div>
-
-    </form>
-
-    @endif
-
-    
-
-    <!-- button start 
-
-    <div class="getstarted"><a href="{{url('/')}}"><i class="fa fa-user" aria-hidden="true"></i> {{__('Get Started Now')}}</a></div>
-
-    button end --> 
-
-    
-
-  </div>
-
 </div>
+<!-- Revolution slider end --> 
+<!--Search Bar start-->
+<div class="searchbar searchblack">
+    <div class="container">
+        @include('includes.search_form')
+    </div>
+</div>
+<!-- Search End --> 
+@else
+<div class="searchwrap">
+    <div class="container">
+        <h3>{{__('One million success stories')}}. <span>{{__('Start yours today')}}.</span></h3>
+
+        @include('includes.search_form')
+
+        <!-- button start 
+        <div class="getstarted"><a href="{{url('/')}}"><i class="fa fa-user" aria-hidden="true"></i> {{__('Get Started Now')}}</a></div>
+        button end --> 
+
+    </div>
+</div>
+@endif

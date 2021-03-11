@@ -41,16 +41,14 @@ class PackageController extends Controller
     public function storePackage(PackageFormRequest $request)
     {
         $package = new Package();
-        
+
         $package->package_title = $request->input('package_title');
         $package->package_price = $request->input('package_price');
         $package->package_num_days = $request->input('package_num_days');
         $package->package_num_listings = $request->input('package_num_listings');
         $package->package_for = $request->input('package_for');
         $package->save();
-
         /*         * ************************************ */
-
         flash('Package has been added!')->success();
         return \Redirect::route('edit.package', array($package->id));
     }
@@ -65,15 +63,14 @@ class PackageController extends Controller
     public function updatePackage($id, PackageFormRequest $request)
     {
         $package = Package::findOrFail($id);
-        
+
         $package->package_title = $request->input('package_title');
         $package->package_price = $request->input('package_price');
         $package->package_num_days = $request->input('package_num_days');
         $package->package_num_listings = $request->input('package_num_listings');
         $package->package_for = $request->input('package_for');
-        
-        $package->update();
 
+        $package->update();
         flash('Package has been updated!')->success();
         return \Redirect::route('edit.package', array($package->id));
     }
@@ -99,33 +96,28 @@ class PackageController extends Controller
                     'packages.package_num_days',
                     'packages.package_num_listings',
                     'packages.package_for',
-        ])->orderBy('packages.package_for');
+                ])->orderBy('packages.package_for');
         return Datatables::of($packages)
                         ->filter(function ($query) use ($request) {
-
-
                             if ($request->has('package_title') && !empty($request->package_title)) {
                                 $query->where('packages.package_title', 'like', "%{$request->get('package_title')}%");
                             }
-
                             if ($request->has('package_price') && !empty($request->package_price)) {
                                 $query->where('packages.package_price', 'like', "{$request->get('package_price')}%");
                             }
-
                             if ($request->has('package_num_days') && !empty($request->package_num_days)) {
                                 $query->where('packages.package_num_days', 'like', "{$request->get('package_num_days')}%");
                             }
-							
-							if ($request->has('package_num_listings') && !empty($request->package_num_listings)) {
+
+                            if ($request->has('package_num_listings') && !empty($request->package_num_listings)) {
                                 $query->where('packages.package_num_listings', 'like', "{$request->get('package_num_listings')}%");
                             }
-							
-							if ($request->has('package_for') && !empty($request->package_for)) {
+
+                            if ($request->has('package_for') && !empty($request->package_for)) {
                                 $query->where('packages.package_for', 'like', "{$request->get('package_for')}");
                             }
-							
                         })
-                        ->addColumn('action', function ($packages) {                        
+                        ->addColumn('action', function ($packages) {
                             return '
 				<div class="btn-group">
 					<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Action

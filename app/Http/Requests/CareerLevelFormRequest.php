@@ -27,7 +27,6 @@ class CareerLevelFormRequest extends Request
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
-
                     $id = (int) $this->input('id', 0);
                     $career_level_unique = '';
                     if ($id > 0) {
