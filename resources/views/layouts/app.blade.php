@@ -63,7 +63,7 @@ if (!isset($seo)) {
     {!! NoCaptcha::renderJs() !!}
     @stack('scripts')
     <!-- Custom js -->
-    <script src="{{asset('/')}}js/script.js"></script>
+    <script src="{{asset('/')}}js/script.js?v={{time()}}"></script>
     <script type="text/JavaScript">
         $(document).ready(function(){
             $(document).scrollTo('.has-error', 2000);
