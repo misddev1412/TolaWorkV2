@@ -1,4 +1,7 @@
 "use strict";
+$.fn.andSelf = function() {
+	return this.addBack.apply(this, arguments);
+}
 /* ==== Jquery Functions ==== */
 (function($) {
 		
