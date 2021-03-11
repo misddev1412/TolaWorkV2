@@ -1,0 +1,34 @@
+
+
+html.rtl, .rtl body{direction:rtl;}
+
+.rtl .col-md-1, .rtl .col-md-10, .rtl .col-md-11, .rtl .col-md-12, .rtl .col-md-2, .rtl .col-md-3, .rtl .col-md-4, .rtl .col-md-5, .rtl .col-md-6, .rtl .col-md-7, .rtl .col-md-8, .rtl .col-md-9 {
+    float: right;
+}
+
+.rtl .navbar-nav>li{float:right;}
+.rtl .navbar-default{float:left;}
+.rtl .navbar-nav>li.userbtn .dropdown-menu{left:0; right:auto;}
+.rtl .dropdown-menu{text-align:right;}
+.rtl .posts-list .media-left{float:right; margin-left:30px; margin-right:0;}
+.rtl .appwraper .titleTop{text-align:right;}
+.rtl .catelist li a{padding-left:0; padding-right:15px;}
+.rtl .catelist li a:before{left:auto; right:0; content:'\f0d9'}
+.rtl .footerWrap .quicklinks li a:before{margin-left:7px; margin-right:0; content:'\f0d9'}
+
+.rtl .pull-right{float:left !important;}
+.rtl .optionlist li{padding-left:0; padding-right:30px;}
+.rtl .searchList li .jobimg{float:right; margin:0 0 0 15px;}
+.rtl .breadCrumb{text-align:left;}
+.rtl .jbdetail li span, .rtl .jbdetail li a{text-align:left;}
+.rtl .job-header .jobinfo .candidateinfo .userPic{float:right; margin:0 0 0 20px;}
+.rtl .col-md-offset-2 {margin-right: 16.66666667%; margin-left:0;}
+.rtl .col-md-offset-3 {margin-right: 25%; margin-left:0;}
+
+.rtl .faqs h4 a {padding: 15px 15px 15px 55px;}
+.rtl .faqs h4 a:before, .rtl .faqs h4 .collapsed:before{right:auto; left:15px;}
+
+.rtl .contact > span{float:right; margin:0 0 0 10px;}
+.rtl .switchbox .txtlbl{float:right;}
+.rtl .owl-carousel .owl-stage-outer{direction:ltr;}
+html.rtl .owl-stage{direction:ltr;}

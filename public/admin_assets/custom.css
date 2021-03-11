@@ -1,0 +1,7 @@
+@charset "utf-8";
+/* CSS Document */
+
+.plus { background: url('images/details_open.png') no-repeat center center !important; cursor: pointer;}
+.minus { background: url('images/details_close.png') no-repeat center center !important; cursor: pointer;}
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+#sortable li { margin:15px; padding:2px; font-size: 16px; background: #cedc98; border: 1px solid #DDDDDD; color: #333333; cursor:pointer;}

@@ -1,0 +1,2 @@
+[30-Aug-2018 22:31:31 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 199233536 bytes) in /home/sheeda/public_html/job_portal/vendor/jrean/laravel-user-verification/src/UserVerification.php on line 199
+[10-Sep-2018 10:26:39 UTC] PHP Fatal error:  Trait method deleteJob has not been applied, because there are collisions with other trait methods on App\Http\Controllers\IndexController in /home/sheeda/public_html/job_portal/app/Http/Controllers/IndexController.php on line 19
