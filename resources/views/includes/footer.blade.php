@@ -14,7 +14,7 @@
 
       <div class="col-md-3 col-sm-6">
 
-        <h5>{{_('Quick Links')}}</h5>
+        <h5>{{__('Quick Links')}}</h5>
 
         <!--Quick Links menu Start-->
 
@@ -52,7 +52,7 @@
 
       <div class="col-md-3 col-sm-6">
 
-        <h5>{{_('Jobs By Functional Area')}}</h5>
+        <h5>{{__('Jobs By Functional Area')}}</h5>
 
         <!--Quick Links menu Start-->
 
@@ -80,7 +80,7 @@
 
       <div class="col-md-3 col-sm-6">
 
-        <h5>{{_('Jobs By Industry')}}</h5>
+        <h5>{{__('Jobs By Industry')}}</h5>
 
         <!--Industry menu Start-->
 
