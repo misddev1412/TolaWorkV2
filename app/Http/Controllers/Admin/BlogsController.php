@@ -53,7 +53,7 @@ class BlogsController extends Base
             $image->move($destinationPath, $input['imagename']);
         }
         $page_slug = $request->slug;
-        $slugs = unique_slug($page_slug, 'blogs', $field = 'slug', $key = NULL, $value = NULL);
+        $slugs = str_slug($page_slug);
         if ($request->cate_id != '') {
             $category_Ids = implode(",", $request->cate_id);
         } else {
